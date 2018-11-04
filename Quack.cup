@@ -190,16 +190,16 @@ op          ::= PLUS                                            {: RESULT = "+";
             |   OR                                              {: RESULT = "or"; :}
             ;
 
-expr        ::= expr:e1 op:o expr:e2                            {: RESULT = Expression.binop(e1, o, e2); :}
-            |   MINUS expr:e                                    {: RESULT = Expression.unop("-", e); :}
-            |   NOT expr:b                                      {: RESULT = Expression.unop("!", b); :}
-            |   INT_LIT:i                                       {: RESULT = Expression.intconst(i); :}
-            |   STRING_LIT:s                                    {: RESULT = Expression.stringLit(s); :}
-            |   expr:e DOT IDENT:i                              {: RESULT = Expression.methodCall(e, i); :}
-            |   expr:e DOT IDENT:i LPAREN inf_args:ia RPAREN    {: RESULT = Expression.methodCall(e, i, ia); :}
-            |   IDENT:i LPAREN inf_args:ia RPAREN               {: RESULT = Expression.constructor(i, ia); :}
-            |   IDENT:i                                         {: RESULT = Expression.ident(i); :}
-            |   LPAREN expr:e RPAREN                            {: RESULT = Expression.priority(e); :}
+expr        ::= expr:e1 op:o expr:e2                            {: RESULT = Expression.binop(e1, o, e2, e1left, e2right); :}
+            |   MINUS:m expr:e                                  {: RESULT = Expression.unop("-", e, mleft, eright); :}
+            |   NOT:n expr:b                                    {: RESULT = Expression.unop("!", b, nleft, bright); :}
+            |   INT_LIT:i                                       {: RESULT = Expression.intconst(i, ileft, iright); :}
+            |   STRING_LIT:s                                    {: RESULT = Expression.stringLit(s, sleft, sright); :}
+            |   expr:e DOT IDENT:i                              {: RESULT = Expression.methodCall(e, i, eleft, iright); :}
+            |   expr:e DOT IDENT:i LPAREN inf_args:ia RPAREN:rp {: RESULT = Expression.methodCall(e, i, ia, eleft, rpright); :}
+            |   IDENT:i LPAREN inf_args:ia RPAREN:rp            {: RESULT = Expression.constructor(i, ia, ileft, rpright); :}
+            |   IDENT:i                                         {: RESULT = Expression.ident(i, ileft, iright); :}
+            |   LPAREN:lp expr:e RPAREN:rp                      {: RESULT = Expression.priority(e, lpleft, rpright); :}
             ;
 
 empty       ::=                                                 {: :};

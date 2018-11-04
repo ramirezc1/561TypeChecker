@@ -5,10 +5,13 @@ public class Expression extends Obj
     public static class Priority extends Expression
     {
         public Expression e;
+        public int _left, _right;
 
-        public Priority(Expression e)
+        public Priority(Expression e, int left, int right)
         {
             this.e = e;
+            this._left = left;
+            this._right = right;
         }
 
         public String toString()
@@ -16,9 +19,9 @@ public class Expression extends Obj
             return "(" + e + ")";
         }
     }
-    public static Expression.Priority priority(Expression e)
+    public static Expression.Priority priority(Expression e, int left, int right)
     {
-        return new Expression.Priority(e);
+        return new Expression.Priority(e, left, right);
     }
 
 
@@ -27,12 +30,14 @@ public class Expression extends Obj
     {
         public Expression e1, e2;
         public String op;
-
-        public Binex(Expression e1, String op, Expression e2)
+        public int _left, _right;
+        public Binex(Expression e1, String op, Expression e2, int left, int right)
         {
             this.e1 = e1;
             this.e2 = e2;
             this.op = op;
+            this._left = left;
+            this._right = right;
         }
 
         public String toString()
@@ -41,9 +46,9 @@ public class Expression extends Obj
         }
 
     }
-    public static Expression.Binex binop(Expression e1, String op, Expression e2)
+    public static Expression.Binex binop(Expression e1, String op, Expression e2, int left, int right)
     {
-        return new Expression.Binex(e1, op, e2);
+        return new Expression.Binex(e1, op, e2, left, right);
     }
 
 
@@ -52,11 +57,13 @@ public class Expression extends Obj
     {
         public String op;
         public Expression e1;
-
-        public Unex(String op, Expression e1)
+        public int _left, _right;
+        public Unex(String op, Expression e1, int left, int right)
         {
             this.e1 = e1;
             this.op = op;
+            this._left = left;
+            this._right = right;
         }
 
         public String toString()
@@ -64,9 +71,9 @@ public class Expression extends Obj
             return op + e1.toString();
         }
     }
-    public static Expression.Unex unop(String op, Expression e)
+    public static Expression.Unex unop(String op, Expression e, int left, int right)
     {
-        return new Expression.Unex(op, e);
+        return new Expression.Unex(op, e, left, right);
     }
 
 
@@ -74,10 +81,12 @@ public class Expression extends Obj
     public static class StringLit extends Expression
     {
         public String _s;
-
-        public StringLit(String s)
+        public int _left, _right;
+        public StringLit(String s, int left, int right)
         {
             this._s = s;
+            this._left = left;
+            this._right = right;
         }
 
         public String toString()
@@ -85,19 +94,21 @@ public class Expression extends Obj
             return _s;
         }
     }
-    public static Expression.StringLit stringLit(String s)
+    public static Expression.StringLit stringLit(String s, int left, int right)
     {
-        return new Expression.StringLit(s);
+        return new Expression.StringLit(s, left, right);
     }
 
 
     public static class IntConst extends Expression
     {
         public int i;
-
-        public IntConst(int i)
+        public int _left, _right;
+        public IntConst(int i, int left, int right)
         {
             this.i = i;
+            this._left = left;
+            this._right = right;
         }
 
         public String toString()
@@ -105,23 +116,25 @@ public class Expression extends Obj
             return i + "";
         }
     }
-    public static Expression.IntConst intconst(int i)
+    public static Expression.IntConst intconst(int i, int left, int right)
     {
-        return new Expression.IntConst(i);
+        return new Expression.IntConst(i, left, right);
     }
+
 
 
 
     public static class Identifier extends Expression
     {
-//        public Location left, right;
+        //        public Location left, right;
+        public int _left, _right;
         public String i;
 
-        public Identifier(String i)
+        public Identifier(String i, int left, int right)
         {
             this.i = i;
-//            this.left = l;
-//            this.right = r;
+            this._left = left;
+            this._right = right;
         }
 
         public String toString()
@@ -129,9 +142,9 @@ public class Expression extends Obj
             return i;
         }
     }
-    public static Expression.Identifier ident(String s)
+    public static Expression.Identifier ident(String s, int left, int right)
     {
-        return new Expression.Identifier(s);
+        return new Expression.Identifier(s, left, right);
     }
 
 
@@ -140,17 +153,23 @@ public class Expression extends Obj
         Expression _e;
         String _ident;
         Args _optionalArgs;
-        public Method_Call(Expression e, String ident)
+        public int _left, _right;
+
+        public Method_Call(Expression e, String ident, int left, int right)
         {
             this._e = e;
             this._ident = ident;
+            this._left = left;
+            this._right = right;
         }
 
-        public Method_Call(Expression e, String ident, Args args)
+        public Method_Call(Expression e, String ident, Args args, int left, int right)
         {
             this._e = e;
             this._ident = ident;
             this._optionalArgs = args;
+            this._left = left;
+            this._right = right;
         }
 
         public String toString()
@@ -163,32 +182,35 @@ public class Expression extends Obj
             return _e + "." + _ident + args;
         }
     }
-    public static Expression.Method_Call methodCall(Expression e, String ident)
+    public static Expression.Method_Call methodCall(Expression e, String ident, int left, int right)
     {
-        return new Expression.Method_Call(e, ident);
+        return new Expression.Method_Call(e, ident, left, right);
     }
-    public static Expression.Method_Call methodCall(Expression e, String ident, Args args)
+    public static Expression.Method_Call methodCall(Expression e, String ident, Args args, int left, int right)
     {
-        return new Expression.Method_Call(e, ident, args);
+        return new Expression.Method_Call(e, ident, args, left, right);
     }
 
     public static class Constructor extends Expression
     {
         String _ident;
         Args _args;
-        public Constructor(String ident, Args args)
+        public int _left, _right;
+        public Constructor(String ident, Args args, int left, int right)
         {
             this._ident = ident;
             this._args = args;
+            this._left = left;
+            this._right = right;
         }
         public String toString()
         {
             return _ident + _args;
         }
     }
-    public static Expression.Constructor constructor(String ident, Args args)
+    public static Expression.Constructor constructor(String ident, Args args, int left, int right)
     {
-        return new Expression.Constructor(ident, args);
+        return new Expression.Constructor(ident, args, left, right);
     }
 
 }

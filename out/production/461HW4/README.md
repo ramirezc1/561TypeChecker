@@ -1,4 +1,4 @@
-# CS 561 Typechecker
+# CS 461 HW4
 Lexer, parser, and AST build by Sam Gerendasy & Cristian Ramirez. 
 Starter code created by Michal Young.
 

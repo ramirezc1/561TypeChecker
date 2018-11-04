@@ -61,14 +61,16 @@ public class Main {
         System.out.println("Beginning parse ..."); 
         try {
 	    ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
-	    Lexer scanner = 
-		new Lexer (new FileReader ( sourceFile ),
-				 symbolFactory);
+	    Lexer scanner = new Lexer (new FileReader ( sourceFile ), symbolFactory);
             parser p = new parser( scanner, symbolFactory); 
             p.setErrorReport(report); 
 	    Symbol result; 
 	    if (DebugMode) { result =  p.debug_parse(); }
-	    else { result = p.parse(); }
+	    else { 
+	    	result = p.parse(); 
+	    }
+	    Program ast = (Program) result.value;
+	    System.out.println(ast.toString());
 	    System.out.println("Done parsing"); 
         } catch (Exception e) {
             System.err.println("Yuck, blew up in parse/validate phase"); 

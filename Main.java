@@ -60,15 +60,25 @@ public class Main {
     void parseProgram() { 
         System.out.println("Beginning parse ..."); 
         try {
+        Symbol result; 
 	    ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
-	    Lexer scanner = new Lexer (new FileReader ( sourceFile ), symbolFactory);
+	    Lexer scanner = new Lexer (new FileReader ( "built-ins.qk" ), symbolFactory);
             parser p = new parser( scanner, symbolFactory); 
+        	result = p.parse();
+        //ast of built in clasess
+		Program builtinAST = (Program) result.value;
+	    //System.out.println("Built in classes parsed, ast built");
+	    //System.out.println(builtinAST.toString());
+
+        scanner = new Lexer (new FileReader ( sourceFile), symbolFactory);
+            p = new parser( scanner, symbolFactory); 
             p.setErrorReport(report); 
-	    Symbol result; 
+	    
 	    if (DebugMode) { result =  p.debug_parse(); }
 	    else { 
 	    	result = p.parse(); 
 	    }
+	    
 	    Program ast = (Program) result.value;
 	    System.out.println(ast.toString());
 	    System.out.println("Done parsing"); 

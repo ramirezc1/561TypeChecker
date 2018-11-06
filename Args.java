@@ -1,6 +1,6 @@
 import java.util.LinkedList;
 
-public abstract class Args extends Obj
+public abstract class Args
 {
 
     public Args() { }

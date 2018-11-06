@@ -1,6 +1,6 @@
 import java.util.List;
 
-public abstract class Class_Block extends Obj
+public abstract class Class_Block
 {
     public Class_Block() { }
 

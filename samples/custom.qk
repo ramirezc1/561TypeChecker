@@ -1,3 +1,7 @@
-x = true and false;
-y = 5 - 7;
-return x;
+x = 0;
+while (x < 5)
+{
+    z = x * x;
+    y = z + 1;
+    x = x + 1;
+}

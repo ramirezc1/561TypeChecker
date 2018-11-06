@@ -1,7 +1,7 @@
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Methods extends Obj
+public abstract class Methods
 {
     public Methods() { }
 

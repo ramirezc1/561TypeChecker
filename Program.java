@@ -4,7 +4,7 @@
 
 import java.util.List;
 
-public class Program extends Obj
+public class Program
 {
     List<Class_Block> _cbs;
     List<Statement> _stmts;

@@ -1,6 +1,7 @@
-public class Expression extends Obj
+public abstract class Expression
 {
     public Expression() { }
+    abstract String getType();
 
     public static class Priority extends Expression
     {
@@ -12,6 +13,11 @@ public class Expression extends Obj
             this.e = e;
             this._left = left;
             this._right = right;
+        }
+
+        public String getType()
+        {
+            return e.getType();
         }
 
         public String toString()
@@ -31,6 +37,7 @@ public class Expression extends Obj
         public Expression e1, e2;
         public String op;
         public int _left, _right;
+
         public Binex(Expression e1, String op, Expression e2, int left, int right)
         {
             this.e1 = e1;
@@ -38,6 +45,12 @@ public class Expression extends Obj
             this.op = op;
             this._left = left;
             this._right = right;
+        }
+
+        public String getType()
+        {
+            // do we need to check if e1 & e2 are the same type here or somewhere else?
+            return e1.getType();
         }
 
         public String toString()
@@ -65,6 +78,10 @@ public class Expression extends Obj
             this._left = left;
             this._right = right;
         }
+        public String getType()
+        {
+            return e1.getType();
+        }
 
         public String toString()
         {
@@ -88,6 +105,10 @@ public class Expression extends Obj
             this._left = left;
             this._right = right;
         }
+        public String getType()
+        {
+            return "STRING";
+        }
 
         public String toString()
         {
@@ -109,6 +130,10 @@ public class Expression extends Obj
             this.i = i;
             this._left = left;
             this._right = right;
+        }
+        public String getType()
+        {
+            return "INT";
         }
 
         public String toString()
@@ -135,6 +160,12 @@ public class Expression extends Obj
             this.i = i;
             this._left = left;
             this._right = right;
+        }
+        public String getType()
+        {
+            // Probably need to look up this ident in the sym table and return type.
+            // Or store type locally after evaluation the appropriate expression
+            return "IDENT";
         }
 
         public String toString()
@@ -172,6 +203,12 @@ public class Expression extends Obj
             this._right = right;
         }
 
+        public String getType()
+        {
+            // need to look up _e._ident() in method table, and return the method's declared type
+            return "METHOD";
+        }
+
         public String toString()
         {
             StringBuilder args = new StringBuilder();
@@ -181,6 +218,7 @@ public class Expression extends Obj
             }
             return _e + "." + _ident + args;
         }
+
     }
     public static Expression.Method_Call methodCall(Expression e, String ident, int left, int right)
     {
@@ -202,6 +240,10 @@ public class Expression extends Obj
             this._args = args;
             this._left = left;
             this._right = right;
+        }
+        public String getType()
+        {
+            return "CONSTRUCTOR";
         }
         public String toString()
         {

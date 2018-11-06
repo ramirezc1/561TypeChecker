@@ -3,7 +3,7 @@ import java_cup.runtime.ComplexSymbolFactory.Location;
 import java.util.LinkedList;
 import java.util.List;
 
-public abstract class Statement extends Obj
+public abstract class Statement
 {
     public Statement() { }
 
@@ -91,6 +91,12 @@ public abstract class Statement extends Obj
                 whileResult.append("\t\n").append(s.toString());
             }
             return whileResult.toString();
+        }
+        public void visit()
+        {
+            // adds statements to table
+            // type checks statements
+            // removes statements from table
         }
 
     }

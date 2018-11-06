@@ -28,9 +28,9 @@ parser code {:
              ComplexSymbolFactory.ComplexSymbol the_token =
   	      (ComplexSymbolFactory.ComplexSymbol) cur_token;
   	   report_error("Syntax error in line " +
-  			the_token.xleft.getLine() +
+  			the_token.getLeft().getLine() +
   			", near column " +
-  			the_token.xleft.getColumn() + ": " + the_token.getName() + "", null);
+  			the_token.getLeft().getColumn() + ": " + the_token.value.toString() + "", null);
   	   ++ errorCount;
   	   if (errorCount > MAX_ERRORS) {
   	       System.err.println("More than " + MAX_ERRORS + " errors. " +
@@ -78,8 +78,7 @@ nonterminal String                  op;
 nonterminal Args                    formal_args, inf_args;
 nonterminal List<Methods>           mthd_block;
 nonterminal Methods                 method;
-
-nonterminal Empty      empty;
+nonterminal Empty                   empty;
 
 
 

@@ -1,0 +1,5 @@
+//Classes may be defined in any order 
+class Foo extends Bar {
+	def answer_me(): Int { return this.answer; }
+}
+class Bar { this.answer = 42; }

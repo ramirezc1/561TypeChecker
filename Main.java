@@ -145,15 +145,19 @@ public class Main {
         {
             throw new Exception("Undefined class");
         }
+        System.out.println("Passed check for undefined class inheritance");
 
         if (checkForCycles())
         {
             throw new Exception("Class cycles");
         }
+        System.out.println("Passed check for class cycles");
+
         if (checkConstructor(ast))
         {
             throw new Exception("Bad constructor");
         }
+        System.out.println("Passed check for subclass matching constructor of parent class");
     }
 
     boolean checkForUndefined()

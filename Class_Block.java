@@ -38,7 +38,7 @@ public abstract class Class_Block
             for (Statement s : this._stmtList)
             {
                 // TODO: populate VarTable with idents and their types for assignment statements of the form "this.__"
-                System.out.println(s);
+//                System.out.println(s);
             }
 
             return varTable;

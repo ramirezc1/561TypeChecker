@@ -1,15 +1,9 @@
 class C1()  extends Obj {
-    this.x = 4;
-    y = 5;
-   def foo():  Top {
-       return C1();    /* CHANGED */
-   }
+    this.x = 7;
+    y = 10;
 }
 
 class C2() extends C1 {
     this.x = 8;
-    y = "sample";
-   def foo():  C1 {
-        return C1();    /* Conforms to C1.foo() */
-   }
+    y = 11;
 }

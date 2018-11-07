@@ -22,9 +22,7 @@
  }
 
  class Boolean() { 
-   def $AND(Boolean other): Boolean { }
-   def $OR(Boolean other): Boolean { }
-   def $NOT(): Boolean {}
+
 
 }
 

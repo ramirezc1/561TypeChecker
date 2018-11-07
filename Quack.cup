@@ -68,9 +68,8 @@ terminal Integer    INT_LIT;
 
 /* Non terminals */
 nonterminal Program                 prog;
-nonterminal List<Class_Block>       clazz_block;
-nonterminal Class_Block.Class_Body  class_body;
-nonterminal Class_Block.Clazz       clss;
+nonterminal List<Class_Block.Clazz_Block>       clazz_block;
+nonterminal Class_Block.Clazz_Block clss;
 nonterminal List<Statement>         stmtlist, type_block;
 nonterminal Expression              expr;
 nonterminal Statement               stmt, asmt_stmt, return_stmt, while_expr, ifstmt, elsestmt, typecase, type_stmts;
@@ -109,16 +108,13 @@ inf_args    ::= inf_args:ia COMMA expr:e                        {: ia.addArg(e);
             ;
 
 clazz_block ::= clazz_block:cb clss:c                           {: cb.add(c); RESULT = cb; :}
-            |   empty                                           {: RESULT = new LinkedList<Class_Block>(); :}
+            |   empty                                           {: RESULT = new LinkedList<Class_Block.Clazz_Block>(); :}
             ;
 
-clss        ::= CLASS:c IDENT:i1 LPAREN formal_args:fa RPAREN EXTENDS IDENT:i2 LBRACE class_body:cb RBRACE
-                                                                {: RESULT = Class_Block.clazz(i1, fa, i2, cb); :}
-            |   CLASS:c IDENT:i LPAREN formal_args:fa RPAREN LBRACE class_body:cb RBRACE
-                                                                {: RESULT = Class_Block.clazz(i, fa, cb); :}
-            ;
-
-class_body  ::= stmtlist:sl mthd_block:mb                       {: RESULT = Class_Block.classBody(sl, mb); :}
+clss        ::= CLASS:c IDENT:i1 LPAREN formal_args:fa RPAREN EXTENDS IDENT:i2 LBRACE stmtlist:sl mthd_block:mb RBRACE
+                                                                {: RESULT = Class_Block.class_block(i1, fa, i2, sl, mb); :}
+            |   CLASS:c IDENT:i LPAREN formal_args:fa RPAREN LBRACE stmtlist:sl mthd_block:mb RBRACE
+                                                                {: RESULT = Class_Block.class_block(i, fa, sl, mb); :}
             ;
 
 stmtlist    ::= stmtlist:sl stmt:s                              {: sl.add(s); RESULT = sl; :}

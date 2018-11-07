@@ -9,6 +9,8 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Options;
 
 import java.io.FileReader;
+import java.util.HashMap;
+import java.util.List;
 
 public class Main {
     
@@ -135,32 +137,68 @@ public class Main {
         }
     }
 
-    boolean TypeCheckProgram(Program ast)
-    {
+    void TypeCheckProgram(Program ast) throws Exception {
 
         ast.visit();
 
+        if (checkForUndefined())
+        {
+            throw new Exception("Undefined class");
+        }
 
-        boolean cyclesRes = checkForCycles();
-        boolean undefinedRes = checkForUndefined();
-        boolean constructorRes = checkConstructor();
-
-        return cyclesRes && undefinedRes && constructorRes;
-    }
-
-    boolean checkForCycles()
-    {
-
-        return true;
+        if (checkForCycles())
+        {
+            throw new Exception("Class cycles");
+        }
+        if (checkConstructor(ast))
+        {
+            throw new Exception("Bad constructor");
+        }
     }
 
     boolean checkForUndefined()
     {
-        return true;
+        HashMap<String, String> clazzTable = classesTable.getClassTable();
+        for (String ident : clazzTable.values())
+        {
+            String currExtends = clazzTable.get(ident);
+            if (currExtends == null)
+            {
+                return true;
+            }
+        }
+
+        return false;
     }
 
-    boolean checkConstructor()
+    boolean checkForCycles()
     {
-        return true;
+        HashMap<String, String> clazzTable = classesTable.getClassTable();
+        for (String ident : clazzTable.values())
+        {
+            String startingIdent = ident;
+            String currIdent = ident;
+            String currExtends = clazzTable.get(currIdent);
+            while (!currExtends.equals("Obj"))
+            {
+                if (currExtends.equals(startingIdent))
+                {
+                    return true;
+                }
+                currIdent = currExtends;
+                currExtends = clazzTable.get(currIdent);
+            }
+        }
+        return false;
+    }
+
+    boolean checkConstructor(Program ast)
+    {
+        List<Class_Block.Clazz_Block> class_blocks = ast.get_cbs();
+        for (Class_Block.Clazz_Block class_block : class_blocks)
+        {
+            VarTable vt = class_block.getConstructor();
+        }
+        return false;
     }
 }

@@ -1,11 +1,15 @@
-x = 0;
-if (x < 5)
-{
-    z = x * x;
-    y = z + 1;
-    x = x + 1;
-}
-else
-{
+class C1()  extends Obj {
+    this.x = 4;
     y = 5;
+   def foo():  Top {
+       return C1();    /* CHANGED */
+   }
+}
+
+class C2() extends C1 {
+    this.x = 8;
+    y = "sample";
+   def foo():  C1 {
+        return C1();    /* Conforms to C1.foo() */
+   }
 }

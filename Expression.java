@@ -167,9 +167,9 @@ public abstract class Expression
         }
         public void visit()
         {
-            Var v = new Var(i, "NONE");
-            VarTable vt = VarTable.getInstance();
-            vt.addVar(v);
+//            Var v = new Var(i, "NONE");
+//            VarTable vt = VarTable.getInstance();
+//            vt.addVar(v);
         }
 
         public String toString()

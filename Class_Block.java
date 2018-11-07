@@ -2,32 +2,46 @@ import java.util.List;
 
 public abstract class Class_Block
 {
-    public Class_Block() { }
-    abstract void visit();
-
-    public static class Clazz extends Class_Block
+    public static class Clazz_Block
     {
         public String _classIdent;
         public Args _argList;
         public String _extendsIdent;
-        public Class_Body _classBody;
+        List<Statement> _stmtList;
+        List<Methods> _methods;
 
-        public Clazz(String class_ident, Args argList, String extends_ident, Class_Body class_body)
+        public Clazz_Block(String class_ident, Args argList, String extends_ident, List<Statement> stmts, List<Methods> mthds)
         {
             this._classIdent = class_ident;
             this._argList = argList;
             this._extendsIdent = extends_ident;
-            this._classBody = class_body;
+            this._stmtList = stmts;
+            this._methods = mthds;
+
         }
 
-        public Clazz(String class_ident, Args argList, Class_Body class_body)
+        public Clazz_Block(String class_ident, Args argList, List<Statement> stmts, List<Methods> mthds)
         {
             this._classIdent = class_ident;
             this._argList = argList;
-            this._classBody = class_body;
+            this._stmtList = stmts;
+            this._methods = mthds;
+
 
             // sig: all classes extend Obj by default right?
             this._extendsIdent = "Obj";
+        }
+
+        public VarTable getConstructor()
+        {
+            VarTable varTable = new VarTable();
+            for (Statement s : this._stmtList)
+            {
+                // TODO: populate VarTable with idents and their types for assignment statements of the form "this.__"
+                System.out.println(s);
+            }
+
+            return varTable;
         }
 
         public void visit()
@@ -35,6 +49,14 @@ public abstract class Class_Block
             System.out.println("visiting class " + _classIdent);
             ClassesTable ct = ClassesTable.getInstance();
             ct.addClass(_classIdent, _extendsIdent);
+            for (Statement s : this._stmtList)
+            {
+                s.visit();
+            }
+            for (Methods m : this._methods)
+            {
+                m.visit();
+            }
         }
 
         public String toString()
@@ -49,45 +71,7 @@ public abstract class Class_Block
                 result.append(_extendsIdent);
             }
             result.append("\n\t");
-            result.append(_classBody);
-            return result.toString();
-        }
-    }
-    public static Class_Block.Clazz clazz(String class_ident, Args argList, String extends_ident, Class_Body class_body)
-    {
-        return new Class_Block.Clazz(class_ident, argList, extends_ident, class_body);
-    }
 
-    public static Class_Block.Clazz clazz(String class_ident, Args argList, Class_Body class_body)
-    {
-        return new Class_Block.Clazz(class_ident, argList, class_body);
-    }
-
-
-    public static class Class_Body extends Class_Block
-    {
-        List<Statement> _stmtList;
-        List<Methods> _methods;
-        public Class_Body(List<Statement> stmts, List<Methods> mthds)
-        {
-            this._stmtList = stmts;
-            this._methods = mthds;
-        }
-
-        public void visit()
-        {
-            for (Statement s : _stmtList)
-            {
-                s.visit();
-            }
-            for (Methods m : _methods)
-            {
-                m.visit();
-            }
-        }
-
-        public String toString()
-        {
             StringBuilder stmtResult = new StringBuilder();
             StringBuilder mthdResult = new StringBuilder();
             for (Statement s: this._stmtList)
@@ -99,12 +83,20 @@ public abstract class Class_Block
                 mthdResult.append("\n\t").append(m);
             }
 
-            return stmtResult.toString() + "\n" + mthdResult.toString();
+            result.append(stmtResult.toString()).append("\n").append(mthdResult.toString());
+            return result.toString();
         }
     }
-    public static Class_Block.Class_Body classBody(List<Statement> stmts, List<Methods> mthds)
+
+    public static Class_Block.Clazz_Block class_block(String class_ident, Args argList, String extends_ident, List<Statement> stmts, List<Methods> mthds)
     {
-        return new Class_Block.Class_Body(stmts, mthds);
+        return new Class_Block.Clazz_Block(class_ident, argList, extends_ident, stmts, mthds);
     }
+
+    public static Class_Block.Clazz_Block class_block(String class_ident, Args argList, List<Statement> stmts, List<Methods> mthds)
+    {
+        return new Class_Block.Clazz_Block(class_ident, argList, stmts, mthds);
+    }
+
 
 }

@@ -32,7 +32,7 @@ public abstract class Class_Block
 
         public void visit()
         {
-            System.out.println("visiting classTable");
+            System.out.println("visiting class " + _classIdent);
             ClassesTable ct = ClassesTable.getInstance();
             ct.addClass(_classIdent, _extendsIdent);
         }

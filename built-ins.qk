@@ -21,7 +21,12 @@
     def MORE(other: String): Boolean { }     // >
  }
 
- class Boolean() { }
+ class Boolean() { 
+   def $AND(Boolean other): Boolean { }
+   def $OR(Boolean other): Boolean { }
+   def $NOT(): Boolean {}
+
+}
 
  class Int() {
     def PLUS(right: Int): Int {}   // this + right

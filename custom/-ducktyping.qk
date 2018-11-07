@@ -1,0 +1,19 @@
+//3.2.2 ducktyping
+//The common ancestor ofInt and String in the type hierarchy is Obj, and Obj has no method corresponding to the < comparison operation 
+
+class C(){
+def not_duck_typing(x: Int): Int {
+if x < 7 {
+a = 42;
+b = 13;
+} else {
+a = "forty-two";
+b = "thirteen";
+}
+if a < b {
+return 1;
+} else {
+return 2;
+}
+}
+}

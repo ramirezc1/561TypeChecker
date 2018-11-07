@@ -1,4 +1,5 @@
 // initialized before it is used on every syntactic execution path
+class a(){
 def bad_init() {
 rep = 0;
 n_reps = 3;
@@ -8,5 +9,6 @@ x = y; // Error here
 }
 rep = rep + 1;
 y = 42;
+}
 }
 }

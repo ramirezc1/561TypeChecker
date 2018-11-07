@@ -21,10 +21,7 @@
     def MORE(other: String): Boolean { }     // >
  }
 
- class Boolean() { 
-
-
-}
+ class Boolean() { }
 
  class Int() {
     def PLUS(right: Int): Int {}   // this + right

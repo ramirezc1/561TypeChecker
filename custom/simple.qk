@@ -1,1 +1,1 @@
-class Bar { this.answer = 42; }
+class Bar() { this.answer = 42; }

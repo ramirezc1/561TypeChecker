@@ -1,7 +1,7 @@
 public abstract class Expression
 {
     public Expression() { }
-    abstract String getType();
+    abstract void visit();
 
     public static class Priority extends Expression
     {
@@ -15,9 +15,10 @@ public abstract class Expression
             this._right = right;
         }
 
-        public String getType()
+
+        public void visit()
         {
-            return e.getType();
+            e.visit();
         }
 
         public String toString()
@@ -47,10 +48,10 @@ public abstract class Expression
             this._right = right;
         }
 
-        public String getType()
+        public void visit()
         {
-            // do we need to check if e1 & e2 are the same type here or somewhere else?
-            return e1.getType();
+            e1.visit();
+            e2.visit();
         }
 
         public String toString()
@@ -78,9 +79,10 @@ public abstract class Expression
             this._left = left;
             this._right = right;
         }
-        public String getType()
+
+        public void visit()
         {
-            return e1.getType();
+            e1.visit();
         }
 
         public String toString()
@@ -105,9 +107,10 @@ public abstract class Expression
             this._left = left;
             this._right = right;
         }
-        public String getType()
+
+        public void visit()
         {
-            return "STRING";
+            // TODO
         }
 
         public String toString()
@@ -131,9 +134,10 @@ public abstract class Expression
             this._left = left;
             this._right = right;
         }
-        public String getType()
+
+        public void visit()
         {
-            return "INT";
+            // TODO
         }
 
         public String toString()
@@ -161,11 +165,11 @@ public abstract class Expression
             this._left = left;
             this._right = right;
         }
-        public String getType()
+        public void visit()
         {
-            // Probably need to look up this ident in the sym table and return type.
-            // Or store type locally after evaluation the appropriate expression
-            return "IDENT";
+            Var v = new Var(i, "NONE");
+            VarTable vt = VarTable.getInstance();
+            vt.addVar(v);
         }
 
         public String toString()
@@ -203,10 +207,9 @@ public abstract class Expression
             this._right = right;
         }
 
-        public String getType()
+        public void visit()
         {
-            // need to look up _e._ident() in method table, and return the method's declared type
-            return "METHOD";
+
         }
 
         public String toString()
@@ -241,10 +244,12 @@ public abstract class Expression
             this._left = left;
             this._right = right;
         }
-        public String getType()
+
+        public void visit()
         {
-            return "CONSTRUCTOR";
+
         }
+
         public String toString()
         {
             return _ident + _args;

@@ -6,6 +6,7 @@ public abstract class Args
     public Args() { }
     public void addArg(String ident, String type) {}
     public void addArg(Expression e) {}
+    abstract void visit();
 
     public static class Formal_Args extends Args
     {
@@ -23,6 +24,11 @@ public abstract class Args
         public void addArg(String ident, String type)
         {
             this._args.add(new Arg(ident, type));
+        }
+
+        public void visit()
+        {
+            // TODO
         }
 
         public String toString()
@@ -66,6 +72,11 @@ public abstract class Args
             this._args.add(e);
         }
 
+        public void visit()
+        {
+            // TODO
+        }
+
         public String toString()
         {
             StringBuilder argsResult = new StringBuilder();
@@ -98,6 +109,11 @@ public abstract class Args
         {
             this._ident = ident;
             this._type = type;
+        }
+
+        public void visit()
+        {
+            // TODO
         }
 
         public String toString()

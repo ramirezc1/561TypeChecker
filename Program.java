@@ -15,6 +15,18 @@ public class Program
         //System.out.println(this.toString());
     }
 
+    public void visit()
+    {
+        System.out.println("visiting program");
+        for (Class_Block cb: _cbs)
+        {
+            cb.visit();
+        }
+        for (Statement s : _stmts)
+        {
+            s.visit();
+        }
+    }
 
     public String toString(){
         StringBuilder classesString = new StringBuilder();

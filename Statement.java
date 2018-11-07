@@ -6,11 +6,12 @@ import java.util.List;
 public abstract class Statement
 {
     public Statement() { }
+    abstract void visit();
 
     public static class Assignment_Statement extends Statement
     {
-        Location _left;
-        Location _right;
+//        Location _left;
+//        Location _right;
         public Expression _e1;
         public Expression _e2;
         public String _ident = "";
@@ -26,6 +27,11 @@ public abstract class Statement
             this._e1 = e1;
             this._e2 = e2;
             this._ident = ident;
+        }
+
+        public void visit()
+        {
+            // TODO
         }
 
         public String toString()
@@ -60,6 +66,11 @@ public abstract class Statement
             _e = e;
         }
 
+        public void visit()
+        {
+            // TODO
+        }
+
         public String toString()
         {
             return "return " + _e.toString() + "\n";
@@ -81,6 +92,13 @@ public abstract class Statement
             this._statements = stmts;
         }
 
+        public void visit()
+        {
+            // adds statements to table
+            // type checks statements
+            // removes statements from table
+        }
+
         public String toString()
         {
             StringBuilder whileResult = new StringBuilder();
@@ -91,12 +109,6 @@ public abstract class Statement
                 whileResult.append("\t\n").append(s.toString());
             }
             return whileResult.toString();
-        }
-        public void visit()
-        {
-            // adds statements to table
-            // type checks statements
-            // removes statements from table
         }
 
     }
@@ -124,6 +136,26 @@ public abstract class Statement
             this._elseStatement = elseStatement;
         }
 
+        public void visit()
+        {
+            // TODO
+        }
+
+        public String toString()
+        {
+            StringBuilder ifString = new StringBuilder();
+            ifString.append("if ").append(_expression);
+            StringBuilder stmts = new StringBuilder();
+            for (Statement s : _statements)
+            {
+                stmts.append("\n\t\t").append(s.toString());
+            }
+            ifString.append(stmts.toString());
+            if (_elseStatement != null)
+                ifString.append("\n").append(_elseStatement.toString());
+            return ifString.toString();
+        }
+
     }
     public static Statement.If_Statement ifStatement(Expression e, List<Statement> stmts)
     {
@@ -144,12 +176,18 @@ public abstract class Statement
             this._elseStatements = elseStatements;
         }
 
+        public void visit()
+        {
+            // TODO
+        }
+
         public String toString()
         {
             StringBuilder elseStatements = new StringBuilder();
+            elseStatements.append("\telse");
             for (Statement s: this._elseStatements)
             {
-                elseStatements.append("\n").append(s.toString());
+                elseStatements.append("\n\t\t").append(s.toString());
             }
             return elseStatements.toString();
         }
@@ -168,6 +206,16 @@ public abstract class Statement
         {
             this._typecaseIdent = ident;
             this._typeAlts = typeAlts;
+        }
+
+        public void visit()
+        {
+            // TODO
+        }
+
+        public String toString()
+        {
+            return "Typecase";
         }
     }
     public static Statement.Typecase typecase(String ident, List<Statement> typeAlts)
@@ -189,6 +237,11 @@ public abstract class Statement
             this._stmtList = stmts;
         }
 
+        public void visit()
+        {
+            // TODO
+        }
+
         public String toString()
         {
             return "Typecase: " + this._ident;
@@ -206,6 +259,12 @@ public abstract class Statement
         {
             this._expression = e;
         }
+
+        public void visit()
+        {
+            // TODO
+        }
+
         public String toString()
         {
             return this._expression.toString();

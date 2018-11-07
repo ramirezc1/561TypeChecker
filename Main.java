@@ -16,7 +16,12 @@ public class Main {
     String sourceFile = ""; 
 
     // Internal state
-    ErrorReport report; 
+    ErrorReport report;
+
+    // built-in program
+    Program builtinAST;
+
+    ClassesTable classesTable;
 
     boolean DebugMode = false; // True => parse in debug mode 
 
@@ -91,13 +96,16 @@ public class Main {
         System.out.println("Beginning parse ...");
         try
         {
+            classesTable = ClassesTable.getInstance();
+
             Symbol result;
             ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
             Lexer scanner = new Lexer (new FileReader( "built-ins.qk" ), symbolFactory);
                 parser p = new parser( scanner, symbolFactory);
                 result = p.parse();
             //ast of built in clasess
-            Program builtinAST = (Program) result.value;
+            builtinAST = (Program) result.value;
+            builtinAST.visit();
             //System.out.println("Built in classes parsed, ast built");
 //            System.out.println(builtinAST.toString());
 
@@ -112,6 +120,10 @@ public class Main {
             }
 
             Program ast = (Program) result.value;
+
+
+            TypeCheckProgram(ast);
+
             System.out.println(ast.toString());
             System.out.println("Done parsing");
         }
@@ -123,4 +135,32 @@ public class Main {
         }
     }
 
+    boolean TypeCheckProgram(Program ast)
+    {
+
+        ast.visit();
+
+
+        boolean cyclesRes = checkForCycles();
+        boolean undefinedRes = checkForUndefined();
+        boolean constructorRes = checkConstructor();
+
+        return cyclesRes && undefinedRes && constructorRes;
+    }
+
+    boolean checkForCycles()
+    {
+
+        return true;
+    }
+
+    boolean checkForUndefined()
+    {
+        return true;
+    }
+
+    boolean checkConstructor()
+    {
+        return true;
+    }
 }

@@ -4,6 +4,7 @@ import java.util.List;
 public abstract class Methods
 {
     public Methods() { }
+    abstract void visit();
 
     public static class Method extends Methods
     {
@@ -26,6 +27,11 @@ public abstract class Methods
             this._formalArgs = formalArgs;
             this._methodType = type;
             this._statements = stmts;
+        }
+
+        public void visit()
+        {
+            // TODO
         }
 
         public String toString()

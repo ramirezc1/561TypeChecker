@@ -3,6 +3,7 @@ import java.util.List;
 public abstract class Class_Block
 {
     public Class_Block() { }
+    abstract void visit();
 
     public static class Clazz extends Class_Block
     {
@@ -24,6 +25,16 @@ public abstract class Class_Block
             this._classIdent = class_ident;
             this._argList = argList;
             this._classBody = class_body;
+
+            // sig: all classes extend Obj by default right?
+            this._extendsIdent = "Obj";
+        }
+
+        public void visit()
+        {
+            System.out.println("visiting classTable");
+            ClassesTable ct = ClassesTable.getInstance();
+            ct.addClass(_classIdent, _extendsIdent);
         }
 
         public String toString()
@@ -61,6 +72,18 @@ public abstract class Class_Block
         {
             this._stmtList = stmts;
             this._methods = mthds;
+        }
+
+        public void visit()
+        {
+            for (Statement s : _stmtList)
+            {
+                s.visit();
+            }
+            for (Methods m : _methods)
+            {
+                m.visit();
+            }
         }
 
         public String toString()

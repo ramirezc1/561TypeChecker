@@ -9,6 +9,15 @@ public class VarTable
     // Var is class that basically acts as a struct to store data necessary to the variable table
     LinkedList<Stack<Var>> varTable;
 
+    private static VarTable varTableInstance;
+
+    public static VarTable getInstance()
+    {
+        if (varTableInstance == null)
+            varTableInstance = new VarTable();
+        return varTableInstance;
+    }
+
 
     public VarTable()
     {

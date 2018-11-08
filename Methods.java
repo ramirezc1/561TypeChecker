@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Methods
@@ -8,10 +7,10 @@ public abstract class Methods
 
     public static class Method extends Methods
     {
-        String _methodIdent;
-        Args _formalArgs;
+        public String _methodIdent;
+        public Args _formalArgs;
         String _methodType;
-        List<Statement> _statements = new LinkedList<>();
+        List<Statement> _statements;
 
 
         public Method(String methodIdent, Args formalArgs, List<Statement> stmts)

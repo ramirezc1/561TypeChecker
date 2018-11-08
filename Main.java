@@ -9,6 +9,7 @@ import org.apache.commons.cli.GnuParser;
 import org.apache.commons.cli.Options;
 
 import java.io.FileReader;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -21,9 +22,55 @@ public class Main {
     ErrorReport report;
 
     // built-in program
-    Program builtinAST;
+    public static Program builtinAST;
+    public static Program ast;
+
+    public static String typeCheckOperator(String classType, String operation, String argumentType)
+    {
+        for (Class_Block.Clazz_Block cb : builtinAST.get_cbs())
+        {
+            if (cb._classIdent.equals(classType))
+            {
+                for (Methods.Method m : cb.getMethods())
+                {
+                    if (m._methodIdent.equals(operation))
+                    {
+                        ArrayList<String> argTypes = ((Args.Formal_Args) m._formalArgs).getArgTypes();
+                        if (argTypes.size() == 1)
+                        {
+                            if (argTypes.get(0).equals(argumentType))
+                                return m._methodType;
+                        }
+                    }
+                }
+            }
+        }
+        // again, but for ast
+        for (Class_Block.Clazz_Block cb : ast.get_cbs())
+        {
+            if (cb._classIdent.equals(classType))
+            {
+                for (Methods.Method m : cb.getMethods())
+                {
+                    if (m._methodIdent.equals(operation))
+                    {
+                        ArrayList<String> argTypes = ((Args.Formal_Args) m._formalArgs).getArgTypes();
+                        if (argTypes.size() == 1)
+                        {
+                            if (argTypes.get(0).equals(argumentType))
+                                return m._methodType;
+                        }
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
 
     ClassesTable classesTable;
+    VarTable varTable;
 
     boolean DebugMode = false; // True => parse in debug mode 
 
@@ -32,24 +79,6 @@ public class Main {
     {
         Main q = new Main();
         q.go(args);
-
-        // Symbol table tests
-//        Expression e1 = Expression.intconst(4, 0, 1);
-//        Expression e2 = Expression.stringLit("four", 0, 1);
-//        Expression e3 = Expression.intconst(5, 0, 1);
-//
-//
-//        SymbolTable.Var v1 = new SymbolTable.Var("x", e1.getType());
-//        SymbolTable.Var v2 = new SymbolTable.Var("y", e2.getType());
-//        SymbolTable.Var v3 = new SymbolTable.Var("x", e3.getType());
-//        SymbolTable.Var v4 = new SymbolTable.Var("z", e3.getType());
-//
-//        SymbolTable.VarTable vt = new SymbolTable.VarTable();
-//        vt.addVar(v1);
-//        vt.addVar(v2);
-//        vt.addVar(v3);
-//        vt.removeVar(v4);
-//        vt.removeVar(v3);
     }
 
     public void go(String[] args)
@@ -121,7 +150,7 @@ public class Main {
                 result = p.parse();
             }
 
-            Program ast = (Program) result.value;
+            ast = (Program) result.value;
 
 
             TypeCheckProgram(ast);

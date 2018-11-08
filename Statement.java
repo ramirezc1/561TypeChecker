@@ -10,35 +10,47 @@ public abstract class Statement
 
     public static class Assignment_Statement extends Statement
     {
-//        Location _left;
-//        Location _right;
-        public Expression _e1;
-        public Expression _e2;
-        public String _ident = "";
+        public Expression _lexpr;
+        public Expression _rexpr;
+        public String _declaredType = "";
 
         public Assignment_Statement(Expression e1, Expression e2)
         {
-            this._e1 = e1;
-            this._e2 = e2;
+            this._lexpr = e1;
+            this._rexpr = e2;
         }
 
-        public Assignment_Statement(Expression e1, String ident, Expression e2)
+        public Assignment_Statement(Expression e1, String declaredType, Expression e2)
         {
-            this._e1 = e1;
-            this._e2 = e2;
-            this._ident = ident;
+            this._lexpr = e1;
+            this._rexpr = e2;
+            this._declaredType = declaredType;
         }
 
         public void visit()
         {
-            // TODO
+            String type = _rexpr.getType();
+
+            // if the type of _rexpr isn't in the class table,
+            // or if the declared type of _lexpr doesn't match the type of _rexpr
+            if (type == null || (!this._declaredType.equals("") && !this._declaredType.equals(type)))
+            {
+                // throw exception: type not found or doesn't match declared type
+                System.out.println("Exception: Type error for " + type);
+            }
+
+            // Temporarily assuming/casting an _lexpr to Expression.Ident because
+            // we don't distinguish between lexpr and rexprs.
+            String tempIdent = ((Expression.Identifier)this._lexpr).ident;
+            Var var = new Var(tempIdent, type);
+            VarTable.getInstance().addVar(var);
         }
 
         public String toString()
         {
             String type ="";
-            if (!_ident.equals("")) type = ": " + _ident + " ";
-            return _e1 + type + " = " + _e2;
+            if (!_declaredType.equals("")) type = ": " + _declaredType + " ";
+            return _lexpr + type + " = " + _rexpr;
         }
     }
     public static Assignment_Statement asmt_stmt(Expression e1, Expression e2)
@@ -84,7 +96,7 @@ public abstract class Statement
     public static class While_Statement extends Statement
     {
         public Expression _expression;
-        public List<Statement> _statements = new LinkedList<>();
+        public List<Statement> _statements;
 
         public While_Statement(Expression e, List<Statement> stmts)
         {

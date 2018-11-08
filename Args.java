@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 public abstract class Args
@@ -24,6 +25,16 @@ public abstract class Args
         public void addArg(String ident, String type)
         {
             this._args.add(new Arg(ident, type));
+        }
+
+        public ArrayList<String> getArgTypes()
+        {
+            ArrayList<String> argTypes = new ArrayList<>();
+            for (Arg a : this._args)
+            {
+                argTypes.add(a._type);
+            }
+            return argTypes;
         }
 
         public void visit()

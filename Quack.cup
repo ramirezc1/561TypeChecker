@@ -75,8 +75,8 @@ nonterminal Expression              expr;
 nonterminal Statement               stmt, asmt_stmt, return_stmt, while_expr, ifstmt, elsestmt, typecase, type_stmts;
 nonterminal String                  op;
 nonterminal Args                    formal_args, inf_args;
-nonterminal List<Methods>           mthd_block;
-nonterminal Methods                 method;
+nonterminal List<Methods.Method>    mthd_block;
+nonterminal Methods.Method          method;
 nonterminal Empty                   empty;
 
 
@@ -130,7 +130,7 @@ stmt        ::= asmt_stmt:as SEMI                               {: RESULT = as; 
             ;
 
 mthd_block  ::= mthd_block:mb method:m                          {: mb.add(m); RESULT = mb; :}
-            |   empty                                           {: RESULT = new LinkedList<Methods>(); :}
+            |   empty                                           {: RESULT = new LinkedList<Methods.Method>(); :}
             ;
 
 method      ::= DEF IDENT:i1 LPAREN formal_args:fa RPAREN COLON IDENT:i2 LBRACE stmtlist:sl RBRACE

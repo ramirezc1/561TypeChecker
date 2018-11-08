@@ -8,9 +8,9 @@ public abstract class Class_Block
         public Args _argList;
         public String _extendsIdent;
         List<Statement> _stmtList;
-        List<Methods> _methods;
+        List<Methods.Method> _methods;
 
-        public Clazz_Block(String class_ident, Args argList, String extends_ident, List<Statement> stmts, List<Methods> mthds)
+        public Clazz_Block(String class_ident, Args argList, String extends_ident, List<Statement> stmts, List<Methods.Method> mthds)
         {
             this._classIdent = class_ident;
             this._argList = argList;
@@ -20,7 +20,7 @@ public abstract class Class_Block
 
         }
 
-        public Clazz_Block(String class_ident, Args argList, List<Statement> stmts, List<Methods> mthds)
+        public Clazz_Block(String class_ident, Args argList, List<Statement> stmts, List<Methods.Method> mthds)
         {
             this._classIdent = class_ident;
             this._argList = argList;
@@ -30,6 +30,11 @@ public abstract class Class_Block
 
             // sig: all classes extend Obj by default right?
             this._extendsIdent = "Obj";
+        }
+
+        public List<Methods.Method> getMethods()
+        {
+            return this._methods;
         }
 
         public VarTable getConstructor()
@@ -88,12 +93,12 @@ public abstract class Class_Block
         }
     }
 
-    public static Class_Block.Clazz_Block class_block(String class_ident, Args argList, String extends_ident, List<Statement> stmts, List<Methods> mthds)
+    public static Class_Block.Clazz_Block class_block(String class_ident, Args argList, String extends_ident, List<Statement> stmts, List<Methods.Method> mthds)
     {
         return new Class_Block.Clazz_Block(class_ident, argList, extends_ident, stmts, mthds);
     }
 
-    public static Class_Block.Clazz_Block class_block(String class_ident, Args argList, List<Statement> stmts, List<Methods> mthds)
+    public static Class_Block.Clazz_Block class_block(String class_ident, Args argList, List<Statement> stmts, List<Methods.Method> mthds)
     {
         return new Class_Block.Clazz_Block(class_ident, argList, stmts, mthds);
     }

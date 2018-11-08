@@ -2,6 +2,7 @@ public abstract class Expression
 {
     public Expression() { }
     abstract void visit();
+    abstract String getType();
 
     public static class Priority extends Expression
     {
@@ -14,6 +15,12 @@ public abstract class Expression
             this._left = left;
             this._right = right;
         }
+
+        public String getType()
+        {
+            return e.getType();
+        }
+
 
 
         public void visit()
@@ -48,6 +55,16 @@ public abstract class Expression
             this._right = right;
         }
 
+        public String getType()
+        {
+            String e1Type = e1.getType();
+            String e2Type = e2.getType();
+            String operatorString = OperatorToString.getOperatorDict().get(this.op);
+            String rtype = Main.typeCheckOperator(e1Type, operatorString, e2Type);
+            // TODO: throw error if rtype is null
+            return rtype;
+        }
+
         public void visit()
         {
             e1.visit();
@@ -80,6 +97,11 @@ public abstract class Expression
             this._right = right;
         }
 
+        public String getType()
+        {
+            return "";
+        }
+
         public void visit()
         {
             e1.visit();
@@ -106,6 +128,11 @@ public abstract class Expression
             this._s = s;
             this._left = left;
             this._right = right;
+        }
+
+        public String getType()
+        {
+            return ClassesTable.getInstance().getClass("String");
         }
 
         public void visit()
@@ -135,6 +162,11 @@ public abstract class Expression
             this._right = right;
         }
 
+        public String getType()
+        {
+            return ClassesTable.getInstance().getClass("Int");
+        }
+
         public void visit()
         {
             // TODO
@@ -157,24 +189,38 @@ public abstract class Expression
     {
         //        public Location left, right;
         public int _left, _right;
-        public String i;
+        public String ident;
 
         public Identifier(String i, int left, int right)
         {
-            this.i = i;
+            this.ident = i;
             this._left = left;
             this._right = right;
         }
+
+        public String getType()
+        {
+            return "";
+        }
+
         public void visit()
         {
-//            Var v = new Var(i, "NONE");
-//            VarTable vt = VarTable.getInstance();
-//            vt.addVar(v);
+            VarTable varTable = VarTable.getInstance();
+            try
+            {
+                String type = ClassesTable.getInstance().getClass("Nothing");
+                Var var = new Var(ident, type);
+                varTable.addVar(var);
+            }
+            catch (Exception e)
+            {
+                System.out.println(e.getMessage());
+            }
         }
 
         public String toString()
         {
-            return i;
+            return ident;
         }
     }
     public static Expression.Identifier ident(String s, int left, int right)
@@ -205,6 +251,11 @@ public abstract class Expression
             this._optionalArgs = args;
             this._left = left;
             this._right = right;
+        }
+
+        public String getType()
+        {
+            return "";
         }
 
         public void visit()
@@ -243,6 +294,11 @@ public abstract class Expression
             this._args = args;
             this._left = left;
             this._right = right;
+        }
+
+        public String getType()
+        {
+            return "";
         }
 
         public void visit()

@@ -60,7 +60,7 @@ public abstract class Expression
             String e1Type = e1.getType();
             String e2Type = e2.getType();
             String operatorString = OperatorToString.getOperatorDict().get(this.op);
-            String rtype = Main.typeCheckOperator(e1Type, operatorString, e2Type);
+            String rtype = TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
             // TODO: throw error if rtype is null
             return rtype;
         }

@@ -21,57 +21,6 @@ public class Main {
     // Internal state
     ErrorReport report;
 
-    // built-in program
-    public static Program builtinAST;
-    public static Program ast;
-
-    public static String typeCheckOperator(String classType, String operation, String argumentType)
-    {
-        for (Class_Block.Clazz_Block cb : builtinAST.get_cbs())
-        {
-            if (cb._classIdent.equals(classType))
-            {
-                for (Methods.Method m : cb.getMethods())
-                {
-                    if (m._methodIdent.equals(operation))
-                    {
-                        ArrayList<String> argTypes = ((Args.Formal_Args) m._formalArgs).getArgTypes();
-                        if (argTypes.size() == 1)
-                        {
-                            if (argTypes.get(0).equals(argumentType))
-                                return m._methodType;
-                        }
-                    }
-                }
-            }
-        }
-        // again, but for ast
-        for (Class_Block.Clazz_Block cb : ast.get_cbs())
-        {
-            if (cb._classIdent.equals(classType))
-            {
-                for (Methods.Method m : cb.getMethods())
-                {
-                    if (m._methodIdent.equals(operation))
-                    {
-                        ArrayList<String> argTypes = ((Args.Formal_Args) m._formalArgs).getArgTypes();
-                        if (argTypes.size() == 1)
-                        {
-                            if (argTypes.get(0).equals(argumentType))
-                                return m._methodType;
-                        }
-                    }
-                }
-            }
-        }
-
-        return null;
-    }
-
-
-    ClassesTable classesTable;
-    VarTable varTable;
-
     boolean DebugMode = false; // True => parse in debug mode 
 
 
@@ -127,7 +76,7 @@ public class Main {
         System.out.println("Beginning parse ...");
         try
         {
-            classesTable = ClassesTable.getInstance();
+            
 
             Symbol result;
             ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
@@ -135,7 +84,7 @@ public class Main {
                 parser p = new parser( scanner, symbolFactory);
                 result = p.parse();
             //ast of built in clasess
-            builtinAST = (Program) result.value;
+            Program builtinAST = (Program) result.value;
             builtinAST.visit();
             //System.out.println("Built in classes parsed, ast built");
 //            System.out.println(builtinAST.toString());
@@ -150,13 +99,19 @@ public class Main {
                 result = p.parse();
             }
 
-            ast = (Program) result.value;
-
-
-            TypeCheckProgram(ast);
+            Program ast = (Program) result.value;
 
             System.out.println(ast.toString());
             System.out.println("Done parsing");
+            final TypeChecker typeChecker = new TypeChecker(builtinAST,ast);
+            if(typeChecker.TypeCheck()) {
+            	System.out.println("Done TypeChecking");
+            }
+            else {
+            	System.out.println("Error Typechecking");
+            }
+            
+           
         }
         catch (Exception e)
         {
@@ -166,72 +121,6 @@ public class Main {
         }
     }
 
-    void TypeCheckProgram(Program ast) throws Exception {
 
-        ast.visit();
-
-        if (checkForUndefined())
-        {
-            throw new Exception("Undefined class");
-        }
-        System.out.println("Passed check for undefined class inheritance");
-
-        if (checkForCycles())
-        {
-            throw new Exception("Class cycles");
-        }
-        System.out.println("Passed check for class cycles");
-
-        if (checkConstructor(ast))
-        {
-            throw new Exception("Bad constructor");
-        }
-        System.out.println("Passed check for subclass matching constructor of parent class");
-    }
-
-    boolean checkForUndefined()
-    {
-        HashMap<String, String> clazzTable = classesTable.getClassTable();
-        for (String ident : clazzTable.values())
-        {
-            String currExtends = clazzTable.get(ident);
-            if (currExtends == null)
-            {
-                return true;
-            }
-        }
-
-        return false;
-    }
-
-    boolean checkForCycles()
-    {
-        HashMap<String, String> clazzTable = classesTable.getClassTable();
-        for (String ident : clazzTable.values())
-        {
-            String startingIdent = ident;
-            String currIdent = ident;
-            String currExtends = clazzTable.get(currIdent);
-            while (!currExtends.equals("Obj"))
-            {
-                if (currExtends.equals(startingIdent))
-                {
-                    return true;
-                }
-                currIdent = currExtends;
-                currExtends = clazzTable.get(currIdent);
-            }
-        }
-        return false;
-    }
-
-    boolean checkConstructor(Program ast)
-    {
-        List<Class_Block.Clazz_Block> class_blocks = ast.get_cbs();
-        for (Class_Block.Clazz_Block class_block : class_blocks)
-        {
-            VarTable vt = class_block.getConstructor();
-        }
-        return false;
-    }
+ 
 }

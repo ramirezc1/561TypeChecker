@@ -39,6 +39,18 @@ public class Program
     {
         return this._cbs;
     }
+    public Class_Block.Clazz_Block get_cb(String classIdent)
+    {
+    	
+    	for (Class_Block.Clazz_Block c: _cbs)
+        {
+            if(c._classIdent.matches(classIdent)) {
+            	return c;
+            }
+        }
+    	
+        return null;
+    }
 
     public String toString(){
         StringBuilder classesString = new StringBuilder();

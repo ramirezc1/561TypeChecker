@@ -32,6 +32,16 @@ public abstract class Class_Block
             this._extendsIdent = "Obj";
         }
 
+        public Methods.Method getMethod(String methodName)
+        {
+        	for (Methods.Method m: _methods)
+            {
+                if(m._methodIdent.matches(methodName)) {
+                	return m;
+                }
+            }
+            return null;
+        }
         public List<Methods.Method> getMethods()
         {
             return this._methods;
@@ -61,7 +71,7 @@ public abstract class Class_Block
             }
             for (Methods m : this._methods)
             {
-                m.visit();
+                m.visit(ct);
             }
         }
 

@@ -3,7 +3,7 @@ import java.util.List;
 public abstract class Methods
 {
     public Methods() { }
-    abstract void visit();
+    abstract void visit(ClassesTable ct) throws Exception;
 
     public static class Method extends Methods
     {
@@ -28,9 +28,11 @@ public abstract class Methods
             this._statements = stmts;
         }
 
-        public void visit()
+        public void visit(ClassesTable ct) throws Exception
         {
-            // TODO
+            //check if method has same name as a class
+        	if(ct.classTable.containsKey(_methodIdent))
+        		throw new Exception("Method "+_methodIdent + " has same name as class ");
         }
 
         public String toString()

@@ -29,6 +29,8 @@ public abstract class Statement
 
         public void visit()
         {
+        	//first time visit
+        	//add to var table 
             String type = _rexpr.getType();
 
             // if the type of _rexpr isn't in the class table,

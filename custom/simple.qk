@@ -1,4 +1,14 @@
-class A() extends B { }
-class B() { }
+class P() {
+def s(x: Int) : Int {
+	return x;
+}
+def PRINT() { }
 
-x=5;
+}
+
+class X() extends P{
+
+def s(x: Int) : Int {
+	return x+1;
+}
+}

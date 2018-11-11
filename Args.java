@@ -41,6 +41,10 @@ public abstract class Args
         {
             // TODO
         }
+        public int size()
+        {
+            return _args.size();
+        }
 
         public String toString()
         {
@@ -101,6 +105,11 @@ public abstract class Args
             argsResult.append(")");
             return argsResult.toString();
         }
+		@Override
+		protected int size() {
+			return _args.size();
+			
+		}
     }
     public static Args.Informal_Args informalArgs(Expression e)
     {
@@ -131,5 +140,11 @@ public abstract class Args
         {
             return this._ident + " : " + this._type;
         }
+
+		protected int size() {
+			return 0;
+			
+		}
     }
+	protected abstract int size();
 }

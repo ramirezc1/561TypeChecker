@@ -37,16 +37,10 @@ public class TypeChecker {
 
 	        ast.visit();
 
-	        if (checkForUndefined())
-	        {
-	            throw new Exception("Undefined class");
-	        }
+	       checkForUndefined();
+	       
 	        System.out.println("Passed check for undefined class inheritance");
-
-	        if (checkForCycles())
-	        {
-	            throw new Exception("Class cycles");
-	        }
+	        checkForCycles();
 	        System.out.println("Passed check for class cycles");
 
 	        if (checkConstructor(ast))
@@ -113,7 +107,7 @@ public class TypeChecker {
 
         return null;
     }
-	boolean checkForUndefined()
+	void checkForUndefined() throws Exception
     {
         HashMap<String, String> clazzTable = classesTable.getClassTable();
         for (String ident : clazzTable.values())
@@ -121,14 +115,13 @@ public class TypeChecker {
             String currExtends = clazzTable.get(ident);
             if (currExtends == null)
             {
-                return true;
+            	throw new Exception("Undefined class "+ident);
             }
         }
 
-        return false;
     }
 
-    boolean checkForCycles()
+    void checkForCycles() throws Exception
     {
         HashMap<String, String> clazzTable = classesTable.getClassTable();
         for (String ident : clazzTable.values())
@@ -140,13 +133,12 @@ public class TypeChecker {
             {
                 if (currExtends.equals(startingIdent))
                 {
-                    return true;
+                	throw new Exception("Class "+currIdent+" and Class "+currExtends +" have cycles");
                 }
                 currIdent = currExtends;
                 currExtends = clazzTable.get(currIdent);
             }
         }
-        return false;
     }
 
     boolean checkConstructor(Program ast)

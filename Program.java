@@ -15,7 +15,7 @@ public class Program
         //System.out.println(this.toString());
     }
 
-    public void visit()
+    public void visit()throws Exception
     {
         System.out.println("visiting program");
         for (Class_Block.Clazz_Block cb: _cbs)

@@ -49,11 +49,12 @@ public abstract class Class_Block
             return varTable;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
             System.out.println("visiting class " + _classIdent);
             ClassesTable ct = ClassesTable.getInstance();
-            ct.addClass(_classIdent, _extendsIdent);
+            if(!ct.addClass(_classIdent, _extendsIdent))
+            	throw new Exception("Class "+_classIdent + " already defined ");
             for (Statement s : this._stmtList)
             {
                 s.visit();

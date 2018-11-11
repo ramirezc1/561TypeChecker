@@ -18,6 +18,7 @@ public class TypeChecker {
 	 public boolean TypeCheck() throws Exception {
 
 	        ast.visit();
+	       
 
 	       checkForUndefined();
 	       

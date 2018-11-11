@@ -1,2 +1,4 @@
 class A() extends B { }
 class B() { }
+
+x=5;

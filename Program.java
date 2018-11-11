@@ -2,6 +2,7 @@
 //
 
 
+import java.util.LinkedList;
 import java.util.List;
 
 public class Program
@@ -22,10 +23,16 @@ public class Program
         {
             cb.visit();
         }
-        for (Statement s : _stmts)
-        {
-            s.visit();
+        //add statements to a dummy class to type checked
+        if(!_stmts.isEmpty()) {
+        	Class_Block.Clazz_Block cb = new Class_Block.Clazz_Block ("$statementsDummyClass", Args.formalArgs(), _stmts, new LinkedList<Methods.Method>());
+        	cb.visit();
         }
+        	
+//        for (Statement s : _stmts)
+//        {
+//            s.visit();
+//        }
     }
 
     public List<Class_Block.Clazz_Block> get_cbs()

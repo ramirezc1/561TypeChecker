@@ -69,9 +69,28 @@ public class TypeChecker {
 		//make sure it has same number of arguments,
 		//each argument is of correct type
 		//return type is subtype of the type r inherited of the superclass method
-		if(m._formalArgs.size()!=mSuper._formalArgs.size())
-			throw new Exception("Overriden Method does not have same number of arguments"); 
+		if(m._formalArgs._args.size()!=mSuper._formalArgs._args.size())
+			throw new Exception("Overriden Method does not have same number of arguments");
+		for (int i=0; i<m._formalArgs._args.size();i++)
+	    {
+			//?????MUST HAVE WAY to check subtype
+			//RIGHT NOW IT ONLY CHECKS SAME TYPE
+			//check arguments to see if type matches
+			//must be a inherited <: a (the overriding
+			//System.out.println(m._formalArgs._args.get(i)._type);
+			//System.out.println(mSuper._formalArgs._args.get(i)._type);
+			if(!m._formalArgs._args.get(i)._type.equals(mSuper._formalArgs._args.get(i)._type))
+				
+				//if(type is super type)
+				throw new Exception("Arguments in super class method do not match");
+			
+	    }
 		
+		//typecheck return statement
+		if(!m._methodType.equals(mSuper._methodType)) {
+			//if(type is subtype)
+			throw new Exception("Method return type do not match with super");
+		}
 		
 	}
 

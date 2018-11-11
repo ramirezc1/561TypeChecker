@@ -4,14 +4,14 @@ import java.util.LinkedList;
 public abstract class Args
 {
 
-    public Args() { }
+    public LinkedList<Arg> _args;
+	public Args() { }
     public void addArg(String ident, String type) {}
     public void addArg(Expression e) {}
     abstract void visit();
 
     public static class Formal_Args extends Args
     {
-        LinkedList<Arg> _args;
         public Formal_Args()
         {
             this._args = new LinkedList<>();
@@ -41,10 +41,7 @@ public abstract class Args
         {
             // TODO
         }
-        public int size()
-        {
-            return _args.size();
-        }
+        
 
         public String toString()
         {
@@ -105,11 +102,6 @@ public abstract class Args
             argsResult.append(")");
             return argsResult.toString();
         }
-		@Override
-		protected int size() {
-			return _args.size();
-			
-		}
     }
     public static Args.Informal_Args informalArgs(Expression e)
     {
@@ -140,11 +132,6 @@ public abstract class Args
         {
             return this._ident + " : " + this._type;
         }
-
-		protected int size() {
-			return 0;
-			
-		}
     }
-	protected abstract int size();
+	
 }

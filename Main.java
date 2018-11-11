@@ -73,6 +73,8 @@ public class Main {
 
     void parseProgram()
     {
+    	Program builtinAST=null;
+    	Program ast=null;
         System.out.println("Beginning parse ...");
         try
         {
@@ -84,7 +86,7 @@ public class Main {
                 parser p = new parser( scanner, symbolFactory);
                 result = p.parse();
             //ast of built in clasess
-            Program builtinAST = (Program) result.value;
+            builtinAST = (Program) result.value;
             builtinAST.visit();
             //System.out.println("Built in classes parsed, ast built");
 //            System.out.println(builtinAST.toString());
@@ -99,26 +101,30 @@ public class Main {
                 result = p.parse();
             }
 
-            Program ast = (Program) result.value;
+            ast = (Program) result.value;
 
             System.out.println(ast.toString());
             System.out.println("Done parsing");
-            final TypeChecker typeChecker = new TypeChecker(builtinAST,ast);
-            if(typeChecker.TypeCheck()) {
-            	System.out.println("Done TypeChecking");
-            }
-            else {
-            	System.out.println("Error Typechecking");
-            }
-            
-           
         }
         catch (Exception e)
         {
-            System.err.println("Yuck, blew up in parse/validate phase");
+            System.err.println("Yuck, blew up in parse phase");
             e.printStackTrace();
 	        System.exit(1);
         }
+            final TypeChecker typeChecker = new TypeChecker(builtinAST,ast);
+            try {
+				if(typeChecker.TypeCheck()) {
+					System.out.println("Done TypeChecking");
+				}
+			} catch (Exception e) {
+				System.err.println("Yuck, blew up in typecheck phase");
+				e.printStackTrace();
+				System.exit(1);
+			}
+            
+           
+       
     }
 
 

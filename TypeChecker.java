@@ -15,24 +15,6 @@ public class TypeChecker {
 		classesTable = ClassesTable.getInstance();
 	}
 	
-	public boolean typecheck() {
-		try {
-			//system
-			identifyClasses();
-			//system
-			identifyParents();
-			//system...
-			checkHierarchyForCycles();
-			
-			//system.print(complete)
-		} catch (final Exception e) {
-			System.err.println("**Typechecking Failed!**");
-			e.printStackTrace();
-			return false;
-		}
-		return true;
-		
-	}
 	 public boolean TypeCheck() throws Exception {
 
 	        ast.visit();
@@ -43,7 +25,7 @@ public class TypeChecker {
 	        checkForCycles();
 	        System.out.println("Passed check for class cycles");
 
-	        if (checkConstructor(ast))
+	        if (checkConstructor())
 	        {
 	            throw new Exception("Bad constructor");
 	        }
@@ -51,20 +33,6 @@ public class TypeChecker {
 			return true;
 	    }
 
-	private void checkHierarchyForCycles() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void identifyParents() {
-		// TODO Auto-generated method stub
-		
-	}
-
-	private void identifyClasses() {
-		// TODO Auto-generated method stub
-		
-	}
 	public static String typeCheckOperator(String classType, String operation, String argumentType)
     {
         for (Class_Block.Clazz_Block cb : builtinAST.get_cbs())
@@ -141,7 +109,7 @@ public class TypeChecker {
         }
     }
 
-    boolean checkConstructor(Program ast)
+    boolean checkConstructor()
     {
         List<Class_Block.Clazz_Block> class_blocks = ast.get_cbs();
         for (Class_Block.Clazz_Block class_block : class_blocks)

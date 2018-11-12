@@ -1,6 +1,7 @@
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map.Entry;
 
 
 public class TypeChecker {
@@ -9,11 +10,13 @@ public class TypeChecker {
 	static Program ast;
 	ClassesTable classesTable;
 	VarTable varTable;
+	Tree tree;
 	
 	public TypeChecker(Program builtinAST, Program ast){
 		TypeChecker.ast= ast;
 		TypeChecker.builtinAST= builtinAST;
 		classesTable = ClassesTable.getInstance();
+		tree= Tree.getInstance();
 	}
 	
 	 public boolean TypeCheck() throws Exception {
@@ -22,17 +25,50 @@ public class TypeChecker {
 	        checkForUndefined();
 	        System.out.println("Passed check for undefined class inheritance");
 	        checkForCycles();
+	        createLattice();
 	        System.out.println("Passed check for class cycles");
 	        if (checkConstructor())
 	        {
 	            throw new Exception("Bad constructor");
 	        }
 	        checkOverriden();
-
+	        System.out.println(tree.LCA(tree.getRoot(), "D","X"));
 	        
 	        System.out.println("Passed check for subclass matching constructor of parent class");
 			return true;
 	    }
+
+	private void createLattice() throws Exception {
+	    Tree tree = Tree.getInstance();
+	    ClassesTable ct = ClassesTable.getInstance();
+	    Node root = new Node("Obj");
+     		 tree.setRoot(root);
+     	ct.classTable.isEmpty();
+     	for(Entry<String, String> entry: ct.classTable.entrySet()) {
+     		if(!entry.getKey().equals("Obj")) {
+     			
+     			if(entry.getValue().equals("Obj")) {
+     				root.addChild(new Node(entry.getKey()));
+     			}
+     			else {
+     				if(tree.exists(entry.getValue())) {
+     					Node n= tree.findNode(root, entry.getValue());
+     					n.addChild(new Node(entry.getKey()));
+     				}
+     				else
+     					//???need to figure out if this will actually get called
+     					throw new Exception("Problem with Lattice");
+     					
+     			}
+
+     		}
+     			
+     		
+     	    //System.out.println(entry.getKey() + " : " + entry.getValue());
+     	}
+		
+	}
+	
 
 	private void checkOverriden() throws Exception {
 		//check each classblock
@@ -61,6 +97,10 @@ public class TypeChecker {
 			           
 			           if(s==null)
 			        	   throw new Exception("Super instance variable "+sSuper.getLexpr() +" not defined");
+			           
+			           //????????
+			           //have way to check type of instance variable
+			          //inherited variable must be compatible with super type
 			           //System.out.println(sSuper);
 			           //System.out.println(s.getLexpr().getIdent());
 //			           if(!s.getLexpr().getIdent().equals(sSuper.getLexpr().getIdent()))

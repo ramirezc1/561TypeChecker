@@ -16,3 +16,63 @@ def s(x: Int) : Int {
 	return x+1;
 }
 }
+
+class Y() extends X{
+this.x=4;
+this.y=4;
+
+
+def s(x: Int) : Int {
+	return x+1;
+}
+}
+
+class D() extends P{
+this.x=4;
+this.y=4;
+
+
+def s(x: Int) : Int {
+	return x+1;
+}
+}
+class Q() extends D{
+this.x=4;
+this.y=4;
+
+
+def s(x: Int) : Int {
+	return x+1;
+}
+}
+
+class T() extends X{
+this.x=4;
+this.y=4;
+
+
+def s(x: Int) : Int {
+	return x+1;
+}
+}
+
+class J() extends X{
+this.x=4;
+this.y=4;
+
+
+def s(x: Int) : Int {
+	return x+1;
+}
+}
+
+class L() extends J{
+this.x=4;
+this.y=4;
+
+
+def s(x: Int) : Int {
+	return x+1;
+}
+}
+

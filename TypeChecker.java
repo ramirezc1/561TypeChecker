@@ -259,5 +259,4 @@ public class TypeChecker {
         }
         return false;
     }
-
 }

@@ -1,5 +1,6 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
 
@@ -32,7 +33,7 @@ public class TypeChecker {
 	            throw new Exception("Bad constructor");
 	        }
 	        checkOverriden();
-	        System.out.println(tree.LCA(tree.getRoot(), "D","X"));
+	       // System.out.println(" : "+tree.LCA(tree.getRoot(), "D","X"));
 	        
 	        System.out.println("Passed check for subclass matching constructor of parent class");
 			return true;
@@ -41,32 +42,45 @@ public class TypeChecker {
 	private void createLattice() throws Exception {
 	    Tree tree = Tree.getInstance();
 	    ClassesTable ct = ClassesTable.getInstance();
+	    HashMap<String, String> c = new HashMap<>();
+	    c.putAll(ct.classTable);
 	    Node root = new Node("Obj");
      		 tree.setRoot(root);
-     	ct.classTable.isEmpty();
-     	for(Entry<String, String> entry: ct.classTable.entrySet()) {
-     		if(!entry.getKey().equals("Obj")) {
-     			
-     			if(entry.getValue().equals("Obj")) {
-     				root.addChild(new Node(entry.getKey()));
-     			}
-     			else {
-     				if(tree.exists(entry.getValue())) {
-     					Node n= tree.findNode(root, entry.getValue());
-     					n.addChild(new Node(entry.getKey()));
-     				}
-     				else
-     					//???need to figure out if this will actually get called
-     					throw new Exception("Problem with Lattice");
-     					
-     			}
+     	c.remove("Obj", "Obj");
+     	Iterator<Entry<String, String>> i = c.entrySet().iterator();
+     	Entry<String,String> entry = null;
+     	String key = "Obj";
 
-     		}
-     			
+     	while(true) {
      		
-     	    //System.out.println(entry.getKey() + " : " + entry.getValue());
+     		Node n =tree.findNode(root, key);
+     		while(n==null) {
+     			key = i.next().getKey();
+     			n =tree.findNode(root, key);
+     		}
+     		entry =getElement(c,key);
+     		while(entry!=null) {
+
+     			n.addChild(new Node(entry.getKey()));
+     			c.remove(entry.getKey());
+     			entry =getElement(c,key);
+     		
+     		}
+     		
+     		if(c.isEmpty())
+     			break;
+     		key = c.entrySet().iterator().next().getValue();
+
      	}
 		
+	}
+	public Entry<String, String> getElement(HashMap<String, String> t, String v) {
+		for(Entry<String, String> entry: t.entrySet()){
+            if(v.equals(entry.getValue())){
+                return entry;
+            }
+        }
+		return null;
 	}
 	
 

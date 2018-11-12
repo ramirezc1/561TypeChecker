@@ -18,8 +18,12 @@ public class OperatorToString
             operatorDict.put("*", "TIMES");
             operatorDict.put("-", "MINUS");
             operatorDict.put("/", "DIVIDE");
+            operatorDict.put("and", "$AND");
+            operatorDict.put("or", "$OR");
+            operatorDict.put("not", "$NOT");
         }
 
         return operatorDict;
     }
 }
+

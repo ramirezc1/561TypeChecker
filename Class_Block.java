@@ -46,6 +46,20 @@ public abstract class Class_Block
         {
             return this._methods;
         }
+        public List<Statement> getStatements()
+        {
+            return this._stmtList;
+        }
+        public Statement getStatement(String var)
+        {
+        	for (Statement s: _stmtList)
+            {
+                if(s.getLexpr().getIdent().equals(var)) {
+                	return s;
+                }
+            }
+            return null;
+        }
 
         public VarTable getConstructor()
         {

@@ -33,6 +33,10 @@ public abstract class Methods
             //check if method has same name as a class
         	if(ct.classTable.containsKey(_methodIdent))
         		throw new Exception("Method "+_methodIdent + " has same name as class ");
+        	for (Statement s : this._statements)
+            {
+                s.visit();
+            }
         }
 
         public String toString()

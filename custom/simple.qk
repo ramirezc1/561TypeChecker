@@ -1,13 +1,18 @@
 class P() {
-def s(x: Int, y: Int) : Int {
+this.y=5;
+this.x=3;
+
+def s(x: Int) : Int {
 	return x;
 }
-
 }
 
 class X() extends P{
+this.x=4;
+this.y=4;
 
-def s(x: Int, y: Int) : Int{
+
+def s(x: Int) : Int {
 	return x+1;
 }
 }

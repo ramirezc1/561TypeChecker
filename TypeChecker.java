@@ -27,27 +27,46 @@ public class TypeChecker {
 	        {
 	            throw new Exception("Bad constructor");
 	        }
-	        checkOverridenMethods();
+	        checkOverriden();
 
 	        
 	        System.out.println("Passed check for subclass matching constructor of parent class");
 			return true;
 	    }
 
-	private void checkOverridenMethods() throws Exception {
+	private void checkOverriden() throws Exception {
 		//check each classblock
 		//check to see if super class has any method
 		String currentSuper="";
 		Class_Block.Clazz_Block ex=null;
 		Methods.Method m= null;
+		Statement s= null;
 		//check each classblock
 		 for (Class_Block.Clazz_Block cb : ast.get_cbs())
-	      {		 
+	      {	 
 			 if(!cb._methods.isEmpty()) {
 				 if(!(cb._extendsIdent==currentSuper)) {
 					 ex= builtinAST.get_cb(cb._extendsIdent);
 					 if(ex == null)
 						 ex= ast.get_cb(cb._extendsIdent);
+				 }
+				 //typecheck instance variables
+				 if(!ex._stmtList.isEmpty())
+				 {
+			        for (Statement sSuper : ex._stmtList)
+			        {
+			        	//System.out.println(sSuper.getLexpr().getClass().getSimpleName());
+			           if(sSuper.getLexpr().getClass().getSimpleName().equals("Method_Call")) {
+			           s = cb.getStatement(sSuper.getLexpr().getIdent());
+			           
+			           if(s==null)
+			        	   throw new Exception("Super instance variable "+sSuper.getLexpr() +" not defined");
+			           //System.out.println(sSuper);
+			           //System.out.println(s.getLexpr().getIdent());
+//			           if(!s.getLexpr().getIdent().equals(sSuper.getLexpr().getIdent()))
+//			        		   throw new Exception("Super instance variables do not match");
+			           }
+			        }
 				 }
 				 //check to see if superclass has methods
 				 if(!ex._methods.isEmpty()) { 			
@@ -65,6 +84,7 @@ public class TypeChecker {
 	      }
 		
 	}
+	
 	private void checkOverridenMethod(Methods.Method m, Methods.Method mSuper) throws Exception {
 		//make sure it has same number of arguments,
 		//each argument is of correct type
@@ -89,8 +109,14 @@ public class TypeChecker {
 		//typecheck return statement
 		if(!m._methodType.equals(mSuper._methodType)) {
 			//if(type is subtype)
+			getSubtype();
 			throw new Exception("Method return type do not match with super");
 		}
+		
+	}
+
+	private void getSubtype() {
+		// TODO Auto-generated method stub 
 		
 	}
 

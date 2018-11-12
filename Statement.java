@@ -5,8 +5,9 @@ import java.util.List;
 
 public abstract class Statement
 {
-    public Statement() { }
-    abstract void visit();
+    
+	public Statement() { }
+    abstract void visit() throws Exception;
 
     public static class Assignment_Statement extends Statement
     {
@@ -26,8 +27,14 @@ public abstract class Statement
             this._rexpr = e2;
             this._declaredType = declaredType;
         }
+        public Expression getLexpr() {
+        	return this._lexpr;
+        }
+        public Expression getRexpr() {
+        	return _rexpr;
+        }
 
-        public void visit()
+        public void visit() throws Exception
         {
         	//first time visit
         	//add to var table 
@@ -43,7 +50,13 @@ public abstract class Statement
 
             // Temporarily assuming/casting an _lexpr to Expression.Ident because
             // we don't distinguish between lexpr and rexprs.
-            String tempIdent = ((Expression.Identifier)this._lexpr).ident;
+            //String tempIdent = ((Expression.Identifier)this._lexpr).ident;
+            
+            String tempIdent = this._lexpr.getIdent();
+            //var name must not be in class name
+            ClassesTable ct = ClassesTable.getInstance();
+            if(ct.classTable.containsKey(tempIdent))
+            	throw new Exception("Var "+tempIdent + " has same name as class ");
             Var var = new Var(tempIdent, type);
             VarTable.getInstance().addVar(var);
         }
@@ -82,7 +95,7 @@ public abstract class Statement
 
         public void visit()
         {
-            // TODO
+            _e.getIdent();
         }
 
         public String toString()
@@ -274,9 +287,9 @@ public abstract class Statement
             this._expression = e;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
-            // TODO
+        	_expression.visit();
         }
 
         public String toString()
@@ -288,4 +301,9 @@ public abstract class Statement
     {
         return new Statement.Expression_Statement(e);
     }
+	public Expression getLexpr() {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
 }

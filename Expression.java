@@ -2,9 +2,10 @@
 public abstract class Expression
 {
     public Expression() { }
-    abstract void visit();
+    abstract void visit() throws Exception;
     abstract String getType();
-
+    protected abstract String getIdent();
+    
     public static class Priority extends Expression
     {
         public Expression e;
@@ -24,7 +25,7 @@ public abstract class Expression
 
 
 
-        public void visit()
+        public void visit() throws Exception
         {
             e.visit();
         }
@@ -33,6 +34,13 @@ public abstract class Expression
         {
             return "(" + e + ")";
         }
+
+		@Override
+		protected String getIdent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
     }
     public static Expression.Priority priority(Expression e, int left, int right)
     {
@@ -66,7 +74,7 @@ public abstract class Expression
             return rtype;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
             e1.visit();
             e2.visit();
@@ -76,6 +84,12 @@ public abstract class Expression
         {
             return e1 + " " + op + " " + e2;
         }
+
+		@Override
+		protected String getIdent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
 
     }
     public static Expression.Binex binop(Expression e1, String op, Expression e2, int left, int right)
@@ -103,7 +117,7 @@ public abstract class Expression
             return "";
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
             e1.visit();
         }
@@ -112,6 +126,13 @@ public abstract class Expression
         {
             return op + e1.toString();
         }
+
+		@Override
+		protected String getIdent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
     }
     public static Expression.Unex unop(String op, Expression e, int left, int right)
     {
@@ -145,6 +166,13 @@ public abstract class Expression
         {
             return _s;
         }
+
+		@Override
+		protected String getIdent() {
+			// TODO Auto-generated method stub
+			return this._s;
+		}
+
     }
     public static Expression.StringLit stringLit(String s, int left, int right)
     {
@@ -177,6 +205,13 @@ public abstract class Expression
         {
             return i + "";
         }
+
+		@Override
+		protected String getIdent() {
+			// TODO Auto-generated method stub
+			return null;
+		}
+
     }
     public static Expression.IntConst intconst(int i, int left, int right)
     {
@@ -204,8 +239,11 @@ public abstract class Expression
             return "";
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
+        	 ClassesTable ct = ClassesTable.getInstance();
+             if(ct.classTable.containsKey(ident))
+             	throw new Exception("Var "+ ident + " has same name as class ");
             VarTable varTable = VarTable.getInstance();
             try
             {
@@ -223,6 +261,12 @@ public abstract class Expression
         {
             return ident;
         }
+
+		protected String getIdent() {
+			
+			return ident;
+		}
+
     }
     public static Expression.Identifier ident(String s, int left, int right)
     {
@@ -233,7 +277,7 @@ public abstract class Expression
     public static class Method_Call extends Expression
     {
         Expression _e;
-        String _ident;
+        public String _ident;
         Args _optionalArgs;
         public int _left, _right;
 
@@ -258,10 +302,17 @@ public abstract class Expression
         {
             return "";
         }
+        public String getIdent() {
+        	return _ident;
+        }
 
-        public void visit()
+        public void visit() throws Exception
         {
-
+        	_e.visit();
+        	ClassesTable ct = ClassesTable.getInstance();
+            if(ct.classTable.containsKey(_ident))
+            	throw new Exception("Var "+ _ident + " has same name as class ");
+        	
         }
 
         public String toString()
@@ -311,10 +362,16 @@ public abstract class Expression
         {
             return _ident + _args;
         }
+		protected String getIdent() {
+			
+			return _ident;
+		}
+
     }
     public static Expression.Constructor constructor(String ident, Args args, int left, int right)
     {
         return new Expression.Constructor(ident, args, left, right);
     }
+	
 
 }

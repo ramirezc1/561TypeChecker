@@ -1,5 +1,8 @@
 class C1()  extends Obj {
     x = 5 + 4;
     y = 5 < 4;
-    z = 5 + y;
+}
+class C12()  extends Obj {
+    x = 5 + 4;
+    y = 5 < 4;
 }

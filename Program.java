@@ -29,6 +29,7 @@ public class Program
         //add statements to a dummy class to type checked
         if(!_stmts.isEmpty()) {
         	Class_Block.Clazz_Block cb = new Class_Block.Clazz_Block ("$statementsDummyClass", Args.formalArgs(), _stmts, new LinkedList<Methods.Method>());
+            VarTableSingleton.getCurrentInstance().addTable(new VarTable("$statementsDummyClass"));
         	cb.visit();
         }
     }

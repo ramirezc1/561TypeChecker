@@ -16,7 +16,7 @@ public class VarTable
         this.className = className;
     }
 
-    public void addVar(Var v)
+    public void addVar(Var v) throws Exception
     {
         boolean changed = false;
         for (Var v2: varTable)

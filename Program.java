@@ -23,7 +23,6 @@ public class Program
         System.out.println("visiting program");
         for (Class_Block.Clazz_Block cb: _cbs)
         {
-            VarTableSingleton.getCurrentInstance().addTable(new VarTable(cb._classIdent));
             cb.visit();
         }
         //add statements to a dummy class to type checked
@@ -39,6 +38,7 @@ public class Program
         System.out.println("TypeChecking program");
         for (Class_Block.Clazz_Block cb: _cbs)
         {
+            VarTableSingleton.getCurrentInstance().addTable(new VarTable(cb._classIdent));
             cb.visit2();
         }
    

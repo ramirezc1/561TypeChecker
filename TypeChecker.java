@@ -174,13 +174,13 @@ public class TypeChecker {
 		
 	}
 
-	private boolean checkSubtype(String typeInherited, String typeSuper) throws Exception {
+	public static boolean checkSubtype(String typeInherited, String typeSuper) throws Exception {
 		//check that types are valid
-		if(!tree.exists(typeInherited)||!tree.exists(typeSuper))
+		if(!Tree.getInstance().exists(typeInherited)||!Tree.getInstance().exists(typeSuper))
 			throw new Exception("Problem: "+typeInherited+" or "+typeSuper+ " are not valid types");;
 		
 		
-		Node n= tree.LCA(tree.getRoot(),typeInherited,typeSuper);
+		Node n= Tree.getInstance().LCA(Tree.getInstance().getRoot(),typeInherited,typeSuper);
 		
 		//returns false if typeInherited is not a subtype of SuperType
 		if(n==null||!n.toString().equals(typeSuper))
@@ -188,6 +188,18 @@ public class TypeChecker {
 		
 		return true;
 	}
+
+	// sam's version - probably useless
+//	public static boolean isSubType(String oldType, String newType)
+//    {
+//        String parentType = ClassesTable.getInstance().getClass(newType);
+//        while (!parentType.equals(oldType) && !parentType.equals("Obj"))
+//        {
+//            parentType = ClassesTable.getInstance().getClass(parentType);
+//        }
+//        return parentType.equals(oldType);
+//    }
+
 
 	public static String typeCheckOperator(String classType, String operation, String argumentType)
     {

@@ -1,8 +1,20 @@
 class C1()  extends Obj {
-    x = 5 + 4;
-    y = 5 < 4;
+    if (true)
+    {
+        y = 4 < 5;
+    }
+    else
+    {
+        y = true;
+    }
 }
 class C12()  extends Obj {
-    x = 5 + 4;
-    y = 5 < 4;
+    if (true)
+        {
+            x = 5;
+        }
+        else
+        {
+            x = 7;
+        }
 }

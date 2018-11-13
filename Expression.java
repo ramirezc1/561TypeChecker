@@ -233,6 +233,10 @@ public abstract class Expression
 
         public String getType()
         {
+            if (ident.equals("true") || ident.equals("false"))
+            {
+                return "Boolean";
+            }
             String identType = VarTableSingleton.getCurrentInstance().getCurrentTable().getType(ident);
             return identType;
         }

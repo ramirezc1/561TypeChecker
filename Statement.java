@@ -45,7 +45,7 @@ public abstract class Statement
             if ((!this._declaredType.equals("") && !this._declaredType.equals(type)))
             {
                 // throw exception: type not found or doesn't match declared type
-                throw new Exception("Exception: Type error for " + type);
+                throw new Exception("Exception: " + this._declaredType + " != " + type);
             }
 
             // Temporarily assuming/casting an _lexpr to Expression.Ident because
@@ -147,7 +147,7 @@ public abstract class Statement
     public static class If_Statement extends Statement
     {
         public Expression _expression;
-        public List<Statement> _statements = new LinkedList<>();
+        public List<Statement> _statements;
         public Statement _elseStatement;
 
         public If_Statement(Expression e, List<Statement> stmts)
@@ -163,9 +163,13 @@ public abstract class Statement
             this._elseStatement = elseStatement;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
-            // TODO
+            for (Statement s : this._statements)
+            {
+                s.visit();
+            }
+            this._elseStatement.visit();
         }
 
         public String toString()
@@ -203,9 +207,12 @@ public abstract class Statement
             this._elseStatements = elseStatements;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
-            // TODO
+            for (Statement s : this._elseStatements)
+            {
+                s.visit();
+            }
         }
 
         public String toString()

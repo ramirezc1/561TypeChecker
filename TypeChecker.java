@@ -21,7 +21,7 @@ public class TypeChecker {
 	}
 	
 	 public boolean TypeCheck() throws Exception {
-
+		 	//first visit only classes
 	        ast.visit();
 	        checkForUndefined();
 	        System.out.println("Passed check for undefined class inheritance");
@@ -33,6 +33,9 @@ public class TypeChecker {
 	            throw new Exception("Bad constructor");
 	        }
 	        checkOverriden();
+	        //Second Visit
+	        //visit to typeCheck everything
+	        ast.visit2();
 	       // System.out.println(" : "+tree.LCA(tree.getRoot(), "D","X"));
 	        
 	        System.out.println("Passed check for subclass matching constructor of parent class");
@@ -103,14 +106,19 @@ public class TypeChecker {
 				 //typecheck instance variables
 				 if(!ex._stmtList.isEmpty())
 				 {
+					 //NEEED BETTER WAY TO CHECK INHERITED VARIABLES
+					 //this.
+					 
+					 //check that the same instance vars declared in super are declared in inherrited class
+					 //check that inherited instance vars are subtype of super class
 			        for (Statement sSuper : ex._stmtList)
 			        {
+			        	
 			        	//System.out.println(sSuper.getLexpr().getClass().getSimpleName());
-			           if(sSuper.getLexpr().getClass().getSimpleName().equals("Method_Call")) {
-			           s = cb.getStatement(sSuper.getLexpr().getIdent());
-			           
-			           if(s==null)
-			        	   throw new Exception("Super instance variable "+sSuper.getLexpr() +" not defined");
+//			           if(sSuper.getLexpr().getClass().getSimpleName().equals("Method_Call")) {
+//			        	   s = cb.getStatement(sSuper.getLexpr().getIdent());
+//			           if(s==null)
+//			        	   throw new Exception("Super instance variable "+sSuper.getLexpr() +" not defined");
 			           
 			           //????????
 			           //have way to check type of instance variable
@@ -119,7 +127,7 @@ public class TypeChecker {
 			           //System.out.println(s.getLexpr().getIdent());
 //			           if(!s.getLexpr().getIdent().equals(sSuper.getLexpr().getIdent()))
 //			        		   throw new Exception("Super instance variables do not match");
-			           }
+			           //}
 			        }
 				 }
 				 //check to see if superclass has methods

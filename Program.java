@@ -18,6 +18,8 @@ public class Program
 
     public void visit()throws Exception
     {
+    	//first visit to make sure syntax is correct
+    	//only visit class
         System.out.println("visiting program");
         for (Class_Block.Clazz_Block cb: _cbs)
         {
@@ -28,11 +30,17 @@ public class Program
         	Class_Block.Clazz_Block cb = new Class_Block.Clazz_Block ("$statementsDummyClass", Args.formalArgs(), _stmts, new LinkedList<Methods.Method>());
         	cb.visit();
         }
-        	
-//        for (Statement s : _stmts)
-//        {
-//            s.visit();
-//        }
+    }
+    public void visit2()throws Exception
+    {
+    	//second visit to typeCheck
+        System.out.println("TypeChecking program");
+        for (Class_Block.Clazz_Block cb: _cbs)
+        {
+            cb.visit2();
+        }
+   
+ 
     }
 
     public List<Class_Block.Clazz_Block> get_cbs()
@@ -70,5 +78,6 @@ public class Program
 
         return "Classes:\n" + classesString + "\nStatements:\n" + statementsString;
     }
+
 
 }

@@ -5,7 +5,7 @@ import java.util.List;
 
 public abstract class Statement
 {
-    
+    public Object _lexpr;
 	public Statement() { }
     abstract void visit() throws Exception;
 
@@ -28,7 +28,7 @@ public abstract class Statement
             this._declaredType = declaredType;
         }
         public Expression getLexpr() {
-        	return this._lexpr;
+        	return _lexpr;
         }
         public Expression getRexpr() {
         	return _rexpr;

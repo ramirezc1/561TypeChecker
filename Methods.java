@@ -31,8 +31,16 @@ public abstract class Methods
         public void visit(ClassesTable ct) throws Exception
         {
             //check if method has same name as a class
+        	System.out.println("TypeChecking Method "+_methodIdent);
         	if(ct.classTable.containsKey(_methodIdent))
         		throw new Exception("Method "+_methodIdent + " has same name as class ");
+        	
+        	//Make sure args have existing type, 
+        	_formalArgs.visit();
+        	//Make sure return type exists
+        	if(!ct.classTable.containsKey(_methodType))
+        		throw new Exception("MethodType "+_methodType + " does not exist");
+        	
         	for (Statement s : this._statements)
             {
                 s.visit();

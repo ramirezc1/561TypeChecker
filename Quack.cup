@@ -185,7 +185,7 @@ op          ::= PLUS                                            {: RESULT = "+";
             |   OR                                              {: RESULT = "or"; :}
             ;
 
-expr        ::= expr:e1 op:o expr:e2                            {: RESULT = Expression.binop(e1, o, e2, e1left, e2right); :}
+expr        ::= expr:e1 op:o expr:e2                            {: RESULT = Expression.binop(e1, o, e2); :}
             |   MINUS:m expr:e                                  {: RESULT = Expression.unop("-", e, mleft, eright); :}
             |   NOT:n expr:b                                    {: RESULT = Expression.unop("!", b, nleft, bright); :}
             |   INT_LIT:i                                       {: RESULT = Expression.intconst(i, ileft, iright); :}

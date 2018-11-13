@@ -231,6 +231,40 @@ public class TypeChecker {
 
         return null;
     }
+
+    public static String typeCheckUnaryOperator(String classType, String operation)
+    {
+        for (Class_Block.Clazz_Block cb : builtinAST.get_cbs())
+        {
+            if (cb._classIdent.equals(classType))
+            {
+                for (Methods.Method m : cb.getMethods())
+                {
+                    if (m._methodIdent.equals(operation))
+                    {
+                        return m._methodType;
+                    }
+                }
+            }
+        }
+        // again, but for ast
+        for (Class_Block.Clazz_Block cb : ast.get_cbs())
+        {
+            if (cb._classIdent.equals(classType))
+            {
+                for (Methods.Method m : cb.getMethods())
+                {
+                    if (m._methodIdent.equals(operation))
+                    {
+                        return m._methodType;
+                    }
+                }
+            }
+        }
+
+        return null;
+    }
+
 	void checkForUndefined() throws Exception
     {
         HashMap<String, String> clazzTable = classesTable.getClassTable();

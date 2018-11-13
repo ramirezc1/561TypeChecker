@@ -8,22 +8,14 @@ public class VarTable
 
     // Var is class that basically acts as a struct to store data necessary to the variable table
     LinkedList<Stack<Var>> varTable;
-
-    private static VarTable varTableInstance;
-
-    public static VarTable getInstance()
-    {
-        if (varTableInstance == null)
-            varTableInstance = new VarTable();
-        return varTableInstance;
-    }
+    public String className;
 
 
-    public VarTable()
+    public VarTable(String className)
     {
         varTable = new LinkedList<>();
+        this.className = className;
     }
-
 
     public void addVar(Var v)
     {
@@ -67,4 +59,17 @@ public class VarTable
         }
         return null;
     }
+
+    public String getType(String identifier)
+    {
+        for (Stack<Var> s : varTable)
+        {
+            if (s.peek().ident.equals(identifier))
+            {
+                return s.peek().type;
+            }
+        }
+        return null;
+    }
 }
+

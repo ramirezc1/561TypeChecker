@@ -109,16 +109,21 @@ public class Main {
             e.printStackTrace();
 	        System.exit(1);
         }
-            final TypeChecker typeChecker = new TypeChecker(builtinAST,ast);
-            try {
-				if(typeChecker.TypeCheck()) {
-					System.out.println("Done TypeChecking");
-				}
-			} catch (Exception e) {
-				System.err.println("Yuck, blew up in typecheck phase");
-				e.printStackTrace();
-				System.exit(1);
-			}
+
+        final TypeChecker typeChecker = new TypeChecker(builtinAST,ast);
+        try
+        {
+            if(typeChecker.TypeCheck())
+            {
+                System.out.println("Done TypeChecking");
+            }
+        }
+        catch (Exception e)
+        {
+            System.err.println("Yuck, blew up in typecheck phase");
+            e.printStackTrace();
+            System.exit(1);
+        }
             
            
        

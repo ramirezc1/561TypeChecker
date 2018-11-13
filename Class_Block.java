@@ -63,14 +63,14 @@ public abstract class Class_Block
 
         public VarTable getConstructor()
         {
-            VarTable varTable = new VarTable();
+//            VarTable varTable = new VarTable();
             for (Statement s : this._stmtList)
             {
                 // TODO: populate VarTable with idents and their types for assignment statements of the form "this.__"
 //                System.out.println(s);
             }
 
-            return varTable;
+            return null;
         }
 
         public void visit() throws Exception

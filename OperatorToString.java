@@ -3,6 +3,7 @@ import java.util.HashMap;
 public class OperatorToString
 {
     private static HashMap<String, String> operatorDict;
+    private static HashMap<String, String> unaryOperatorDict;
 
     public static HashMap<String ,String> getOperatorDict()
     {
@@ -24,6 +25,17 @@ public class OperatorToString
         }
 
         return operatorDict;
+    }
+
+    public static HashMap<String ,String> getUnaryOperatorDict()
+    {
+        if (unaryOperatorDict == null)
+        {
+            unaryOperatorDict = new HashMap<>();
+            unaryOperatorDict.put("-", "NEG");
+        }
+
+        return unaryOperatorDict;
     }
 }
 

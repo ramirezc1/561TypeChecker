@@ -42,10 +42,10 @@ public abstract class Statement
 
             // if the type of _rexpr isn't in the class table,
             // or if the declared type of _lexpr doesn't match the type of _rexpr
-            if (type == null || (!this._declaredType.equals("") && !this._declaredType.equals(type)))
+            if ((!this._declaredType.equals("") && !this._declaredType.equals(type)))
             {
                 // throw exception: type not found or doesn't match declared type
-                System.out.println("Exception: Type error for " + type);
+                throw new Exception("Exception: Type error for " + type);
             }
 
             // Temporarily assuming/casting an _lexpr to Expression.Ident because
@@ -56,9 +56,9 @@ public abstract class Statement
             //var name must not be in class name
             ClassesTable ct = ClassesTable.getInstance();
             if(ct.classTable.containsKey(tempIdent))
-            	throw new Exception("Var "+tempIdent + " has same name as class ");
+            	throw new Exception("Var " + tempIdent + " has same name as class ");
             Var var = new Var(tempIdent, type);
-            VarTable.getInstance().addVar(var);
+            VarTableSingleton.getCurrentInstance().getCurrentTable().addVar(var);
         }
 
         public String toString()

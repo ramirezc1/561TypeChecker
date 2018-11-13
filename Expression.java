@@ -3,7 +3,7 @@ public abstract class Expression
 {
     public Expression() { }
     abstract void visit() throws Exception;
-    abstract String getType();
+    abstract String getType() throws Exception;
     protected abstract String getIdent();
     
     public static class Priority extends Expression
@@ -18,7 +18,7 @@ public abstract class Expression
             this._right = right;
         }
 
-        public String getType()
+        public String getType() throws Exception
         {
             return e.getType();
         }
@@ -35,10 +35,9 @@ public abstract class Expression
             return "(" + e + ")";
         }
 
-		@Override
+
 		protected String getIdent() {
-			// TODO Auto-generated method stub
-			return null;
+            return e.getIdent();
 		}
 
     }
@@ -53,24 +52,22 @@ public abstract class Expression
     {
         public Expression e1, e2;
         public String op;
-        public int _left, _right;
 
-        public Binex(Expression e1, String op, Expression e2, int left, int right)
+        public Binex(Expression e1, String op, Expression e2)
         {
             this.e1 = e1;
             this.e2 = e2;
             this.op = op;
-            this._left = left;
-            this._right = right;
         }
 
-        public String getType()
+        public String getType() throws Exception
         {
             String e1Type = e1.getType();
             String e2Type = e2.getType();
             String operatorString = OperatorToString.getOperatorDict().get(this.op);
             String rtype = TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
-            // TODO: throw error if rtype is null
+            if (rtype == null)
+                throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") not defined");
             return rtype;
         }
 
@@ -85,16 +82,15 @@ public abstract class Expression
             return e1 + " " + op + " " + e2;
         }
 
-		@Override
 		protected String getIdent() {
-			// TODO Auto-generated method stub
-			return null;
+			// there is no identifier for a binary expression
+            return null;
 		}
 
     }
-    public static Expression.Binex binop(Expression e1, String op, Expression e2, int left, int right)
+    public static Expression.Binex binop(Expression e1, String op, Expression e2)
     {
-        return new Expression.Binex(e1, op, e2, left, right);
+        return new Expression.Binex(e1, op, e2);
     }
 
 
@@ -112,9 +108,12 @@ public abstract class Expression
             this._right = right;
         }
 
-        public String getType()
+        public String getType() throws Exception
         {
-            return "";
+            String eType = this.e1.getType();
+            String opString = OperatorToString.getUnaryOperatorDict().get(this.op);
+            String unopType = TypeChecker.typeCheckUnaryOperator(eType, opString);
+            return unopType;
         }
 
         public void visit() throws Exception
@@ -127,9 +126,9 @@ public abstract class Expression
             return op + e1.toString();
         }
 
-		@Override
+
 		protected String getIdent() {
-			// TODO Auto-generated method stub
+            // there is no identifier for a unary expression
 			return null;
 		}
 
@@ -167,10 +166,9 @@ public abstract class Expression
             return _s;
         }
 
-		@Override
 		protected String getIdent() {
-			// TODO Auto-generated method stub
-			return this._s;
+            // there is no identifier for a string lit
+			return null;
 		}
 
     }
@@ -206,9 +204,8 @@ public abstract class Expression
             return i + "";
         }
 
-		@Override
 		protected String getIdent() {
-			// TODO Auto-generated method stub
+            // there is no identifier for an int const
 			return null;
 		}
 
@@ -236,15 +233,16 @@ public abstract class Expression
 
         public String getType()
         {
-            return "";
+            String identType = VarTableSingleton.getCurrentInstance().getCurrentTable().getType(ident);
+            return identType;
         }
 
         public void visit() throws Exception
         {
         	 ClassesTable ct = ClassesTable.getInstance();
              if(ct.classTable.containsKey(ident))
-             	throw new Exception("Var "+ ident + " has same name as class ");
-            VarTable varTable = VarTable.getInstance();
+             	throw new Exception("Var "+ ident + " (" + _left + ", " + _right + ") has same name as class ");
+            VarTable varTable = VarTableSingleton.getCurrentInstance().getCurrentTable();
             try
             {
                 String type = ClassesTable.getInstance().getClass("Nothing");
@@ -335,6 +333,7 @@ public abstract class Expression
         return new Expression.Method_Call(e, ident, args, left, right);
     }
 
+    // Constructor class is for when a class gets instantiated: C1(4, "example");
     public static class Constructor extends Expression
     {
         String _ident;
@@ -350,7 +349,8 @@ public abstract class Expression
 
         public String getType()
         {
-            return "";
+            // the class identifier is the type, right?
+            return this._ident;
         }
 
         public void visit()

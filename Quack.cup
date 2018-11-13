@@ -72,7 +72,7 @@ nonterminal List<Class_Block.Clazz_Block>       clazz_block;
 nonterminal Class_Block.Clazz_Block clss;
 nonterminal List<Statement>         stmtlist, type_block;
 nonterminal Expression              expr;
-nonterminal Statement               stmt, asmt_stmt, return_stmt, while_expr, ifstmt, elsestmt, typecase, type_stmts;
+nonterminal Statement               stmt, asmt_stmt, return_stmt, while_expr, ifstmt, elsestmt, elifstmt, typecase, type_stmts;
 nonterminal String                  op;
 nonterminal Args                    formal_args, inf_args;
 nonterminal List<Methods.Method>    mthd_block;
@@ -158,12 +158,18 @@ type_stmts  ::= IDENT:i COLON IDENT:t LBRACE stmtlist:sl RBRACE {: RESULT = Stat
             ;
 
 ifstmt      ::= IF expr:e LBRACE stmtlist:sl RBRACE             {: RESULT = Statement.ifStatement(e, sl); :}
+            |   IF expr:e LBRACE stmtlist:sl RBRACE elifstmt:lf {: RESULT = Statement.ifStatement(e, sl, lf ); :}
             |   IF expr:e LBRACE stmtlist:sl RBRACE elsestmt:es {: RESULT = Statement.ifStatement(e, sl, es ); :}
             ;
 
 elsestmt    ::= ELSE LBRACE stmtlist:sl RBRACE                  {: RESULT = Statement.elseStatement(sl); :}
+            ;
+
+elifstmt    ::= ELIF expr:e LBRACE stmtlist:sl RBRACE           {: RESULT = Statement.ifStatement(e, sl); :}
             |   ELIF expr:e LBRACE stmtlist:sl RBRACE elsestmt:es
                                                                 {: RESULT = Statement.ifStatement(e, sl, es); :}
+            |   ELIF expr:e LBRACE stmtlist:sl RBRACE elifstmt:lf
+                                                                {: RESULT = Statement.ifStatement(e, sl, lf ); :}
             ;
 
 

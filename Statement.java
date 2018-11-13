@@ -41,7 +41,9 @@ public abstract class Statement
             String type = _rexpr.getType();
 
             // if the type of _rexpr isn't in the class table,
-            // or if the declared type of _lexpr doesn't match the type of _rexpr
+            if (type == null)
+                throw new Exception("\"" + this._rexpr.getIdent() + "\" is not declared");
+            // if the declared type of _lexpr doesn't match the type of _rexpr
             if ((!this._declaredType.equals("") && !this._declaredType.equals(type)))
             {
                 // throw exception: type not found or doesn't match declared type
@@ -200,7 +202,7 @@ public abstract class Statement
 
     public static class Else_Statement extends Statement
     {
-        public List<Statement> _elseStatements = new LinkedList<Statement>();
+        public List<Statement> _elseStatements;
 
         public Else_Statement(List<Statement> elseStatements)
         {

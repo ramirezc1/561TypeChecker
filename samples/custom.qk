@@ -1,7 +1,12 @@
 class C1()  extends Obj {
-    if (true)
+    a = 4 >= 3;
+    if true
     {
-        y = 4 < 5;
+        y = a;
+    }
+    elif y < 3
+    {
+        y = a;
     }
     else
     {

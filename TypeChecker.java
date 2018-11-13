@@ -176,9 +176,12 @@ public class TypeChecker {
 
 	public static boolean checkSubtype(String typeInherited, String typeSuper) throws Exception {
 		//check that types are valid
-		if(!Tree.getInstance().exists(typeInherited)||!Tree.getInstance().exists(typeSuper))
-			throw new Exception("Problem: "+typeInherited+" or "+typeSuper+ " are not valid types");;
-		
+		if(!Tree.getInstance().exists(typeInherited))
+			throw new Exception("Problem: " + typeInherited + " is not a valid type");
+		if (!Tree.getInstance().exists(typeSuper))
+        {
+            throw new Exception("Problem: " + typeSuper + " is not a valid type");
+        }
 		
 		Node n= Tree.getInstance().LCA(Tree.getInstance().getRoot(),typeInherited,typeSuper);
 		

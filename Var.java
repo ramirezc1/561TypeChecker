@@ -10,5 +10,10 @@ public class Var
         this.ident = i;
         this.type = t;
     }
+
+    public void UpdateType(String newType)
+    {
+        this.type = newType;
+    }
 }
 

@@ -1,5 +1,4 @@
 import java.util.LinkedList;
-import java.util.Stack;
 
 
 
@@ -7,7 +6,7 @@ public class VarTable
 {
 
     // Var is class that basically acts as a struct to store data necessary to the variable table
-    LinkedList<Stack<Var>> varTable;
+    LinkedList<Var> varTable;
     public String className;
 
 
@@ -19,42 +18,33 @@ public class VarTable
 
     public void addVar(Var v)
     {
-        boolean added = false;
-        for (Stack<Var> s: varTable)
+        boolean changed = false;
+        for (Var v2: varTable)
         {
-            if (((Var)s.peek()).ident.equals(v.ident))
+            if (v2.ident.equals(v.ident))
             {
-                added = true;
-                s.push(v);
+                changed = true;
+                v2.UpdateType(v.type);
             }
         }
-        if (!added)
+        if (!changed)
         {
-            Stack<Var> newStack = new Stack<>();
-            newStack.push(v);
-            varTable.add(newStack);
+            varTable.add(v);
         }
     }
 
     public void removeVar(Var v)
     {
-        for (Stack<Var> s : varTable)
-        {
-            if (s.peek().ident.equals(v.ident))
-            {
-                s.pop();
-                break;
-            }
-        }
+        varTable.remove(v);
     }
 
     public String getType(Var v)
     {
-        for (Stack<Var> s : varTable)
+        for (Var v2 : varTable)
         {
-            if (s.peek().ident.equals(v.ident))
+            if (v2.ident.equals(v.ident))
             {
-                return s.peek().type;
+                return v.type;
             }
         }
         return null;
@@ -62,11 +52,11 @@ public class VarTable
 
     public String getType(String identifier)
     {
-        for (Stack<Var> s : varTable)
+        for (Var v : varTable)
         {
-            if (s.peek().ident.equals(identifier))
+            if (v.ident.equals(identifier))
             {
-                return s.peek().type;
+                return v.type;
             }
         }
         return null;

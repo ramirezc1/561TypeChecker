@@ -147,31 +147,38 @@ public class TypeChecker {
 			throw new Exception("Overriden Method does not have same number of arguments");
 		for (int i=0; i<m._formalArgs._args.size();i++)
 	    {
-			//?????MUST HAVE WAY to check subtype
-			//RIGHT NOW IT ONLY CHECKS SAME TYPE
 			//check arguments to see if type matches
 			//must be a inherited <: a (the overriding
 			//System.out.println(m._formalArgs._args.get(i)._type);
 			//System.out.println(mSuper._formalArgs._args.get(i)._type);
-			if(!m._formalArgs._args.get(i)._type.equals(mSuper._formalArgs._args.get(i)._type))
-				
+			
+			if(!checkSubtype(m._formalArgs._args.get(i)._type,mSuper._formalArgs._args.get(i)._type))
 				//if(type is super type)
-				throw new Exception("Arguments in super class method do not match");
+				throw new Exception("Problem with arguments "+m._formalArgs._args.get(i)._type+" is not a subtype of "+mSuper._formalArgs._args.get(i)._type);
 			
 	    }
 		
 		//typecheck return statement
-		if(!m._methodType.equals(mSuper._methodType)) {
+		if(!checkSubtype(m._methodType, mSuper._methodType)) {
 			//if(type is subtype)
-			getSubtype();
-			throw new Exception("Method return type do not match with super");
+			throw new Exception("Problem with return: "+m._methodType+ " is not a subtype of "+ mSuper._methodType);
 		}
 		
 	}
 
-	private void getSubtype() {
-		// TODO Auto-generated method stub 
+	private boolean checkSubtype(String typeInherited, String typeSuper) throws Exception {
+		//check that types are valid
+		if(!tree.exists(typeInherited)||!tree.exists(typeSuper))
+			throw new Exception("Problem: "+typeInherited+" or "+typeSuper+ " are not valid types");;
 		
+		
+		Node n= tree.LCA(tree.getRoot(),typeInherited,typeSuper);
+		
+		//returns false if typeInherited is not a subtype of SuperType
+		if(n==null||!n.toString().equals(typeSuper))
+			return false;
+		
+		return true;
 	}
 
 	public static String typeCheckOperator(String classType, String operation, String argumentType)

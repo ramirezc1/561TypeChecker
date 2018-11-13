@@ -1,25 +1,19 @@
 class P() {
-this.y=5;
-this.x=3;
 
-def s(x: Int) : Int {
+def s(x: Int) : Obj {
 	return x;
 }
 }
 
 class X() extends P{
-this.x=4;
-this.y=4;
 
 
-def s(x: Int) : Int {
+def s(x: Int) : Y {
 	return x+1;
 }
 }
 
 class Y() extends X{
-this.x=4;
-this.y=4;
 
 
 def s(x: Int) : Int {
@@ -28,17 +22,12 @@ def s(x: Int) : Int {
 }
 
 class D() extends P{
-this.x=4;
-this.y=4;
-
 
 def s(x: Int) : Int {
 	return x+1;
 }
 }
 class Q() extends D{
-this.x=4;
-this.y=4;
 
 
 def s(x: Int) : Int {
@@ -47,9 +36,6 @@ def s(x: Int) : Int {
 }
 
 class T() extends X{
-this.x=4;
-this.y=4;
-
 
 def s(x: Int) : Int {
 	return x+1;
@@ -57,9 +43,6 @@ def s(x: Int) : Int {
 }
 
 class J() extends X{
-this.x=4;
-this.y=4;
-
 
 def s(x: Int) : Int {
 	return x+1;
@@ -67,9 +50,6 @@ def s(x: Int) : Int {
 }
 
 class L() extends J{
-this.x=4;
-this.y=4;
-
 
 def s(x: Int) : Int {
 	return x+1;

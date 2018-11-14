@@ -308,7 +308,7 @@ public abstract class Expression
                     throw new Exception("Class variable " + _e.getIdent() + "." + this._ident + " is private.");
                 return VarTableSingleton.getConstructorVarTable(TypeChecker.currentClass).getType(_e.getIdent() + "." + _ident);
             }
-            return this._ident;
+            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).getType(this._ident);
 
         }
         public String getIdent() throws Exception

@@ -4,3 +4,4 @@ TODO:
 3. Control flow / testing all cases - DONE sam
 4. Typecase
 5. Change run script so it doesn't re-make Lexer & Parser
+6. Add locations to error messages

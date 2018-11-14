@@ -1,6 +1,7 @@
 class C1() {
-    this.X = 5;
 
-    def X() : Int {} 
+    def x() {}
+
+    def y() {}
 }
 

@@ -9,7 +9,7 @@ public abstract class Methods
     {
         public String _methodIdent;
         public Args _formalArgs;
-        String _methodType;
+        String _methodType ="Nothing";
         List<Statement> _statements;
 
 

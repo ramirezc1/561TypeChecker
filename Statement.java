@@ -5,7 +5,6 @@ import java.util.List;
 
 public abstract class Statement
 {
-    public Object _lexpr;
 	public Statement() { }
     abstract void visit() throws Exception;
 
@@ -32,6 +31,9 @@ public abstract class Statement
         }
         public Expression getRexpr() {
         	return _rexpr;
+        }
+        public String getDeclaredType() {
+        	return _declaredType;
         }
 
         public void visit() throws Exception
@@ -104,6 +106,7 @@ public abstract class Statement
         {
             return "return " + _e.toString() + "\n";
         }
+
     }
     public static Assignment_Statement.Return_Statement returnStatement(Expression e)
     {
@@ -139,6 +142,7 @@ public abstract class Statement
             }
             return whileResult.toString();
         }
+
 
     }
     public static Statement.While_Statement whileStatement(Expression e, List<Statement> stmts)
@@ -228,6 +232,7 @@ public abstract class Statement
             }
             return elseStatements.toString();
         }
+
     }
     public static Statement.Else_Statement elseStatement(List<Statement> elseStmts)
     {
@@ -254,6 +259,7 @@ public abstract class Statement
         {
             return "Typecase";
         }
+
     }
     public static Statement.Typecase typecase(String ident, List<Statement> typeAlts)
     {
@@ -283,6 +289,7 @@ public abstract class Statement
         {
             return "Typecase: " + this._ident;
         }
+
     }
     public static Statement.Type_Statement typeStatement(String ident, String type, List<Statement> stmts)
     {
@@ -316,4 +323,16 @@ public abstract class Statement
 		// TODO Auto-generated method stub
 		
 	}
+	public Expression getRexpr() {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+	public String getDeclaredType() {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+	
+	
 }

@@ -300,7 +300,7 @@ public abstract class Expression
             this._right = right;
         }
 
-        public String getType()
+        public String getType() throws Exception
         {
             return "";
         }

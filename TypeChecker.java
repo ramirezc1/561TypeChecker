@@ -97,7 +97,7 @@ public class TypeChecker {
 		//check each classblock
 		 for (Class_Block.Clazz_Block cb : ast.get_cbs())
 	      {	 
-			 if(!cb._methods.isEmpty()) {
+			 
 				 if(!(cb._extendsIdent==currentSuper)) {
 					 ex= builtinAST.get_cb(cb._extendsIdent);
 					 if(ex == null)
@@ -106,28 +106,33 @@ public class TypeChecker {
 				 //typecheck instance variables
 				 if(!ex._stmtList.isEmpty())
 				 {
-					 //NEEED BETTER WAY TO CHECK INHERITED VARIABLES
-					 //this.
 					 
 					 //check that the same instance vars declared in super are declared in inherrited class
 					 //check that inherited instance vars are subtype of super class
 			        for (Statement sSuper : ex._stmtList)
 			        {
 			        	
-			        	//System.out.println(sSuper.getLexpr().getClass().getSimpleName());
-//			           if(sSuper.getLexpr().getClass().getSimpleName().equals("Method_Call")) {
-//			        	   s = cb.getStatement(sSuper.getLexpr().getIdent());
-//			           if(s==null)
-//			        	   throw new Exception("Super instance variable "+sSuper.getLexpr() +" not defined");
+			           if(sSuper.getLexpr()!=null)
+			           if(sSuper.getLexpr().toString().contains("this.")) {
+			        	   s = cb.getStatement(sSuper.getLexpr().getIdent());
+			           if(s==null)
+			        	   throw new Exception("Super instance variable "+sSuper.getLexpr() +" not defined");
+			          
 			           
-			           //????????
-			           //have way to check type of instance variable
-			          //inherited variable must be compatible with super type
-			           //System.out.println(sSuper);
-			           //System.out.println(s.getLexpr().getIdent());
-//			           if(!s.getLexpr().getIdent().equals(sSuper.getLexpr().getIdent()))
-//			        		   throw new Exception("Super instance variables do not match");
-			           //}
+			         //inherited variable must be compatible with super type
+			           	if(s.getDeclaredType()==""||sSuper.getDeclaredType()=="") {
+			           		if(!checkSubtype(s.getRexpr().getType(), sSuper.getRexpr().getType())){
+			           			throw new Exception("Problem with type of inherrited instance variable "+sSuper.getLexpr()+" of type "+s.getRexpr().getType()+ " is not a subtype of "+ sSuper.getRexpr().getType());
+			           		}
+			           	}
+			           	else {
+			           		if(!checkSubtype(s.getDeclaredType(), sSuper.getDeclaredType())){
+			           			throw new Exception("Problem with type of inherrited instance variable "+sSuper.getLexpr().getIdent()+" : "+s.getLexpr().getIdent()+ " is not a subtype of "+ sSuper.getLexpr().getIdent());
+			           		}
+			           	}
+			          
+			           }
+
 			        }
 				 }
 				 //check to see if superclass has methods
@@ -143,7 +148,7 @@ public class TypeChecker {
 			 
 				 }
 			 }
-	      }
+	      
 		
 	}
 	
@@ -166,7 +171,7 @@ public class TypeChecker {
 			
 	    }
 		
-		//typecheck return statement
+		//typecheck return statement declared type
 		if(!checkSubtype(m._methodType, mSuper._methodType)) {
 			//if(type is subtype)
 			throw new Exception("Problem with return: "+m._methodType+ " is not a subtype of "+ mSuper._methodType);

@@ -39,6 +39,7 @@ public class Program
         for (Class_Block.Clazz_Block cb: _cbs)
         {
             VarTableSingleton.getCurrentInstance().addTable(new VarTable(cb._classIdent));
+            
             cb.visit2();
         }
    

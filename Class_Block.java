@@ -88,9 +88,15 @@ public abstract class Class_Block
             for (Statement s : this._stmtList)
             {
                 s.visit();
+                
             }
             for (Methods m : this._methods)
             {
+            	//.contains(m.getMethodIdent()
+            	VarTable t=VarTableSingleton.getCurrentInstance().getCurrentTable();
+            	
+            	if(VarTableSingleton.getCurrentInstance().getCurrentTable().getType(m.getMethodIdent())!=null)
+            		throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
                 m.visit(ct);
             }
             

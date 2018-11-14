@@ -2,7 +2,7 @@
 //This should pass
 class C(x: Int) { 
 this.x = x; 
-def val(): Int { return this.x } } 
+def val(): Int { return this.x; } } 
 class D(x: Int) 
 { this.x = x; 
 def val(): Int { return this.x; } } 

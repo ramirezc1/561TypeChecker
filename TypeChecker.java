@@ -127,7 +127,7 @@ public class TypeChecker {
 			           	}
 			           	else {
 			           		if(!checkSubtype(s.getDeclaredType(), sSuper.getDeclaredType())){
-			           			throw new Exception("Problem with type of inherrited instance variable "+sSuper.getLexpr().getIdent()+" : "+s.getLexpr().getIdent()+ " is not a subtype of "+ sSuper.getLexpr().getIdent());
+			           			throw new Exception("Problem with type of inherrited instance variable "+sSuper.getLexpr().getIdent()+" : "+s.getDeclaredType()+ " is not a subtype of "+ sSuper.getDeclaredType());
 			           		}
 			           	}
 			          

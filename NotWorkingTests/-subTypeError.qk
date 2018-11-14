@@ -1,5 +1,6 @@
-//2.4 Manual
 
+//right now fails for the wrong reason
+//PLUS in Obj is of type Nothing
 class Pt(x: Int, y: Int) {
 this.x = x;
 this.y = y;
@@ -7,12 +8,15 @@ def STR() : String {
 return "(" + this.x.STR() + ","
 + this.y.STR() + ")";
 }
+
 def PLUS(other: Pt) : Pt {
 return Pt(this.x + other.x, this.y + other.y);
 }
 def _x() : Int { return this.x; }
 def _y() : Int { return this.y; }
 }
+
+
 class Rect(ll: Pt, ur: Pt) extends Obj {
 this.ll = ll;
 this.ur = ur;
@@ -26,10 +30,9 @@ return "(" + this.ll.STR() + ", "
 + lr.STR() + ")";
 }
 }
+
 class Square(ll: Pt, side: Int) extends Rect {
-this.ll = ll;
+this.ll: Obj = ll; // OK, Pt <: Obj
 this.ur = Pt(this.ll._x() + side, this.ll._y() + side);
+// Error: No method _x() in class Obj
 }
-a_square = Square( Pt(3,3), 5 );
-a_square = a_square.translate( Pt(2,2) );
-a_square.PRINT();

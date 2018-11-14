@@ -130,11 +130,15 @@ public abstract class Statement
             this._statements = stmts;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
             // adds statements to table
             // type checks statements
             // removes statements from table
+        	for (Statement s : this._statements)
+            {
+                s.visit();
+            }
         }
 
         public String toString()

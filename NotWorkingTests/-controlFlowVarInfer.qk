@@ -1,5 +1,5 @@
 //Hand is a class that does not have the foo method
-
+//fails for the wrong reason
 class Hand() {
 /* Nothing to see here */
 }

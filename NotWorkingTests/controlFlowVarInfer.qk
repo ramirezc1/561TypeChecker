@@ -1,3 +1,7 @@
+//this should pass
+//I don't think vars from constructor were not added???
+
+
 //this.hand the static type Hand (the nearest common ancestor of LeftHand and RightHand in the class hierarchy).
 
 class Hand() {

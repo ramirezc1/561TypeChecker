@@ -1,8 +1,0 @@
-class C1()  extends Int {
-
-}
-x : Obj = Obj();
-if true
-{
-    x = 4;
-}

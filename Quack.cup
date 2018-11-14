@@ -173,7 +173,7 @@ elifstmt    ::= ELIF expr:e LBRACE stmtlist:sl RBRACE           {: RESULT = Stat
             ;
 
 
-while_expr  ::= WHILE LPAREN expr:e RPAREN LBRACE stmtlist:sb RBRACE
+while_expr  ::= WHILE expr:e LBRACE stmtlist:sb RBRACE
                                                                 {: RESULT = Statement.whileStatement(e, sb); :}
             ;
 

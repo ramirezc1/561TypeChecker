@@ -1,2 +1,13 @@
-class Foo() extends Bar { }
-class Bar() { }
+class BadInit() {
+
+   def bad_init() {
+      rep = 0;
+      n_reps = 3;
+      
+      while rep < n_reps {
+	     x = y;    
+	   }
+
+
+   }
+}

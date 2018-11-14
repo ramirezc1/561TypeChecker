@@ -11,7 +11,7 @@ class BadInit() {
       n_reps = 3;
       while rep < n_reps {
           if rep > 0 {
-	     x = y;     // Error here
+	     x = y;    
 	   }
 	   rep = rep + 1;
 	   y = 42;

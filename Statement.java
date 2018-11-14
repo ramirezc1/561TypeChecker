@@ -97,15 +97,21 @@ public abstract class Statement
             _e = e;
         }
 
-        public void visit()
-        {
-            _e.getIdent();
+        public void visit() throws Exception
+        {	
+        	
+            _e.getType();
         }
 
         public String toString()
         {
             return "return " + _e.toString() + "\n";
         }
+        public Expression getExpr()
+        {	
+			return _e;
+        }
+        
 
     }
     public static Assignment_Statement.Return_Statement returnStatement(Expression e)
@@ -329,6 +335,11 @@ public abstract class Statement
 		
 	}
 	public String getDeclaredType() {
+		return null;
+		// TODO Auto-generated method stub
+		
+	}
+	public Expression getExpr() {
 		return null;
 		// TODO Auto-generated method stub
 		

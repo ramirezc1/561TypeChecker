@@ -171,7 +171,8 @@ public abstract class Statement
             {
                 s.visit();
             }
-            this._elseStatement.visit();
+            if (this._elseStatement != null)
+                this._elseStatement.visit();
         }
 
         public String toString()

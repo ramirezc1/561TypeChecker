@@ -29,7 +29,6 @@ public class VarTableSingleton
 
     public VarTable getCurrentTable()
     {
-        // it's important we always append new varTables to the end
         return varTables.get(varTables.size() - 1);
     }
 }

@@ -1,25 +1,8 @@
-class C1()  extends Obj {
-    a = 4 >= 3;
-    if true
-    {
-        y = a;
-    }
-    elif y < 3
-    {
-        y = a;
-    }
-    else
-    {
-        y = true;
-    }
+class C1()  extends Int {
+
 }
-class C12()  extends Obj {
-    if (true)
-        {
-            x = 5;
-        }
-        else
-        {
-            x = 7;
-        }
+x : Obj = Obj();
+if true
+{
+    x = 4;
 }

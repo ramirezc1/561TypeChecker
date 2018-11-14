@@ -23,12 +23,16 @@ public class Program
         System.out.println("visiting program");
         for (Class_Block.Clazz_Block cb: _cbs)
         {
+            TypeChecker.currentClass = cb._classIdent;
+            VarTableSingleton.getCurrentInstance().addTable(new VarTable(cb._classIdent));
             cb.visit();
         }
         //add statements to a dummy class to type checked
         if(!_stmts.isEmpty()) {
         	Class_Block.Clazz_Block cb = new Class_Block.Clazz_Block ("$statementsDummyClass", Args.formalArgs(), _stmts, new LinkedList<Methods.Method>());
             this._cbs.add(cb);
+            TypeChecker.currentClass = "$statementsDummyClass";
+            VarTableSingleton.getCurrentInstance().addTable(new VarTable(cb._classIdent));
         	cb.visit();
         }
     }
@@ -36,14 +40,11 @@ public class Program
     {
     	//second visit to typeCheck
         System.out.println("TypeChecking program");
-        for (Class_Block.Clazz_Block cb: _cbs)
+        for (Class_Block.Clazz_Block cb : _cbs)
         {
-            VarTableSingleton.getCurrentInstance().addTable(new VarTable(cb._classIdent));
-            
+            TypeChecker.currentClass = cb._classIdent;
             cb.visit2();
         }
-   
- 
     }
 
     public List<Class_Block.Clazz_Block> get_cbs()

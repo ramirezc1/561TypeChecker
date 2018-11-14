@@ -1,0 +1,8 @@
+class C(x: Int)
+{
+    this.x = x;
+    def val(): Int
+        {
+            return this.x;
+        }
+}

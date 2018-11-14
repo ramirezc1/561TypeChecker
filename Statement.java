@@ -62,7 +62,12 @@ public abstract class Statement
             if(ct.classTable.containsKey(tempIdent))
             	throw new Exception("Var " + tempIdent + " has same name as class ");
             Var var = new Var(tempIdent, type);
-            VarTableSingleton.getCurrentInstance().getCurrentTable().addVar(var);
+            VarTable varTable;
+            if (this._lexpr.getIdent().contains("this."))
+                varTable = VarTableSingleton.getConstructorVarTable(TypeChecker.currentClass);
+            else
+                varTable = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+            varTable.addVar(var);
         }
 
         public String toString()

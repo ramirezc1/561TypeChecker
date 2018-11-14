@@ -1,10 +1,9 @@
-
 public abstract class Expression
 {
     public Expression() { }
     abstract void visit() throws Exception;
     abstract String getType() throws Exception;
-    protected abstract String getIdent();
+    protected abstract String getIdent() throws Exception;
     
     public static class Priority extends Expression
     {
@@ -36,7 +35,8 @@ public abstract class Expression
         }
 
 
-		protected String getIdent() {
+		protected String getIdent() throws Exception
+        {
             return e.getIdent();
 		}
 
@@ -237,7 +237,7 @@ public abstract class Expression
             {
                 return "Boolean";
             }
-            String identType = VarTableSingleton.getCurrentInstance().getCurrentTable().getType(ident);
+            String identType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).getType(this.ident);
             return identType;
         }
 
@@ -304,7 +304,14 @@ public abstract class Expression
         {
             return "";
         }
-        public String getIdent() {
+        public String getIdent() throws Exception
+        {
+            if (this._e != null)
+            {
+                if (!this._e.getIdent().equals("this"))
+                    throw new Exception("Cannot access private variables in class " + this._e.getIdent());
+                return _e.getIdent() + "." + _ident;
+            }
         	return _ident;
         }
 

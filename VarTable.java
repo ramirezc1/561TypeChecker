@@ -16,6 +16,17 @@ public class VarTable
         this.className = className;
     }
 
+    public String VarExists(Var v)
+    {
+        for (Var v1 : varTable)
+        {
+            if (v.ident.equals(v1.ident))
+                return v1.type;
+        }
+        return null;
+    }
+
+
     public void addVar(Var v) throws Exception
     {
         boolean changed = false;

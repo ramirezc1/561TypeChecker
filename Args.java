@@ -8,7 +8,7 @@ public abstract class Args
 	public Args() { }
     public void addArg(String ident, String type) {}
     public void addArg(Expression e) {}
-    abstract void visit();
+    abstract void visit() throws Exception;
 
     public static class Formal_Args extends Args
     {
@@ -123,9 +123,12 @@ public abstract class Args
             this._type = type;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
-            // TODO
+            VarTable varTable = VarTableSingleton.getCurrentInstance().getCurrentTable();
+            Var var = new Var(this._ident, this._type);
+            varTable.addVar(var);
+
         }
 
         public String toString()

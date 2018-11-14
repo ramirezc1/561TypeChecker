@@ -51,7 +51,7 @@ public abstract class Class_Block
         {
             return this._stmtList;
         }
-        public Statement getStatement(String var)
+        public Statement getStatement(String var) throws Exception
         {
         	for (Statement s: _stmtList)
             {
@@ -62,13 +62,13 @@ public abstract class Class_Block
             return null;
         }
 
-        public VarTable getConstructor()
+        public VarTable checkConstructor()
         {
 //            VarTable varTable = new VarTable();
             for (Statement s : this._stmtList)
             {
                 // TODO: populate VarTable with idents and their types for assignment statements of the form "this.__"
-//                System.out.println(s);
+                System.out.println(s);
             }
 
             return null;
@@ -80,12 +80,17 @@ public abstract class Class_Block
             ClassesTable ct = ClassesTable.getInstance();
             if(!ct.addClass(_classIdent, _extendsIdent))
             	throw new Exception("Class "+_classIdent + " already defined ");
+            for (Args.Arg a : this._argList._args)
+            {
+                a.visit();
+            }
          
         }
         public void visit2() throws Exception
         {
         	System.out.println("TypeChecking class " + _classIdent);
             ClassesTable ct = ClassesTable.getInstance();
+
             for (Statement s : this._stmtList)
             {
                 s.visit();

@@ -51,11 +51,6 @@ public class TypeChecker {
      	tree.setRoot(root);
      		 
      	c.remove("Obj", "Obj");
-     	c.remove("Nothing", "Obj");
-     	c.remove("$statementsDummyClass", "Obj");
-     	Set<String> a = new HashSet<String>();
-     	a.addAll(c.keySet());
-     	
      	
      	Iterator<Entry<String, String>> i = c.entrySet().iterator();
      	Entry<String,String> entry = null;
@@ -70,8 +65,8 @@ public class TypeChecker {
      		}
      		entry =getElement(c,key);
      		while(entry!=null) {
-     			Node temp = new Node(entry.getKey());
-     			n.addChild(temp);
+
+     			n.addChild(new Node(entry.getKey()));
      			c.remove(entry.getKey());
      			entry =getElement(c,key);
      		
@@ -82,22 +77,7 @@ public class TypeChecker {
      		key = c.entrySet().iterator().next().getValue();
 
      	}
-     	int size= a.size();
-     	Iterator<String> iter = a.iterator();
-     	while(size>0) {
-     		String str=iter.next();
-     		System.out.println(str);
-     		Node s= tree.findNode(root, str);
-     		if(s!=null) {
-     			if(s.getChildren().isEmpty()) {
-     				s.addChild(new Node("Nothing"));
-     			}
-     		}
-     		
-     		size--;
-     		
-     	}
-     	
+     	System.out.println("Latice");
 		
 	}
 	public Entry<String, String> getElement(HashMap<String, String> t, String v) {

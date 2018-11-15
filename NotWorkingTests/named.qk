@@ -6,5 +6,5 @@ def val(): Int { return this.x; } }
 class D(x: Int) 
 { this.x = x; 
 def val(): Int { return this.x; } } 
-y = C(5);
+y = C(5,5);
 z = D(5);

@@ -1,3 +1,6 @@
+import java.util.LinkedList;
+import java.util.List;
+
 public abstract class Expression
 {
     public Expression() { }
@@ -368,12 +371,35 @@ public abstract class Expression
         public String getType()
         {
             // the class identifier is the type, right?
+        	
             return this._ident;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
-
+        	//check constructor
+        	List<Class_Block.Clazz_Block> class_blocks = TypeChecker.ast.get_cbs();
+            for (Class_Block.Clazz_Block class_block : class_blocks)
+            {
+                if(class_block._classIdent.equals(_ident)) {
+                	int i=0;
+//                	System.out.println(class_block._argList._args.size());
+//                	LinkedList<Expression> aSuper = _args.getArgs();
+//                	System.out.println(_args.getArgs().get(0).getType());
+                	
+                	if(!(class_block._argList._args.size()==_args.getArgs().size()))
+                		throw new Exception("Class "+class_block._classIdent+ "is getting instantiated with the wrong number of arguments");
+                	for (Args.Arg a: class_block._argList._args)
+                    {
+                		
+                		if(!TypeChecker.checkSubtype(a._type, _args.getArgs().get(i).getType()))
+            				//if(type is super type)
+            				throw new Exception("Problem with arguments in constructor "+a._type+" is not a subtype of "+_args.getArgs().get(i).getType());
+                		i++;
+                    }
+                }
+                	
+            }
         }
 
         public String toString()

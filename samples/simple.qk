@@ -1,8 +1,6 @@
-class C(x: Int, y:Int) { 
-this.x = x; 
-def val(): Int { return this.x; } } 
-class D(x: Int) 
+
+class D(x: Nothing, y:Nothing) 
 { this.x = x; 
 def val(): Int { return this.x; } } 
-y = C(5);
-z = D(5);
+
+z = D(5,"5");

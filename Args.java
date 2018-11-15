@@ -43,16 +43,11 @@ public abstract class Args
         	Var var;
         	for (Arg a : this._args)
             {
-        
         		var = new Var(a._ident,a._type);
         		varTable = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
                 varTable.addVar(var);
             }
-        	
-        	
         }
-        
-
         public String toString()
         {
             StringBuilder argsResult = new StringBuilder();
@@ -92,6 +87,10 @@ public abstract class Args
         public void addArg(Expression e)
         {
             this._args.add(e);
+        }
+        public LinkedList<Expression> getArgs()
+        {
+			return this._args;
         }
 
         public void visit()
@@ -138,13 +137,16 @@ public abstract class Args
             VarTable varTable = VarTableSingleton.getCurrentInstance().getCurrentTable();
             Var var = new Var(this._ident, this._type);
             varTable.addVar(var);
-
         }
 
         public String toString()
         {
             return this._ident + " : " + this._type;
         }
+    }
+    public LinkedList<Expression> getArgs()
+    {
+		return null;
     }
 	
 }

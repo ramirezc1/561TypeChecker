@@ -40,6 +40,8 @@ public abstract class Statement
         {
         	//first time visit
         	//add to var table 
+        	//???? should visit go here
+        	_rexpr.visit();
             String type = _rexpr.getType();
 
             // if the type of _rexpr isn't in the class table,
@@ -56,6 +58,9 @@ public abstract class Statement
             // we don't distinguish between lexpr and rexprs.
             //String tempIdent = ((Expression.Identifier)this._lexpr).ident;
             
+            //?????should visit on _lexpr get called?? for this var it will add type Nothing. which later won't be able to be updated
+            //maybe latice needs to be updated
+            //_lexpr.visit();
             String tempIdent = this._lexpr.getIdent();
             
             Var var = new Var(tempIdent, type);

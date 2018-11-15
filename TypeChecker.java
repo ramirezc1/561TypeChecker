@@ -1,10 +1,5 @@
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.HashSet;
-import java.util.Iterator;
-import java.util.List;
+import java.util.*;
 import java.util.Map.Entry;
-import java.util.Set;
 
 
 public class TypeChecker {
@@ -133,11 +128,11 @@ public class TypeChecker {
             //typecheck instance variables
             if(parentClass != null && !parentClass._stmtList.isEmpty())
             {
-                VarTable parentClassConstructorTable = VarTableSingleton.getConstructorVarTable(parentClass._classIdent);
-                VarTable classConstructorTable = VarTableSingleton.getConstructorVarTable(cb._classIdent);
-                for (Var v : parentClassConstructorTable.varTable)
+                VarTable parentClassConstructorTable = VarTableSingleton.getTableByClassName(parentClass._classIdent);
+                VarTable classConstructorTable = VarTableSingleton.getTableByClassName(cb._classIdent);
+                for (Var v : parentClassConstructorTable.constructorTable)
                 {
-                    String matchingType = classConstructorTable.VarExists(v);
+                    String matchingType = classConstructorTable.ExistsInConstructorTable(v);
                     if (matchingType == null)
                         throw new Exception("Super instance variable " + v.ident + " not defined");
                     if (!checkSubtype(matchingType, v.type))

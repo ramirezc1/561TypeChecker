@@ -2,8 +2,8 @@ import java.util.LinkedList;
 
 public class VarTableSingleton
 {
-    static LinkedList<VarTable> varTables = new LinkedList<>();
-    static LinkedList<VarTable> constructorVarTables = new LinkedList<>();
+    static LinkedList<VarTable> TheTable = new LinkedList<>();
+//    static LinkedList<VarTable> constructorVarTables = new LinkedList<>();
     private static VarTableSingleton varTableInstance;
 
     public static VarTableSingleton getCurrentInstance()
@@ -15,28 +15,17 @@ public class VarTableSingleton
 
     public void addTable(VarTable varTable)
     {
-        varTables.add(varTable);
+        TheTable.add(varTable);
     }
 
     public static VarTable getTableByClassName(String className)
     {
-        for (VarTable vt : varTables)
+        for (VarTable vt : TheTable)
         {
             if (vt.className.equals(className))
                 return vt;
         }
         return null;
-    }
-
-    public static VarTable getConstructorVarTable(String className)
-    {
-        for (VarTable vt : constructorVarTables)
-        {
-            if (vt.className.equals(className))
-                return vt;
-        }
-        constructorVarTables.add(new VarTable(className));
-        return constructorVarTables.get(constructorVarTables.size() - 1);
     }
 
    

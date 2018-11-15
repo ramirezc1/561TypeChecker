@@ -54,22 +54,19 @@ public abstract class Statement
                 throw new Exception("Exception: " + this._declaredType + " != " + type);
             }
 
-            // Temporarily assuming/casting an _lexpr to Expression.Ident because
-            // we don't distinguish between lexpr and rexprs.
-            //String tempIdent = ((Expression.Identifier)this._lexpr).ident;
-            
-            //?????should visit on _lexpr get called?? for this var it will add type Nothing. which later won't be able to be updated
-            //maybe latice needs to be updated
-            //_lexpr.visit();
             String tempIdent = this._lexpr.getIdent();
             
             Var var = new Var(tempIdent, type);
-            VarTable varTable;
             if (this._lexpr.getIdent().contains("this."))
-                varTable = VarTableSingleton.getConstructorVarTable(classIdent);
+            {
+                VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+                varTable.AddToConstructorTable(var);
+            }
             else
-                varTable = VarTableSingleton.getTableByClassName(classIdent);
-            varTable.addVar(var);
+            {
+                VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+                varTable.AddToVarTable(var);
+            }
         }
 
         public String toString()

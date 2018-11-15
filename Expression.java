@@ -239,7 +239,7 @@ public abstract class Expression
             {
                 return "Boolean";
             }
-            String identType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).getType(this.ident);
+            String identType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetVarType(this.ident);
             return identType;
         }
 
@@ -251,14 +251,14 @@ public abstract class Expression
             VarTableSingleton.getCurrentInstance();
 			VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
 			
-			String type= varTable.varExists(ident);
-			if(type ==null) {
+			String type = varTable.ExistsInVarTable(ident);
+			if(type == null)
+			{
 				type = ClassesTable.getInstance().getClass("Nothing");
-				
 			}
+
 			Var var = new Var(ident, type);
-			varTable.addVar(var);
-            
+			varTable.AddToVarTable(var);
         }
 
         public String toString()
@@ -308,9 +308,10 @@ public abstract class Expression
             {
                 if (!this._e.getIdent().equals("this"))
                     throw new Exception("Class variable " + _e.getIdent() + "." + this._ident + " is private.");
-                return VarTableSingleton.getConstructorVarTable(TypeChecker.currentClass).getType(_e.getIdent() + "." + _ident);
+                return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetConstructorType(_e.getIdent() + "." + _ident);
+
             }
-            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).getType(this._ident);
+            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetVarType(this._ident);
 
         }
         public String getIdent() throws Exception

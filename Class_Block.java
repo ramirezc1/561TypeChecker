@@ -97,7 +97,7 @@ public abstract class Class_Block
                 
             }
             
-            LinkedList<String> classNames = new LinkedList<String>();
+            LinkedList<String> classNames = new LinkedList<>();
             for (Methods m : this._methods)
             {
             	if(classNames.contains(m.getMethodIdent()))
@@ -106,7 +106,7 @@ public abstract class Class_Block
             	classNames.add(m.getMethodIdent());
             	
             	VarTableSingleton.getCurrentInstance();
-				if(VarTableSingleton.getTableByClassName(_classIdent).getType(m.getMethodIdent())!=null)
+				if(VarTableSingleton.getTableByClassName(_classIdent).VarIdentExists(m.getMethodIdent()))
             		throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
             	
                 m.visit2(_classIdent);

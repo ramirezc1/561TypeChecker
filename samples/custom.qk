@@ -1,8 +1,12 @@
-class C(x: Int)
-{
-    this.x = x;
-    def val(): Int
-        {
-            return x;
-        }
-}
+class C1(a: Int) extends Obj
+ {
+     this.x = a;
+     y = true;
+ }
+
+ class C2() extends C1
+ {
+     this.x = 10;
+     this.z = "example";
+     b = this.x + 1;
+ }

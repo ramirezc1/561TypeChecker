@@ -37,9 +37,19 @@ public abstract class Args
             return argTypes;
         }
 
-        public void visit()
+        public void visit() throws Exception
         {
-            // TODO
+        	VarTable varTable;
+        	Var var;
+        	for (Arg a : this._args)
+            {
+        
+        		var = new Var(a._ident,a._type);
+        		varTable = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+                varTable.addVar(var);
+            }
+        	
+        	
         }
         
 

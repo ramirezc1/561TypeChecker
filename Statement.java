@@ -57,10 +57,7 @@ public abstract class Statement
             //String tempIdent = ((Expression.Identifier)this._lexpr).ident;
             
             String tempIdent = this._lexpr.getIdent();
-            //var name must not be in class name
-            ClassesTable ct = ClassesTable.getInstance();
-            if(ct.classTable.containsKey(tempIdent))
-            	throw new Exception("Var " + tempIdent + " has same name as class ");
+            
             Var var = new Var(tempIdent, type);
             VarTable varTable;
             if (this._lexpr.getIdent().contains("this."))

@@ -164,6 +164,7 @@ public class TypeChecker {
 
 	public static boolean checkSubtype(String typeInherited, String typeSuper) throws Exception {
 		//check that types are valid
+		//???THIS MAYBE not needed since now variables are checked before they get added
 		if(!Tree.getInstance().exists(typeInherited))
 			throw new Exception("Problem: " + typeInherited + " is not a valid type");
 		if (!Tree.getInstance().exists(typeSuper))

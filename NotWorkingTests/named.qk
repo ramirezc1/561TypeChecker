@@ -1,6 +1,6 @@
-//constructor vars not added???
+
 //This should pass
-class C(x: Int) { 
+class C(x: Int, y:Int) { 
 this.x = x; 
 def val(): Int { return this.x; } } 
 class D(x: Int) 

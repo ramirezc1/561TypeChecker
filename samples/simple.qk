@@ -1,6 +1,10 @@
 
-class D(x: Nothing, y:Nothing) 
+class D(x: Int, y:Int) 
 { this.x = x; 
 def val(): Int { return this.x; } } 
 
-z = D(5,"5");
+class E(x: Int, y:Int) extends D
+{ this.x = x; 
+def val(): Int { return this.x; } } 
+
+z = D(5,5);

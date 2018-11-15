@@ -1,8 +1,10 @@
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map.Entry;
+import java.util.Set;
 
 
 public class TypeChecker {
@@ -51,8 +53,15 @@ public class TypeChecker {
 	    HashMap<String, String> c = new HashMap<>();
 	    c.putAll(ct.classTable);
 	    Node root = new Node("Obj");
-     		 tree.setRoot(root);
+     	tree.setRoot(root);
+     		 
      	c.remove("Obj", "Obj");
+     	c.remove("Nothing", "Obj");
+     	c.remove("$statementsDummyClass", "Obj");
+     	Set<String> a = new HashSet<String>();
+     	a.addAll(c.keySet());
+     	
+     	
      	Iterator<Entry<String, String>> i = c.entrySet().iterator();
      	Entry<String,String> entry = null;
      	String key = "Obj";
@@ -66,8 +75,8 @@ public class TypeChecker {
      		}
      		entry =getElement(c,key);
      		while(entry!=null) {
-
-     			n.addChild(new Node(entry.getKey()));
+     			Node temp = new Node(entry.getKey());
+     			n.addChild(temp);
      			c.remove(entry.getKey());
      			entry =getElement(c,key);
      		
@@ -78,6 +87,22 @@ public class TypeChecker {
      		key = c.entrySet().iterator().next().getValue();
 
      	}
+     	int size= a.size();
+     	Iterator<String> iter = a.iterator();
+     	while(size>0) {
+     		String str=iter.next();
+     		System.out.println(str);
+     		Node s= tree.findNode(root, str);
+     		if(s!=null) {
+     			if(s.getChildren().isEmpty()) {
+     				s.addChild(new Node("Nothing"));
+     			}
+     		}
+     		
+     		size--;
+     		
+     	}
+     	System.out.println("Done");
 		
 	}
 	public Entry<String, String> getElement(HashMap<String, String> t, String v) {

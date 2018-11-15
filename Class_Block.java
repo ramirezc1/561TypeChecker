@@ -86,7 +86,6 @@ public abstract class Class_Block
         public void visit2() throws Exception
         {
         	System.out.println("TypeChecking class " + _classIdent);
-            ClassesTable ct = ClassesTable.getInstance();
             
             for (Args.Arg a : this._argList._args)
             {
@@ -106,7 +105,8 @@ public abstract class Class_Block
             	else
             	classNames.add(m.getMethodIdent());
             	
-            	if(VarTableSingleton.getCurrentInstance().getCurrentTable().getType(m.getMethodIdent())!=null)
+            	VarTableSingleton.getCurrentInstance();
+				if(VarTableSingleton.getTableByClassName(_classIdent).getType(m.getMethodIdent())!=null)
             		throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
             	
                 m.visit2(_classIdent);

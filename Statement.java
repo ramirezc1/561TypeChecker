@@ -66,9 +66,9 @@ public abstract class Statement
             Var var = new Var(tempIdent, type);
             VarTable varTable;
             if (this._lexpr.getIdent().contains("this."))
-                varTable = VarTableSingleton.getConstructorVarTable(TypeChecker.currentClass);
+                varTable = VarTableSingleton.getConstructorVarTable(classIdent);
             else
-                varTable = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+                varTable = VarTableSingleton.getTableByClassName(classIdent);
             varTable.addVar(var);
         }
 

@@ -25,6 +25,15 @@ public class VarTable
         }
         return null;
     }
+    public String varExists(String s)
+    {
+        for (Var v1 : varTable)
+        {
+            if (s.equals(v1.ident))
+                return v1.type;
+        }
+        return null;
+    }
 
 
     public void addVar(Var v) throws Exception

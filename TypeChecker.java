@@ -205,6 +205,10 @@ public class TypeChecker {
 		
 		return true;
 	}
+	public static String getCommonAncestor(String type1, String type2) throws Exception {
+		
+		return Tree.getInstance().LCA(Tree.getInstance().getRoot(),type1,type2).getId();
+	}
 
 	public static String typeCheckOperator(String classType, String operation, String argumentType)
     {

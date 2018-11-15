@@ -10,6 +10,7 @@ import org.apache.commons.cli.Options;
 import java.io.FileReader;
 
 
+@SuppressWarnings("deprecation")
 public class Main {
     
     // Command line options

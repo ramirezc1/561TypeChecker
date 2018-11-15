@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Expression
@@ -249,11 +248,16 @@ public abstract class Expression
         	 ClassesTable ct = ClassesTable.getInstance();
              if(ct.classTable.containsKey(ident))
              	throw new Exception("Var "+ ident + " (" + _left + ", " + _right + ") has same name as class ");
-            VarTable varTable = VarTableSingleton.getCurrentInstance().getCurrentTable();
-
-            String type = ClassesTable.getInstance().getClass("Nothing");
-            Var var = new Var(ident, type);
-            varTable.addVar(var);
+            VarTableSingleton.getCurrentInstance();
+			VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+			
+			String type= varTable.varExists(ident);
+			if(type ==null) {
+				type = ClassesTable.getInstance().getClass("Nothing");
+				
+			}
+			Var var = new Var(ident, type);
+			varTable.addVar(var);
             
         }
 

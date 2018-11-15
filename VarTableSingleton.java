@@ -39,10 +39,5 @@ public class VarTableSingleton
         return constructorVarTables.get(constructorVarTables.size() - 1);
     }
 
-    public VarTable getCurrentTable()
-    {
-    	//System.out.println("size: "+ (varTables.size() - 1));
-        return varTables.get(varTables.size() - 1);
-        
-    }
+   
 }

@@ -1,3 +1,7 @@
+
+//this should fail at this.answer = this.hand.foo() because the common ancestor of Right 
+//and Left Hand is Hand, but hand does not have the mothod foo()
+
 class Hand() {
       /* Nothing to see here */
 }

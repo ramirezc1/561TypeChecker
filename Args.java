@@ -134,7 +134,8 @@ public abstract class Args
 
         public void visit2(String _classIdent) throws Exception
         {
-            VarTable varTable = VarTableSingleton.getCurrentInstance().getCurrentTable();
+            VarTableSingleton.getCurrentInstance();
+			VarTable varTable = VarTableSingleton.getTableByClassName(_classIdent);
             Var var = new Var(this._ident, this._type);
             varTable.addVar(var);
         }

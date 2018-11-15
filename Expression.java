@@ -239,7 +239,7 @@ public abstract class Expression
             {
                 return "Boolean";
             }
-            String identType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetVarType(this.ident);
+            String identType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this.ident);
             return identType;
         }
 
@@ -308,10 +308,10 @@ public abstract class Expression
             {
                 if (!this._e.getIdent().equals("this"))
                     throw new Exception("Class variable " + _e.getIdent() + "." + this._ident + " is private.");
-                return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetConstructorType(_e.getIdent() + "." + _ident);
+                return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_e.getIdent() + "." + _ident);
 
             }
-            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetVarType(this._ident);
+            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this._ident);
 
         }
         public String getIdent() throws Exception

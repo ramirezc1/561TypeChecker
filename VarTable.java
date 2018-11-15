@@ -50,9 +50,29 @@ public class VarTable
         return false;
     }
 
-    public Var getVar(String ident)
+    public Var GetVarFromVarTable(String ident)
     {
         for (Var v : varTable)
+        {
+            if (v.ident.equals(ident))
+                return v;
+        }
+        return null;
+    }
+
+    public Var GetVarFromConstructorTable(String ident)
+    {
+        for (Var v : constructorTable)
+        {
+            if (v.ident.equals(ident))
+                return v;
+        }
+        return null;
+    }
+
+    public Var GetVarFromMethodTable(String ident)
+    {
+        for (Var v : methodTable)
         {
             if (v.ident.equals(ident))
                 return v;
@@ -189,12 +209,24 @@ public class VarTable
         }
     }
 
-    public void removeVar(Var v)
+    public void RemoveVarFromVarTable(Var v)
     {
         varTable.remove(v);
     }
 
-    public String GetVarType(Var v)
+
+    public void RemoveVarFromConstructorTable(Var v)
+    {
+        constructorTable.remove(v);
+    }
+
+
+    public void RemoveVarFromMethodTable(Var v)
+    {
+        methodTable.remove(v);
+    }
+
+    public String GetTypeFromVarTable(Var v)
     {
         for (Var v2 : varTable)
         {
@@ -206,7 +238,7 @@ public class VarTable
         return null;
     }
 
-    public String GetVarType(String identifier)
+    public String GetTypeFromVarTable(String identifier)
     {
         for (Var v : varTable)
         {
@@ -218,7 +250,7 @@ public class VarTable
         return null;
     }
 
-    public String GetConstructorType(Var v)
+    public String GetTypeFromConstructorTable(Var v)
     {
         for (Var v2 : constructorTable)
         {
@@ -230,7 +262,7 @@ public class VarTable
         return null;
     }
 
-    public String GetConstructorType(String identifier)
+    public String GetTypeFromConstructorTable(String identifier)
     {
         for (Var v : constructorTable)
         {
@@ -242,7 +274,7 @@ public class VarTable
         return null;
     }
 
-    public String GetMethodType(Var v)
+    public String GetTypeFromMethodTable(Var v)
     {
         for (Var v2 : methodTable)
         {
@@ -254,7 +286,7 @@ public class VarTable
         return null;
     }
 
-    public String GetMethodType(String identifier)
+    public String GetTypeFromMethodTable(String identifier)
     {
         for (Var v : methodTable)
         {

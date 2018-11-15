@@ -102,7 +102,7 @@ public class TypeChecker {
      		size--;
      		
      	}
-     	System.out.println("Done");
+     	
 		
 	}
 	public Entry<String, String> getElement(HashMap<String, String> t, String v) {

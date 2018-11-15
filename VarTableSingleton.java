@@ -41,6 +41,8 @@ public class VarTableSingleton
 
     public VarTable getCurrentTable()
     {
+    	//System.out.println("size: "+ (varTables.size() - 1));
         return varTables.get(varTables.size() - 1);
+        
     }
 }

@@ -80,20 +80,21 @@ public abstract class Class_Block
             ClassesTable ct = ClassesTable.getInstance();
             if(!ct.addClass(_classIdent, _extendsIdent))
             	throw new Exception("Class "+_classIdent + " already defined ");
-            for (Args.Arg a : this._argList._args)
-            {
-                a.visit();
-            }
+            
          
         }
         public void visit2() throws Exception
         {
         	System.out.println("TypeChecking class " + _classIdent);
             ClassesTable ct = ClassesTable.getInstance();
-
+            
+            for (Args.Arg a : this._argList._args)
+            {
+                a.visit2(_classIdent);
+            }
             for (Statement s : this._stmtList)
             {
-                s.visit();
+                s.visit2(_classIdent);
                 
             }
             
@@ -108,7 +109,7 @@ public abstract class Class_Block
             	if(VarTableSingleton.getCurrentInstance().getCurrentTable().getType(m.getMethodIdent())!=null)
             		throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
             	
-                m.visit(ct);
+                m.visit2(_classIdent);
             }
             
         }

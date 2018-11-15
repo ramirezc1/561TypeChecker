@@ -8,7 +8,7 @@ public abstract class Args
 	public Args() { }
     public void addArg(String ident, String type) {}
     public void addArg(Expression e) {}
-    abstract void visit() throws Exception;
+    abstract void visit2(String s) throws Exception;
 
     public static class Formal_Args extends Args
     {
@@ -37,7 +37,7 @@ public abstract class Args
             return argTypes;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
         	VarTable varTable;
         	Var var;
@@ -93,7 +93,7 @@ public abstract class Args
 			return this._args;
         }
 
-        public void visit()
+        public void visit2(String classIdent)
         {
             // TODO
         }
@@ -132,7 +132,7 @@ public abstract class Args
             this._type = type;
         }
 
-        public void visit() throws Exception
+        public void visit2(String _classIdent) throws Exception
         {
             VarTable varTable = VarTableSingleton.getCurrentInstance().getCurrentTable();
             Var var = new Var(this._ident, this._type);

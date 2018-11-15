@@ -4,7 +4,7 @@ import java.util.List;
 public abstract class Expression
 {
     public Expression() { }
-    abstract void visit() throws Exception;
+    abstract void visit2(String classIdent) throws Exception;
     abstract String getType() throws Exception;
     protected abstract String getIdent() throws Exception;
     
@@ -27,9 +27,9 @@ public abstract class Expression
 
 
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
-            e.visit();
+            e.visit2(classIdent);
         }
 
         public String toString()
@@ -74,10 +74,10 @@ public abstract class Expression
             return rtype;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
-            e1.visit();
-            e2.visit();
+            e1.visit2(classIdent);
+            e2.visit2(classIdent);
         }
 
         public String toString()
@@ -119,9 +119,9 @@ public abstract class Expression
             return unopType;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
-            e1.visit();
+            e1.visit2(classIdent);
         }
 
         public String toString()
@@ -159,7 +159,7 @@ public abstract class Expression
             return ClassesTable.getInstance().getClass("String");
         }
 
-        public void visit()
+        public void visit2(String classIdent)
         {
             // TODO
         }
@@ -197,7 +197,7 @@ public abstract class Expression
             return ClassesTable.getInstance().getClass("Int");
         }
 
-        public void visit()
+        public void visit2(String classIdent)
         {
             // TODO
         }
@@ -244,22 +244,17 @@ public abstract class Expression
             return identType;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
         	 ClassesTable ct = ClassesTable.getInstance();
              if(ct.classTable.containsKey(ident))
              	throw new Exception("Var "+ ident + " (" + _left + ", " + _right + ") has same name as class ");
             VarTable varTable = VarTableSingleton.getCurrentInstance().getCurrentTable();
-            try
-            {
-                String type = ClassesTable.getInstance().getClass("Nothing");
-                Var var = new Var(ident, type);
-                varTable.addVar(var);
-            }
-            catch (Exception e)
-            {
-                System.out.println(e.getMessage());
-            }
+
+            String type = ClassesTable.getInstance().getClass("Nothing");
+            Var var = new Var(ident, type);
+            varTable.addVar(var);
+            
         }
 
         public String toString()
@@ -325,9 +320,9 @@ public abstract class Expression
         	return _ident;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
-        	_e.visit();
+        	_e.visit2(classIdent);
         	ClassesTable ct = ClassesTable.getInstance();
             if(ct.classTable.containsKey(_ident))
             	throw new Exception("Var "+ _ident + " has same name as class ");
@@ -375,7 +370,7 @@ public abstract class Expression
             return this._ident;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
         	//check constructor
         	List<Class_Block.Clazz_Block> class_blocks = TypeChecker.ast.get_cbs();

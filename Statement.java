@@ -6,7 +6,7 @@ import java.util.List;
 public abstract class Statement
 {
 	public Statement() { }
-    abstract void visit() throws Exception;
+    abstract void visit2(String classIdent) throws Exception;
 
     public static class Assignment_Statement extends Statement
     {
@@ -36,12 +36,12 @@ public abstract class Statement
         	return _declaredType;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
         	//first time visit
         	//add to var table 
         	//???? should visit go here
-        	_rexpr.visit();
+        	_rexpr.visit2(classIdent);
             String type = _rexpr.getType();
 
             // if the type of _rexpr isn't in the class table,
@@ -104,7 +104,7 @@ public abstract class Statement
             _e = e;
         }
 
-        public void visit() throws Exception
+        public void visit2(String ClassIdent) throws Exception
         {	
         	
             _e.getType();
@@ -137,14 +137,14 @@ public abstract class Statement
             this._statements = stmts;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
             // adds statements to table
             // type checks statements
             // removes statements from table
         	for (Statement s : this._statements)
             {
-                s.visit();
+                s.visit2(classIdent);
             }
         }
 
@@ -186,14 +186,14 @@ public abstract class Statement
             this._elseStatement = elseStatement;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
             for (Statement s : this._statements)
             {
-                s.visit();
+                s.visit2(classIdent);
             }
             if (this._elseStatement != null)
-                this._elseStatement.visit();
+                this._elseStatement.visit2(classIdent);
         }
 
         public String toString()
@@ -231,11 +231,11 @@ public abstract class Statement
             this._elseStatements = elseStatements;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
             for (Statement s : this._elseStatements)
             {
-                s.visit();
+                s.visit2(classIdent);
             }
         }
 
@@ -267,7 +267,7 @@ public abstract class Statement
             this._typeAlts = typeAlts;
         }
 
-        public void visit()
+        public void visit2(String classIdent)
         {
             // TODO
         }
@@ -297,7 +297,7 @@ public abstract class Statement
             this._stmtList = stmts;
         }
 
-        public void visit()
+        public void visit2(String classIdent)
         {
             // TODO
         }
@@ -321,9 +321,9 @@ public abstract class Statement
             this._expression = e;
         }
 
-        public void visit() throws Exception
+        public void visit2(String classIdent) throws Exception
         {
-        	_expression.visit();
+        	_expression.visit2(classIdent);
         }
 
         public String toString()

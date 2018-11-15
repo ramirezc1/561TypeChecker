@@ -1,10 +1,24 @@
 
-class D(x: Int, y:Int) 
-{ this.x = x; 
-def val(): Int { return this.x; } } 
+class Hand() {
+      /* Nothing to see here */
+}
 
-class E(x: Int, y:Int) extends D
-{ this.x = x; 
-def val(): Int { return this.x; } } 
 
-z = D(5,5);
+class LeftHand(x: Int) extends Hand {
+      this.x = x;
+      def foo(): Int { return 42; }
+}
+
+class RightHand(x: Int) extends Hand {
+      this.x = x; 
+      def foo(): Int { return 42; }
+}
+
+class Bot(x: Int) {
+   if x > 0 {
+      this.hand = LeftHand(3);
+   } else {
+      this.hand = RightHand(7);
+   }
+   this.answer = this.hand.foo(); 
+}

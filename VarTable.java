@@ -37,7 +37,7 @@ public class VarTable
     {
         for (Var v : constructorTable)
         {
-            if (v.ident.equals(ident))
+            if (v.ident.equals(ident) || v.ident.replace("this.", "").equals(ident))
                 return true;
         }
         return false;

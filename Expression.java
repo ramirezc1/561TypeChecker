@@ -256,13 +256,12 @@ public abstract class Expression
 			VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
 			
 			String type = varTable.ExistsInVarTable(ident);
-			if(type == null)
+			if(type != null)
 			{
-				type = ClassesTable.getInstance().getClass("Nothing");
+                Var var = new Var(ident, type);
+                varTable.AddVarToVarTable(var);
 			}
 
-			Var var = new Var(ident, type);
-			varTable.AddVarToVarTable(var);
         }
 
         public String toString()

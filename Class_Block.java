@@ -104,6 +104,9 @@ public abstract class Class_Block
 
             for (Methods m : this._methods)
             {
+                if(VarTableSingleton.getTableByClassName(_classIdent).ConstructorIdentExists(m.getMethodIdent()))
+                    throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
+
                 if(VarTableSingleton.getTableByClassName(_classIdent).VarIdentExists(m.getMethodIdent()))
                     throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
 

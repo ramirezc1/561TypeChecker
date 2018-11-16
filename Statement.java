@@ -88,7 +88,7 @@ public abstract class Statement
             //add to var table
             //???? should visit go here
             _rexpr.visit2(classIdent);
-            String type = _rexpr.getType();
+            String type = _rexpr.getType(methodIdent);
 
             // if the type of _rexpr isn't in the class table,
             if (type == null)

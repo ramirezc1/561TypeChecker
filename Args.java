@@ -4,10 +4,11 @@ import java.util.LinkedList;
 public abstract class Args
 {
 
-    public LinkedList<Arg> _args;
+    public LinkedList<Args.Arg> _args;
 	public Args() { }
     public void addArg(String ident, String type) {}
     public void addArg(Expression e) {}
+    abstract ArrayList<String> getArgTypes() throws Exception;
     abstract void visit2(String s) throws Exception;
 	abstract void visit2(String s, String methodIdent) throws Exception;
 
@@ -28,30 +29,28 @@ public abstract class Args
             this._args.add(new Arg(ident, type));
         }
 
-        public ArrayList<String> getArgTypes()
-        {
-            ArrayList<String> argTypes = new ArrayList<>();
-            for (Arg a : this._args)
-            {
-                argTypes.add(a._type);
-            }
-            return argTypes;
-        }
-
         public void visit2(String classIdent) throws Exception
         {
+            // only called for formal args in class definition
         	VarTable varTable;
         	Var var;
         	for (Arg a : this._args)
             {
-        		var = new Var(a._ident,a._type);
+        		var = new Var(a._ident, a._type);
         		varTable = VarTableSingleton.getTableByClassName(classIdent);
                 varTable.AddVarToVarTable(var);
             }
+            LinkedList<String> listOfTypes = new LinkedList<>();
+            for (Arg e : this._args)
+            {
+                listOfTypes.add(e._type);
+            }
+            VarTableSingleton.getTableByClassName(classIdent).addClassArgs(listOfTypes);
         }
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
+            // only called for formal args in method definition
             for (Arg a : this._args)
             {
                 Var var = new Var(a._ident,a._type);
@@ -67,7 +66,23 @@ public abstract class Args
                     
                 }
             }
+            LinkedList<String> listOfTypes = new LinkedList<>();
+            for (Arg e : this._args)
+            {
+                listOfTypes.add(e._type);
+            }
 
+            VarTableSingleton.getTableByClassName(classIdent).addMethodArgs(methodIdent, listOfTypes);
+        }
+
+        public ArrayList<String> getArgTypes()
+        {
+            ArrayList<String> argTypes = new ArrayList<>();
+            for (int i = 0; i < this._args.size(); i++)
+            {
+                argTypes.add(this._args.get(i)._type);
+            }
+            return argTypes;
         }
 
         public String toString()
@@ -115,26 +130,33 @@ public abstract class Args
 			return this._args;
         }
 
-        public void checkArgs(String classIdent, String methodIdent) throws Exception
+        public ArrayList<String> getArgTypes() throws Exception
         {
-
-            for (Expression a : this._args)
+            ArrayList<String> argTypes = new ArrayList<>();
+            for (int i = 0; i < this._args.size(); i++)
             {
-//                if(!TypeChecker.checkSubtype(a.getType(), _args.getArgs().get(i).getType()))
-//                    //if(type is super type)
-//                    throw new Exception("Problem with arguments in constructor " + a.getType() + " is not a subtype of " + _args.getArgs().get(i).getType());
+                argTypes.add(this._args.get(i).getType());
             }
-
+            return argTypes;
         }
 
-        public void visit2(String classIdent)
+
+        public void visit2(String classIdent) throws Exception
         {
-            // TODO
+            // check to make sure each arg is the correct type for class constructor
+
+            VarTableSingleton.getTableByClassName(classIdent).checkClassArgs(this.getArgTypes());
         }
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
-
+            // check to make sure each arg is the correct type for method in classIdent
+            ArrayList<String> listOfTypes = new ArrayList<>();
+            for (Expression e : this._args)
+            {
+                listOfTypes.add(e.getType());
+            }
+            VarTableSingleton.getTableByClassName(classIdent).checkMethodArgs(methodIdent, listOfTypes);
         }
 
         public String toString()
@@ -169,6 +191,13 @@ public abstract class Args
         {
             this._ident = ident;
             this._type = type;
+        }
+
+        public ArrayList<String> getArgTypes()
+        {
+            ArrayList<String> argTypes = new ArrayList<>();
+            argTypes.add(this._type);
+            return argTypes;
         }
 
         public void visit2(String _classIdent) throws Exception

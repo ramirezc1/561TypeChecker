@@ -1,3 +1,4 @@
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
 
@@ -11,6 +12,8 @@ public class VarTable
     LinkedList<Var> constructorTable;
     LinkedList<Var> methodTable;
     HashMap<String, LinkedList<Var>> methodVars;
+    HashMap<String, LinkedList<String>> methodArgTypes;
+    LinkedList<String> classArgTypes;
     public String className;
 
 
@@ -20,7 +23,55 @@ public class VarTable
         constructorTable = new LinkedList<>();
         methodTable = new LinkedList<>();
         methodVars = new HashMap<>();
+        classArgTypes = new LinkedList<>();
+        methodArgTypes = new HashMap<>();
         this.className = className;
+    }
+
+    public void addClassArgs(LinkedList<String> theArgTypes)
+    {
+        this.classArgTypes = theArgTypes;
+    }
+
+    public void addMethodArgs(String methodIdent, LinkedList<String> theMethodArgTypes)
+    {
+        if (!methodArgTypes.containsKey(methodIdent))
+        {
+            methodArgTypes.put(methodIdent, theMethodArgTypes);
+        }
+        else
+        {
+            methodArgTypes.get(methodIdent).clear();
+            methodArgTypes.put(methodIdent, theMethodArgTypes);
+        }
+    }
+
+    public void checkClassArgs(ArrayList<String> givenArgTypes) throws Exception
+    {
+        if (givenArgTypes.size() != this.classArgTypes.size())
+            throw new Exception("Number of args for " + this.className + " don't match");
+        for (int i = 0; i < givenArgTypes.size(); i++)
+        {
+            if (!TypeChecker.checkSubtype(this.classArgTypes.get(i), givenArgTypes.get(i)))
+                throw new Exception(this.classArgTypes.get(i) + " not a subtype of " + givenArgTypes.get(i));
+        }
+    }
+
+    public void checkMethodArgs(String methodIdent, ArrayList<String> givenMethodArgTypes) throws Exception
+    {
+        if (!this.methodArgTypes.containsKey(methodIdent))
+            throw new Exception("Method " + methodIdent + " doesn't exist");
+        if (givenMethodArgTypes.size() != this.methodArgTypes.get(methodIdent).size())
+        {
+            throw new Exception("Number of args for " + methodIdent + " don't match");
+        }
+        for (int i = 0; i < givenMethodArgTypes.size(); i++)
+        {
+            if (!TypeChecker.checkSubtype(this.methodArgTypes.get(methodIdent).get(i), givenMethodArgTypes.get(i)))
+            {
+                throw new Exception(this.methodArgTypes.get(methodIdent).get(i) + " not a subtype of " + givenMethodArgTypes.get(i));
+            }
+        }
     }
 
     public boolean VarIdentExists(String ident)

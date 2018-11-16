@@ -155,7 +155,7 @@ public abstract class Statement
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
         	_e.visit2(classIdent,methodIdent);
-            String type= _e.getType();
+            String type= _e.getType(methodIdent);
             VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
             
             //find type by looking in method_args

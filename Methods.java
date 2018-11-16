@@ -21,6 +21,7 @@ public abstract class Methods
             this._formalArgs = formalArgs;
             this._statements = stmts;
             this._methodType = "Nothing";
+
         }
 
         public Method(String methodIdent, Args formalArgs, String type, List<Statement> stmts)
@@ -35,6 +36,7 @@ public abstract class Methods
         {
             Var method = new Var(this._methodIdent, this._methodType);
             VarTableSingleton.getTableByClassName(classIdent).AddMethodToMethodTable(method);
+            this._formalArgs.visit2(classIdent, this._methodIdent);
         }
 
         public void visit2(String classIdent) throws Exception
@@ -42,9 +44,25 @@ public abstract class Methods
         	//Make sure args have existing type
         	_formalArgs.visit2(classIdent, this._methodIdent);
 
-        	String statementIdent = "";
-        	int statementIndex = 0;
-        	int statementCount = this._statements.size();
+            boolean hasReturnStmt = false;
+            for (Statement stmt : this._statements)
+            {
+                if (stmt.StatementType().toLowerCase().equals("return"))
+                {
+                    hasReturnStmt = true;
+                    break;
+                }
+            }
+            if (!hasReturnStmt)
+            {
+                Expression.Identifier none = new Expression.Identifier("none", -1, -1);
+                Statement.Return_Statement return_statement = new Statement.Return_Statement(none);
+                this._statements.add(return_statement);
+            }
+
+            String statementIdent = "";
+            int statementIndex = 0;
+            int statementCount = this._statements.size();
             Statement s = null;
         	while (!statementIdent.toLowerCase().equals("return") && statementIndex < statementCount)
             {

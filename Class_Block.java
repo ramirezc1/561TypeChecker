@@ -87,6 +87,7 @@ public abstract class Class_Block
             {
                 m.visit(this._classIdent);
             }
+            this._argList.visit2(this._classIdent);
         }
 
         public void visit2() throws Exception

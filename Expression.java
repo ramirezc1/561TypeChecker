@@ -286,44 +286,93 @@ public abstract class Expression
     {
         Expression _e;
         public String _ident;
+        public String _varIdent;
+        public String methodName;
         Args _optionalArgs;
         public int _left, _right;
 
-        public Method_Call(Expression e, String ident, int left, int right)
+        public boolean isMethod;
+
+        public Method_Call(Expression e, String ident, int left, int right) throws Exception
         {
             this._e = e;
+
+            if (e != null && e.getIdent().equals("this"))
+                this._varIdent = e + "." + ident;
+            else
+                this._varIdent = e.getIdent();
+            methodName = ident;
+
             this._ident = ident;
             this._left = left;
             this._right = right;
+            isMethod = false;
         }
 
-        public Method_Call(Expression e, String ident, Args args, int left, int right)
+        public Method_Call(Expression e, String ident, Args args, int left, int right) throws Exception
         {
             this._e = e;
+
+            this._varIdent = e.getIdent();
+            this.methodName = ident;
+
             this._ident = ident;
             this._optionalArgs = args;
             this._left = left;
             this._right = right;
+            isMethod = true;
         }
 
         public String getType() throws Exception
         {
-            if (this._e != null)
+            String type = null;
+            if (isMethod)
             {
-                if (!this._e.getIdent().equals("this"))
-                    throw new Exception("Class variable " + _e.getIdent() + "." + this._ident + " is private.");
-                return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_e.getIdent() + "." + _ident);
-
+                String identifierType = "";
+                if (_varIdent.contains("this."))
+                {
+                    identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_varIdent);
+                }
+                else
+                {
+                    identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_varIdent);
+                }
+                String currentClassIdent = identifierType;
+                String methodType = null;
+                while (methodType == null)
+                {
+                    methodType = VarTableSingleton.getTableByClassName(currentClassIdent).ExistsInMethodTable(methodName);
+                    if (currentClassIdent.equals("Obj"))
+                        break;
+                    currentClassIdent = ClassesTable.getInstance().getParentClass(currentClassIdent);
+                }
+                type = methodType;
             }
-            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this._ident);
+            else
+            {
+                type = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_varIdent);
+            }
+
+
+            return type;
+
+
+//            if (this._e != null)
+//            {
+//                if (!this._e.getIdent().contains("this."))
+//                    throw new Exception("Class variable " + _e.getIdent() + "." + this._ident + " is private.");
+//                return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_e.getIdent() + "." + _ident);
+//
+//            }
+//            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this._ident);
 
         }
         public String getIdent() throws Exception
         {
             if (this._e != null)
             {
-                if (!this._e.getIdent().equals("this"))
-                    throw new Exception("Cannot access private variables in class " + this._e.getIdent());
+                if (!this.toString().contains("this."))
+                    throw new Exception("Cannot access private variables in class " + this.toString());
                 return _e.getIdent() + "." + _ident;
             }
         	return _ident;
@@ -331,10 +380,7 @@ public abstract class Expression
 
         public void visit2(String classIdent) throws Exception
         {
-            if (this._e.getIdent().contains("this."))
-            {
-                
-            }
+
         	_e.visit2(classIdent);
         	ClassesTable ct = ClassesTable.getInstance();
             if(ct.classTable.containsKey(_ident))
@@ -352,11 +398,11 @@ public abstract class Expression
         }
 
     }
-    public static Expression.Method_Call methodCall(Expression e, String ident, int left, int right)
+    public static Expression.Method_Call methodCall(Expression e, String ident, int left, int right) throws Exception
     {
         return new Expression.Method_Call(e, ident, left, right);
     }
-    public static Expression.Method_Call methodCall(Expression e, String ident, Args args, int left, int right)
+    public static Expression.Method_Call methodCall(Expression e, String ident, Args args, int left, int right) throws Exception
     {
         return new Expression.Method_Call(e, ident, args, left, right);
     }

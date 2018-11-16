@@ -49,6 +49,15 @@ public class ClassesTable
         return null;
     }
 
+    public String getParentClass(String className) {
+        if (classTable.containsKey(className))
+        {
+            return classTable.get(className);
+        }
+//        throw new Exception(String.format("Class %s does not exist", className));
+        return null;
+    }
+
     public HashMap<String, String> getClassTable()
     {
         return classTable;

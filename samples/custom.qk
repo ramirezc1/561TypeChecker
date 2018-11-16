@@ -1,41 +1,48 @@
-//Hand is a class that does not have the foo method
-//fails for the wrong reason
-//this should pass
-//I don't think vars from constructor were not added???
+//right now fails for the wrong reason
+//PLUS in Obj is of type Nothing
 
-
-class Hand()
-{
-    /* Nothing to see here */
-}
-
-class LeftHand(x: Int) extends Hand
+class Pt(x: Int, y: Int)
 {
     this.x = x;
-    def foo(): Int
+    this.y = y;
+    def STR() : String
     {
-        return 42;
+        return "(" + this.x.STR() + "," + this.y.STR() + ")";
+    }
+
+    def PLUS(other: Pt) : Pt
+    {
+        return Pt(this.x + other.x, this.y + other.y);
+    }
+    def _x() : Int
+    {
+        return this.x;
+    }
+    def _y() : Int
+    {
+        return this.y;
     }
 }
 
-class RightHand(x: Int) extends Hand
+class Rect(ll: Pt, ur: Pt) extends Obj
 {
-    this.x = x;
-    def foo(): Int
+    this.ll = ll;
+    this.ur = ur;
+    def translate(delta: Pt) : Pt
     {
-        return 42;
+        return Rect(ll+Pt, ur+Pt);
+    }
+    def STR()
+    {
+        lr = Pt( this.ur._y(), this.ll._x() ); // lower right
+        ul = Pt( this.ll._x(), this.ur._y() ); // upper left
+        return "(" + this.ll.STR() + ", " + ul.STR() + "," + this.ur.STR() + "," + lr.STR() + ")";
     }
 }
 
-class Bot(x: Int)
+class Square(ll: Pt, side: Int) extends Rect
 {
-    if x > 0
-    {
-        this.hand = LeftHand(3);
-    }
-    else
-    {
-        this.hand = RightHand(7);
-    }
-    this.answer = this.hand.foo(); // Nope, no foo in Hand
+    this.ll: Obj = ll; // OK, Pt <: Obj
+    this.ur = Pt(this.ll._x() + side, this.ll._y() + side);
+    // Error: No method _x() in class Obj
 }

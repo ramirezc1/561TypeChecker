@@ -39,7 +39,7 @@ public abstract class Methods
         public void visit2(String classIdent) throws Exception
         {
         	//Make sure args have existing type
-        	_formalArgs.visit2(classIdent);
+        	_formalArgs.visit2(classIdent, this._methodIdent);
 
         	String statementIdent = "";
         	int statementIndex = 0;

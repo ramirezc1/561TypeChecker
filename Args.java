@@ -9,6 +9,7 @@ public abstract class Args
     public void addArg(String ident, String type) {}
     public void addArg(Expression e) {}
     abstract void visit2(String s) throws Exception;
+	abstract void visit2(String s, String methodIdent) throws Exception;
 
     public static class Formal_Args extends Args
     {
@@ -44,10 +45,30 @@ public abstract class Args
         	for (Arg a : this._args)
             {
         		var = new Var(a._ident,a._type);
-        		varTable = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+        		varTable = VarTableSingleton.getTableByClassName(classIdent);
                 varTable.AddVarToVarTable(var);
             }
         }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+            for (Arg a : this._args)
+            {
+                Var var = new Var(a._ident,a._type);
+                if (a._ident.contains("this."))
+                {
+                    VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+                    varTable.AddVarToConstructorTable(var);
+                }
+                else
+                {
+                    VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+                    varTable.AddVarToMethodVarTable(methodIdent, var);
+                }
+            }
+
+        }
+
         public String toString()
         {
             StringBuilder argsResult = new StringBuilder();
@@ -98,6 +119,11 @@ public abstract class Args
             // TODO
         }
 
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+
+        }
+
         public String toString()
         {
             StringBuilder argsResult = new StringBuilder();
@@ -134,10 +160,13 @@ public abstract class Args
 
         public void visit2(String _classIdent) throws Exception
         {
-            VarTableSingleton.getCurrentInstance();
-			VarTable varTable = VarTableSingleton.getTableByClassName(_classIdent);
             Var var = new Var(this._ident, this._type);
-            varTable.AddVarToVarTable(var);
+            VarTableSingleton.getTableByClassName(_classIdent).AddVarToVarTable(var);
+        }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+
         }
 
         public String toString()

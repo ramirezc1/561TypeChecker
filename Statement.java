@@ -45,15 +45,11 @@ public abstract class Statement
 
         public void visit2(String classIdent) throws Exception
         {
-        	//first time visit
-        	//add to var table 
-        	//???? should visit go here
-        	_rexpr.visit2(classIdent);
             String type = _rexpr.getType();
 
             // if the type of _rexpr isn't in the class table,
             if (type == null)
-                throw new Exception("\"" + this._rexpr.getIdent() + "\" is not declared");
+                throw new Exception("\"" + this._rexpr.getIdent() + "()\" is not declared");
             // if the declared type of _lexpr doesn't match the type of _rexpr
             if ((!this._declaredType.equals("") && !this._declaredType.equals(type)))
             {

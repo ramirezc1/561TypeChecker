@@ -1,4 +1,3 @@
-import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Class_Block
@@ -35,10 +34,10 @@ public abstract class Class_Block
 
         public Methods.Method getMethod(String methodName)
         {
-        	for (Methods.Method m: _methods)
+            for (Methods.Method m: _methods)
             {
                 if(m._methodIdent.matches(methodName)) {
-                	return m;
+                    return m;
                 }
             }
             return null;
@@ -53,10 +52,10 @@ public abstract class Class_Block
         }
         public Statement getStatement(String var) throws Exception
         {
-        	for (Statement s: _stmtList)
+            for (Statement s: _stmtList)
             {
                 if(s.getLexpr().getIdent().equals(var)) {
-                	return s;
+                    return s;
                 }
             }
             return null;
@@ -79,14 +78,21 @@ public abstract class Class_Block
             System.out.println("visiting class " + _classIdent);
             ClassesTable ct = ClassesTable.getInstance();
             if(!ct.addClass(_classIdent, _extendsIdent))
-            	throw new Exception("Class "+_classIdent + " already defined ");
-            
-         
+                throw new Exception("Class "+_classIdent + " already defined ");
         }
+
+        public void methodVisit() throws Exception
+        {
+            for (Methods m : this._methods)
+            {
+                m.visit(this._classIdent);
+            }
+        }
+
         public void visit2() throws Exception
         {
-        	System.out.println("TypeChecking class " + _classIdent);
-            
+            System.out.println("TypeChecking class " + _classIdent);
+
             for (Args.Arg a : this._argList._args)
             {
                 a.visit2(_classIdent);
@@ -94,26 +100,22 @@ public abstract class Class_Block
             for (Statement s : this._stmtList)
             {
                 s.visit2(_classIdent);
-                
+
             }
-            
-            LinkedList<String> classNames = new LinkedList<>();
+
             for (Methods m : this._methods)
             {
-            	if(classNames.contains(m.getMethodIdent()))
-            		throw new Exception("Method "+ m.getMethodIdent() + " already defined");
-            	else
-            	classNames.add(m.getMethodIdent());
-            	
-            	VarTableSingleton.getCurrentInstance();
-				if(VarTableSingleton.getTableByClassName(_classIdent).VarIdentExists(m.getMethodIdent()))
-            		throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
-            	
+                if(VarTableSingleton.getTableByClassName(_classIdent).VarIdentExists(m.getMethodIdent()))
+                    throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
+
+                if(ClassesTable.getInstance().classTable.containsKey(m.getMethodIdent()))
+                    throw new Exception("Method " + m.getMethodIdent() + " has same name as class ");
+
                 m.visit2(_classIdent);
             }
-            
+
         }
-        
+
 
         public String toString()
         {

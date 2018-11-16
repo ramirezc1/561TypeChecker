@@ -155,7 +155,6 @@ public class VarTable
 
     public String ExistsInConstructorTable(Var v)
     {
-        String currentClassIdent;
         for (Var v1 : constructorTable)
         {
             if (v.ident.equals(v1.ident))

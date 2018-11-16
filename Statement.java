@@ -45,11 +45,21 @@ public abstract class Statement
 
         public void visit2(String classIdent) throws Exception
         {
-            String type = _rexpr.getType();
-
+        	String type;
+        	//_rexpr.setsetType(classIdent);
+        	if(_rexpr.getClass().getCanonicalName().equals("Expression.Identifier")) {
+        		 VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+                 type=varTable.ExistsInVarTable(_rexpr.getIdent());
+        	}else {
+        		type= _rexpr.getType();
+        	}
+             
             // if the type of _rexpr isn't in the class table,
-            if (type == null)
-                throw new Exception("\"" + this._rexpr.getIdent() + "()\" is not declared");
+            if (type == null) {
+            	
+            	 throw new Exception("\"" + this._rexpr.getIdent() + "()\" is not declared");
+            }
+               
             // if the declared type of _lexpr doesn't match the type of _rexpr
             if ((!this._declaredType.equals("") && !TypeChecker.checkSubtype(type, _declaredType)))
             {
@@ -414,7 +424,7 @@ public abstract class Statement
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
-            // TODO
+            //
         }
 
         public String toString()

@@ -1,8 +1,11 @@
+class Point(x : Int, y:Int) {
+    this.x = x;
+    this.y = y;
 
-
-class X(){
-
-def s(x: Int) : Int {
-	return x+1;
-}
+    def EQUALS(other : Obj) : Boolean {
+        typecase other {
+            pt: Point { return this.x == pt.x and this.y == pt.y; }
+            thing: ObjNotExist { return false; }
+        }
+    }
 }

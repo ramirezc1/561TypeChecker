@@ -6,7 +6,6 @@ public abstract class Expression
     public Expression() { }
     abstract void visit2(String classIdent) throws Exception;
     abstract String getType() throws Exception;
-    abstract String getType(String methodIdent) throws Exception;
     protected abstract String getIdent() throws Exception;
     protected abstract void visit2(String classIdent, String methodIdent);
     
@@ -26,10 +25,8 @@ public abstract class Expression
         {
             return e.getType();
         }
-        public String getType(String methodIdent) throws Exception
-        {
-            return e.getType(methodIdent);
-        }
+
+
 
         public void visit2(String classIdent) throws Exception
         {
@@ -83,19 +80,9 @@ public abstract class Expression
 
         public String getType() throws Exception
         {
+        	
             String e1Type = e1.getType();
             String e2Type = e2.getType();
-            String operatorString = OperatorToString.getOperatorDict().get(this.op);
-            String rtype = TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
-            if (rtype == null)
-                throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") not defined");
-            return rtype;
-        }
-
-        public String getType(String methodIdent) throws Exception
-        {
-            String e1Type = e1.getType(methodIdent);
-            String e2Type = e2.getType(methodIdent);
             String operatorString = OperatorToString.getOperatorDict().get(this.op);
             String rtype = TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
             if (rtype == null)
@@ -163,14 +150,6 @@ public abstract class Expression
             return unopType;
         }
 
-        public String getType(String methodIdent) throws Exception
-        {
-            String eType = this.e1.getType(methodIdent);
-            String opString = OperatorToString.getUnaryOperatorDict().get(this.op);
-            String unopType = TypeChecker.typeCheckUnaryOperator(eType, opString);
-            return unopType;
-        }
-
         public void visit2(String classIdent) throws Exception
         {
             e1.visit2(classIdent);
@@ -223,11 +202,6 @@ public abstract class Expression
         }
 
         public String getType()
-        {
-            return ClassesTable.getInstance().getClass("String");
-        }
-
-        public String getType(String methodIdent)
         {
             return ClassesTable.getInstance().getClass("String");
         }
@@ -286,11 +260,6 @@ public abstract class Expression
             return ClassesTable.getInstance().getClass("Int");
         }
 
-        public String getType(String methodIdent)
-        {
-            return ClassesTable.getInstance().getClass("Int");
-        }
-
         public void visit2(String classIdent)
         {
             // TODO
@@ -323,7 +292,7 @@ public abstract class Expression
     }
     public static Expression.IntConst intconst(int i, int left, int right)
     {
-        return new Expression.IntConst(i, left, right);
+         return new Expression.IntConst(i, left, right);
     }
 
 
@@ -355,41 +324,9 @@ public abstract class Expression
             {
                 return "Nothing";
             }
-            if (ident.equals("this"))
-            {
-                this.type = TypeChecker.currentClass;
-                return type;
-            }
-            // TODO: fix so it looks for the type in the correct table
-            String iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this.ident);
-            return iType;
-//            return type;
+            
+            return type;
         }
-
-        public String getType(String methodIdent) throws Exception
-        {
-            if (ident.equals("true") || ident.equals("false"))
-            {
-                return "Boolean";
-            }
-            if (ident.equals("none"))
-            {
-                return "Nothing";
-            }
-            if (ident.equals("this"))
-            {
-                this.type = TypeChecker.currentClass;
-                return type;
-            }
-            // TODO: fix so it looks for the type in the correct table
-            String iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromMethodVarTable(this.ident, methodIdent);
-            if (iType == null)
-                throw new Exception(this.ident + " not defined");
-            return iType;
-//            return type;
-        }
-
-
         public void visit2(String classIdent) throws Exception
         {
         	 
@@ -488,47 +425,40 @@ public abstract class Expression
 
         public String getType() throws Exception
         {
-            String identifierType = "";
             String type = null;
-            if (_optionalArgs == null)
+            if (isMethod)
             {
-                // if optional args are null, I'm accessing a variable
-                if (!_e.getIdent().equals("this"))
-                    throw new Exception("Can't access private variable " + _ident + " in " + _e.getIdent());
-                identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
-                return identifierType;
+                String identifierType = "";
+                if (_varIdent.contains("this."))
+                {
+                    identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_varIdent);
+                }
+                else
+                {
+                    // check for variable in local method var scope first
+                    identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromMethodVarTable(_varIdent, this.methodName);
+                    // if it's not there, check local class scope
+                    if (identifierType == null)
+                        identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_varIdent);
+                }
+                String currentClassIdent = identifierType;
+                String methodType = null;
+                while (methodType == null)
+                {
+                    methodType = VarTableSingleton.getTableByClassName(currentClassIdent).ExistsInMethodTable(methodName);
+                    if (currentClassIdent.equals("Obj"))
+                        break;
+                    currentClassIdent = ClassesTable.getInstance().getParentClass(currentClassIdent);
+                }
+                type = methodType;
             }
             else
             {
-                identifierType = this._e.getType();
-                type = VarTableSingleton.getTableByClassName(identifierType).ExistsInMethodTable(this._ident);
-                VarTableSingleton.getTableByClassName(identifierType).checkMethodArgs(this._ident, this._optionalArgs.getArgTypes());
-                return type;
+                type = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_varIdent);
             }
+            return type;
+
         }
-
-        public String getType(String methodIdent) throws Exception
-        {
-            String identifierType = "";
-            String type = null;
-            if (_optionalArgs == null)
-            {
-                // if optional args are null, I'm accessing a variable
-                if (!_e.getIdent().equals("this"))
-                    throw new Exception("Can't access private variable " + _ident + " in " + _e.getIdent());
-                identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
-                return identifierType;
-            }
-            else
-            {
-                identifierType = this._e.getType();
-                type = VarTableSingleton.getTableByClassName(identifierType).ExistsInMethodTable(this._ident);
-                VarTableSingleton.getTableByClassName(identifierType).checkMethodArgs(this._ident, this._optionalArgs.getArgTypes());
-                return type;
-            }
-        }
-
-
         public String getIdent() throws Exception
         {
             if (this._e != null)
@@ -600,17 +530,9 @@ public abstract class Expression
             
         }
 
-        public String getType() throws Exception
+        public String getType()
         {
             // the class identifier is the type, right?
-            this._args.visit2(this._ident);
-            return this._ident;
-        }
-
-        public String getType(String methodIdent) throws Exception
-        {
-            // the class identifier is the type, right?
-            this._args.visit2(this._ident, methodIdent);
             return this._ident;
         }
 
@@ -624,6 +546,7 @@ public abstract class Expression
                 	
                 	if(!(class_block._argList._args.size()==_args.getArgs().size()))
                 		throw new Exception("Class " + class_block._classIdent + "is getting instantiated with the wrong number of arguments");
+                	_args.checkArgs(classIdent, "");
                 }
                 	
             }

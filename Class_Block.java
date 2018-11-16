@@ -1,3 +1,4 @@
+import java.util.LinkedList;
 import java.util.List;
 
 public abstract class Class_Block
@@ -79,16 +80,9 @@ public abstract class Class_Block
             ClassesTable ct = ClassesTable.getInstance();
             if(!ct.addClass(_classIdent, _extendsIdent))
             	throw new Exception("Class "+_classIdent + " already defined ");
+            
+         
         }
-
-        public void methodVisit() throws Exception
-        {
-            for (Methods m : this._methods)
-            {
-                m.visit(this._classIdent);
-            }
-        }
-
         public void visit2() throws Exception
         {
         	System.out.println("TypeChecking class " + _classIdent);
@@ -102,15 +96,19 @@ public abstract class Class_Block
                 s.visit2(_classIdent);
                 
             }
-
+            
+            LinkedList<String> classNames = new LinkedList<>();
             for (Methods m : this._methods)
             {
+            	if(classNames.contains(m.getMethodIdent()))
+            		throw new Exception("Method "+ m.getMethodIdent() + " already defined");
+            	else
+            	classNames.add(m.getMethodIdent());
+            	
+            	VarTableSingleton.getCurrentInstance();
 				if(VarTableSingleton.getTableByClassName(_classIdent).VarIdentExists(m.getMethodIdent()))
             		throw new Exception("Method "+ m.getMethodIdent() + " has same name as a variable");
-
-                if(ClassesTable.getInstance().classTable.containsKey(m.getMethodIdent()))
-                    throw new Exception("Method " + m.getMethodIdent() + " has same name as class ");
-
+            	
                 m.visit2(_classIdent);
             }
             

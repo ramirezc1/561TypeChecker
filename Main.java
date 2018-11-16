@@ -10,11 +10,10 @@ import org.apache.commons.cli.Options;
 import java.io.FileReader;
 
 
-@SuppressWarnings("deprecation")
 public class Main {
-    
+
     // Command line options
-    String sourceFile = ""; 
+    String sourceFile = "";
 
     // Internal state
     ErrorReport report;
@@ -30,7 +29,7 @@ public class Main {
 
     public void go(String[] args)
     {
-        report = new ErrorReport(); 
+        report = new ErrorReport();
         parseCommandLine(args);
         parseProgram();
     }
@@ -76,7 +75,7 @@ public class Main {
         System.out.println("Beginning parse ...");
         try
         {
-            
+
 
             Symbol result;
             ComplexSymbolFactory symbolFactory = new ComplexSymbolFactory();
@@ -126,11 +125,11 @@ public class Main {
             e.printStackTrace();
             System.exit(1);
         }
-            
-           
-       
+
+
+
     }
 
 
- 
+
 }

@@ -335,7 +335,11 @@ public abstract class Expression
                 }
                 else
                 {
-                    identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_varIdent);
+                    // check for variable in local method var scope first
+                    identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromMethodVarTable(_varIdent, this.methodName);
+                    // if it's not there, check local class scope
+                    if (identifierType == null)
+                        identifierType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_varIdent);
                 }
                 String currentClassIdent = identifierType;
                 String methodType = null;
@@ -441,13 +445,13 @@ public abstract class Expression
 //                	System.out.println(_args.getArgs().get(0).getType());
                 	
                 	if(!(class_block._argList._args.size()==_args.getArgs().size()))
-                		throw new Exception("Class "+class_block._classIdent+ "is getting instantiated with the wrong number of arguments");
+                		throw new Exception("Class " + class_block._classIdent + "is getting instantiated with the wrong number of arguments");
                 	for (Args.Arg a: class_block._argList._args)
                     {
                 		
                 		if(!TypeChecker.checkSubtype(a._type, _args.getArgs().get(i).getType()))
             				//if(type is super type)
-            				throw new Exception("Problem with arguments in constructor "+a._type+" is not a subtype of "+_args.getArgs().get(i).getType());
+            				throw new Exception("Problem with arguments in constructor " + a._type + " is not a subtype of " + _args.getArgs().get(i).getType());
                 		i++;
                     }
                 }

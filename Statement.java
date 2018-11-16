@@ -154,7 +154,7 @@ public abstract class Statement
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
-            // TODO
+            // TODO: make sure expression type evaluates to method's return type
         }
 
         public String toString()

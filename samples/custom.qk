@@ -28,11 +28,11 @@ class Rect(ll: Pt, ur: Pt) extends Obj
 {
     this.ll = ll;
     this.ur = ur;
-    def translate(delta: Pt) : Pt
+    def translate(delta: Pt) : Rect
     {
-        return Rect(ll+Pt, ur+Pt);
+        return Rect(ll+delta, ur+delta);
     }
-    def STR()
+    def STR() : String
     {
         lr = Pt( this.ur._y(), this.ll._x() ); // lower right
         ul = Pt( this.ll._x(), this.ur._y() ); // upper left

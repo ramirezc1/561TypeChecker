@@ -329,6 +329,21 @@ public class VarTable
         }
         return null;
     }
+
+
+    public String GetTypeFromMethodVarTable(String identifier, String methodIdent)
+    {
+        if (methodVars.containsKey(methodIdent))
+        {
+            LinkedList<Var> vars = methodVars.get(methodIdent);
+            for (Var v : vars)
+            {
+                if (v.ident.equals(identifier))
+                    return v.type;
+            }
+        }
+        return null;
+    }
     
 }
 

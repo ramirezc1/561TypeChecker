@@ -114,6 +114,18 @@ public abstract class Args
 			return this._args;
         }
 
+        public void checkArgs(String classIdent, String methodIdent) throws Exception
+        {
+
+            for (Expression a : this._args)
+            {
+//                if(!TypeChecker.checkSubtype(a.getType(), _args.getArgs().get(i).getType()))
+//                    //if(type is super type)
+//                    throw new Exception("Problem with arguments in constructor " + a.getType() + " is not a subtype of " + _args.getArgs().get(i).getType());
+            }
+
+        }
+
         public void visit2(String classIdent)
         {
             // TODO

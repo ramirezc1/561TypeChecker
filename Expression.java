@@ -356,19 +356,7 @@ public abstract class Expression
             {
                 type = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_varIdent);
             }
-
-
             return type;
-
-
-//            if (this._e != null)
-//            {
-//                if (!this._e.getIdent().contains("this."))
-//                    throw new Exception("Class variable " + _e.getIdent() + "." + this._ident + " is private.");
-//                return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromConstructorTable(_e.getIdent() + "." + _ident);
-//
-//            }
-//            return VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this._ident);
 
         }
         public String getIdent() throws Exception
@@ -415,9 +403,9 @@ public abstract class Expression
     public static class Constructor extends Expression
     {
         String _ident;
-        Args _args;
+        Args.Informal_Args _args;
         public int _left, _right;
-        public Constructor(String ident, Args args, int left, int right)
+        public Constructor(String ident, Args.Informal_Args args, int left, int right)
         {
             this._ident = ident;
             this._args = args;
@@ -428,7 +416,6 @@ public abstract class Expression
         public String getType()
         {
             // the class identifier is the type, right?
-        	
             return this._ident;
         }
 
@@ -440,20 +427,9 @@ public abstract class Expression
             {
                 if(class_block._classIdent.equals(_ident)) {
                 	int i=0;
-//                	System.out.println(class_block._argList._args.size());
-//                	LinkedList<Expression> aSuper = _args.getArgs();
-//                	System.out.println(_args.getArgs().get(0).getType());
-                	
                 	if(!(class_block._argList._args.size()==_args.getArgs().size()))
                 		throw new Exception("Class " + class_block._classIdent + "is getting instantiated with the wrong number of arguments");
-                	for (Args.Arg a: class_block._argList._args)
-                    {
-                		
-                		if(!TypeChecker.checkSubtype(a._type, _args.getArgs().get(i).getType()))
-            				//if(type is super type)
-            				throw new Exception("Problem with arguments in constructor " + a._type + " is not a subtype of " + _args.getArgs().get(i).getType());
-                		i++;
-                    }
+                	_args.checkArgs(classIdent, "");
                 }
                 	
             }
@@ -469,7 +445,7 @@ public abstract class Expression
 		}
 
     }
-    public static Expression.Constructor constructor(String ident, Args args, int left, int right)
+    public static Expression.Constructor constructor(String ident, Args.Informal_Args args, int left, int right)
     {
         return new Expression.Constructor(ident, args, left, right);
     }

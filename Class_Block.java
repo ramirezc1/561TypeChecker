@@ -100,7 +100,6 @@ public abstract class Class_Block
             for (Statement s : this._stmtList)
             {
                 s.visit2(_classIdent);
-
             }
 
             for (Methods m : this._methods)

@@ -51,7 +51,7 @@ public abstract class Statement
             if (type == null)
                 throw new Exception("\"" + this._rexpr.getIdent() + "()\" is not declared");
             // if the declared type of _lexpr doesn't match the type of _rexpr
-            if ((!this._declaredType.equals("") && !this._declaredType.equals(type)))
+            if ((!this._declaredType.equals("") && !TypeChecker.checkSubtype(type, _declaredType)))
             {
                 // throw exception: type not found or doesn't match declared type
                 throw new Exception("Exception: " + this._declaredType + " != " + type);

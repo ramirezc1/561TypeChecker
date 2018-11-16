@@ -57,7 +57,7 @@ public abstract class Methods
                 throw new Exception("Statement after return: " + s);
             }
 
-            if (!s.StatementType().toLowerCase().equals("return"))
+            if (s != null && !s.StatementType().toLowerCase().equals("return"))
             {
                 throw new Exception("Method " + this._methodIdent + " lacks a return statement");
             }

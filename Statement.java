@@ -7,6 +7,8 @@ public abstract class Statement
 {
 	public Statement() { }
     abstract void visit2(String classIdent) throws Exception;
+    abstract void visit2(String classIdent, String methodIdent) throws Exception;
+	public abstract String StatementType();
 
     public static class Assignment_Statement extends Statement
     {
@@ -34,6 +36,11 @@ public abstract class Statement
         }
         public String getDeclaredType() {
         	return _declaredType;
+        }
+
+        public String StatementType()
+        {
+            return "ASSIGNMENT";
         }
 
         public void visit2(String classIdent) throws Exception
@@ -69,6 +76,39 @@ public abstract class Statement
             }
         }
 
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+            //first time visit
+            //add to var table
+            //???? should visit go here
+            _rexpr.visit2(classIdent);
+            String type = _rexpr.getType();
+
+            // if the type of _rexpr isn't in the class table,
+            if (type == null)
+                throw new Exception("\"" + this._rexpr.getIdent() + "\" is not declared");
+            // if the declared type of _lexpr doesn't match the type of _rexpr
+            if ((!this._declaredType.equals("") && !this._declaredType.equals(type)))
+            {
+                // throw exception: type not found or doesn't match declared type
+                throw new Exception("Exception: " + this._declaredType + " != " + type);
+            }
+
+            String tempIdent = this._lexpr.getIdent();
+
+            Var var = new Var(tempIdent, type);
+            if (this._lexpr.getIdent().contains("this."))
+            {
+                VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+                varTable.AddToConstructorTable(var);
+            }
+            else
+            {
+                VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
+                varTable.AddToMethodVarTable(methodIdent, var);
+            }
+        }
+
         public String toString()
         {
             String type ="";
@@ -101,10 +141,19 @@ public abstract class Statement
             _e = e;
         }
 
+        public String StatementType()
+        {
+            return "RETURN";
+        }
+
         public void visit2(String ClassIdent) throws Exception
-        {	
-        	
+        {
             _e.getType();
+        }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+            // TODO
         }
 
         public String toString()
@@ -134,6 +183,11 @@ public abstract class Statement
             this._statements = stmts;
         }
 
+        public String StatementType()
+        {
+            return "WHILE";
+        }
+
         public void visit2(String classIdent) throws Exception
         {
             // adds statements to table
@@ -142,6 +196,17 @@ public abstract class Statement
         	for (Statement s : this._statements)
             {
                 s.visit2(classIdent);
+            }
+        }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+            // adds statements to table
+            // type checks statements
+            // removes statements from table
+            for (Statement s : this._statements)
+            {
+                s.visit2(classIdent, methodIdent);
             }
         }
 
@@ -183,6 +248,11 @@ public abstract class Statement
             this._elseStatement = elseStatement;
         }
 
+        public String StatementType()
+        {
+            return "IF";
+        }
+
         public void visit2(String classIdent) throws Exception
         {
             for (Statement s : this._statements)
@@ -191,6 +261,16 @@ public abstract class Statement
             }
             if (this._elseStatement != null)
                 this._elseStatement.visit2(classIdent);
+        }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+            for (Statement s : this._statements)
+            {
+                s.visit2(classIdent, methodIdent);
+            }
+            if (this._elseStatement != null)
+                this._elseStatement.visit2(classIdent, methodIdent);
         }
 
         public String toString()
@@ -236,6 +316,19 @@ public abstract class Statement
             }
         }
 
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+            for (Statement s : this._elseStatements)
+            {
+                s.visit2(classIdent, methodIdent);
+            }
+        }
+
+        public String StatementType()
+        {
+            return "ELSE";
+        }
+
         public String toString()
         {
             StringBuilder elseStatements = new StringBuilder();
@@ -264,7 +357,17 @@ public abstract class Statement
             this._typeAlts = typeAlts;
         }
 
+        public String StatementType()
+        {
+            return "TYPECASE";
+        }
+
         public void visit2(String classIdent)
+        {
+            // TODO
+        }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
         {
             // TODO
         }
@@ -294,7 +397,17 @@ public abstract class Statement
             this._stmtList = stmts;
         }
 
+        public String StatementType()
+        {
+            return "TYPE_STMT";
+        }
+
         public void visit2(String classIdent)
+        {
+            // TODO
+        }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
         {
             // TODO
         }
@@ -318,9 +431,19 @@ public abstract class Statement
             this._expression = e;
         }
 
+        public String StatementType()
+        {
+            return "EXPRESSION";
+        }
+
         public void visit2(String classIdent) throws Exception
         {
-        	_expression.visit2(classIdent);
+        	this._expression.visit2(classIdent);
+        }
+
+        public void visit2(String classIdent, String methodIdent) throws Exception
+        {
+            this._expression.visit2(classIdent);
         }
 
         public String toString()

@@ -9,4 +9,11 @@ class C1(a: Int) extends Obj
      this.x = 10;
      this.z = "example";
      b = this.x + 1;
+
+     def foo() : Int
+     {
+        this.x = 12;
+        b = "five";
+        return 4;
+     }
  }

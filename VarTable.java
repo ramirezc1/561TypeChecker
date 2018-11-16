@@ -1,3 +1,4 @@
+import java.util.HashMap;
 import java.util.LinkedList;
 
 
@@ -9,6 +10,7 @@ public class VarTable
     LinkedList<Var> varTable;
     LinkedList<Var> constructorTable;
     LinkedList<Var> methodTable;
+    HashMap<String, LinkedList<Var>> methodVars;
     public String className;
 
 
@@ -17,6 +19,7 @@ public class VarTable
         varTable = new LinkedList<>();
         constructorTable = new LinkedList<>();
         methodTable = new LinkedList<>();
+        methodVars = new HashMap<>();
         this.className = className;
     }
 
@@ -153,6 +156,7 @@ public class VarTable
             {
                 changed = true;
                 v2.UpdateType(v.type);
+                break;
             }
         }
         if (!changed)
@@ -177,6 +181,7 @@ public class VarTable
             {
                 changed = true;
                 v2.UpdateType(v.type);
+                break;
             }
         }
         if (!changed)
@@ -201,11 +206,37 @@ public class VarTable
             {
                 changed = true;
                 v2.UpdateType(v.type);
+                break;
             }
         }
         if (!changed)
         {
             methodTable.add(v);
+        }
+        methodVars.put(v.ident, new LinkedList<>());
+    }
+
+    public void AddToMethodVarTable(String methodIdent, Var v) throws Exception
+    {
+        //make sure the varname is not same as a class name
+        if(ClassesTable.getInstance().classTable.containsKey(v.ident))
+            throw new Exception("Var " + v.ident + " has same name as class ");
+        //make sure var type exists
+        if(!ClassesTable.getInstance().classTable.containsKey(v.type))
+            throw new Exception("Var " + v.ident + " has invalid type "+v.type);
+        boolean changed = false;
+        for (Var v2: methodVars.get(methodIdent))
+        {
+            if (v2.ident.equals(v.ident))
+            {
+                changed = true;
+                v2.UpdateType(v.type);
+                break;
+            }
+        }
+        if (!changed)
+        {
+            methodVars.get(methodIdent).add(v);
         }
     }
 

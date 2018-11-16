@@ -30,12 +30,7 @@ public class TypeChecker {
             //Second Visit to typeCheck everything
             ast.visit2();
 	        checkOverriden();
-
-
-//             if (checkConstructor())
-//             {
-//                 throw new Exception("Bad constructor");
-//             }
+	        
 	       // System.out.println(" : "+tree.LCA(tree.getRoot(), "D","X"));
 	        
 	        System.out.println("Passed check for subclass matching constructor of parent class");

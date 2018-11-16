@@ -18,6 +18,7 @@ public abstract class Methods
             this._methodIdent = methodIdent;
             this._formalArgs = formalArgs;
             this._statements = stmts;
+            this._methodType = "Nothing";
         }
 
         public Method(String methodIdent, Args formalArgs, String type, List<Statement> stmts)
@@ -30,33 +31,33 @@ public abstract class Methods
 
         public void visit2(String classIdent) throws Exception
         {
-            //check if method has same name as a class
-        	System.out.println("TypeChecking Method "+_methodIdent);
-        	ClassesTable ct = ClassesTable.getInstance();
-        	if(ct.classTable.containsKey(_methodIdent))
-        		throw new Exception("Method "+_methodIdent + " has same name as class ");
-        	
-        	//Make sure args have existing type, 
+            Var method = new Var(this._methodIdent, this._methodType);
+            VarTableSingleton.getTableByClassName(classIdent).AddToMethodTable(method);
+
+        	//Make sure args have existing type
         	_formalArgs.visit2(classIdent);
-        	//Make sure return type exists
-        	if(!ct.classTable.containsKey(_methodType))
-        		throw new Exception("MethodType "+_methodType + " does not exist");
-        	
-        	
-        	for (Statement s : this._statements)
+
+        	String statementIdent = "";
+        	int statementIndex = 0;
+        	int statementCount = this._statements.size();
+            Statement s = null;
+        	while (!statementIdent.toLowerCase().equals("return") && statementIndex < statementCount)
             {
-        		
-        		if(s.toString().contains("return ")) {
-        			if(!TypeChecker.checkSubtype(s.getExpr().getType(), _methodType)) {
-        				//if(type is subtype)
-        				throw new Exception("Problem with return: "+s.getExpr().getType()+ " is not a subtype of "+ _methodType);
-        			}
-        			
-        		}
-        		else {
-        			s.visit2(classIdent);
-        		}
+                s = this._statements.get(statementIndex++);
+                statementIdent = s.StatementType();
+                s.visit2(classIdent, this._methodIdent);
             }
+
+            if (statementIndex < statementCount)
+            {
+                throw new Exception("Statement after return: " + s);
+            }
+
+            if(s != null && !TypeChecker.checkSubtype(s.getExpr().getType(), _methodType))
+            {
+                throw new Exception("Problem with return: " + s.getExpr().getType() + " is not a subtype of "+ _methodType);
+            }
+
         }
 
         public String toString()

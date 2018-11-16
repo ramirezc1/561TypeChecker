@@ -141,7 +141,7 @@ public class VarTable
     }
 
 
-    public void AddToVarTable(Var v) throws Exception
+    public void AddVarToVarTable(Var v) throws Exception
     {
     	//make sure the varname is not same as a class name
         if(ClassesTable.getInstance().classTable.containsKey(v.ident))
@@ -166,7 +166,7 @@ public class VarTable
     }
 
 
-    public void AddToConstructorTable(Var v) throws Exception
+    public void AddVarToConstructorTable(Var v) throws Exception
     {
         //make sure the varname is not same as a class name
         if(ClassesTable.getInstance().classTable.containsKey(v.ident))
@@ -191,14 +191,14 @@ public class VarTable
     }
 
 
-    public void AddToMethodTable(Var v) throws Exception
+    public void AddMethodToMethodTable(Var v) throws Exception
     {
         //make sure the varname is not same as a class name
         if(ClassesTable.getInstance().classTable.containsKey(v.ident))
             throw new Exception("Var " + v.ident + " has same name as class ");
         //make sure var type exists
         if(!ClassesTable.getInstance().classTable.containsKey(v.type))
-            throw new Exception("Var " + v.ident + " has invalid type "+v.type);
+            throw new Exception("Var " + v.ident + " has invalid type " + v.type);
         boolean changed = false;
         for (Var v2: methodTable)
         {
@@ -216,7 +216,7 @@ public class VarTable
         methodVars.put(v.ident, new LinkedList<>());
     }
 
-    public void AddToMethodVarTable(String methodIdent, Var v) throws Exception
+    public void AddVarToMethodVarTable(String methodIdent, Var v) throws Exception
     {
         //make sure the varname is not same as a class name
         if(ClassesTable.getInstance().classTable.containsKey(v.ident))

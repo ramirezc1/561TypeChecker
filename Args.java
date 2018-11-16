@@ -45,7 +45,7 @@ public abstract class Args
             {
         		var = new Var(a._ident,a._type);
         		varTable = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
-                varTable.AddToVarTable(var);
+                varTable.AddVarToVarTable(var);
             }
         }
         public String toString()
@@ -137,7 +137,7 @@ public abstract class Args
             VarTableSingleton.getCurrentInstance();
 			VarTable varTable = VarTableSingleton.getTableByClassName(_classIdent);
             Var var = new Var(this._ident, this._type);
-            varTable.AddToVarTable(var);
+            varTable.AddVarToVarTable(var);
         }
 
         public String toString()

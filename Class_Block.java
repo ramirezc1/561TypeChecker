@@ -79,9 +79,16 @@ public abstract class Class_Block
             ClassesTable ct = ClassesTable.getInstance();
             if(!ct.addClass(_classIdent, _extendsIdent))
             	throw new Exception("Class "+_classIdent + " already defined ");
-            
-         
         }
+
+        public void methodVisit() throws Exception
+        {
+            for (Methods m : this._methods)
+            {
+                m.visit(this._classIdent);
+            }
+        }
+
         public void visit2() throws Exception
         {
         	System.out.println("TypeChecking class " + _classIdent);

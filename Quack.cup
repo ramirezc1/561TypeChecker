@@ -140,7 +140,7 @@ method      ::= DEF IDENT:i1 LPAREN formal_args:fa RPAREN COLON IDENT:i2 LBRACE 
             ;
 
 return_stmt ::= RETURN expr:e                                   {: RESULT = Statement.returnStatement(e); :}
-            |   RETURN                                          {: RESULT = Statement.returnStatement(null); :}
+            |   RETURN                                          {: RESULT = Statement.returnStatement(); :}
             ;
 
 asmt_stmt  ::= expr:e1 GETS expr:e2                             {: RESULT = Statement.asmt_stmt(e1, e2); :}

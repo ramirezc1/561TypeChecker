@@ -239,6 +239,10 @@ public abstract class Expression
             {
                 return "Boolean";
             }
+            if (ident.equals("none"))
+            {
+                return "Nothing";
+            }
             String identType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this.ident);
             return identType;
         }
@@ -258,7 +262,7 @@ public abstract class Expression
 			}
 
 			Var var = new Var(ident, type);
-			varTable.AddToVarTable(var);
+			varTable.AddVarToVarTable(var);
         }
 
         public String toString()
@@ -327,11 +331,14 @@ public abstract class Expression
 
         public void visit2(String classIdent) throws Exception
         {
+            if (this._e.getIdent().contains("this."))
+            {
+                
+            }
         	_e.visit2(classIdent);
         	ClassesTable ct = ClassesTable.getInstance();
             if(ct.classTable.containsKey(_ident))
             	throw new Exception("Var "+ _ident + " has same name as class ");
-        	
         }
 
         public String toString()

@@ -8,19 +8,19 @@ public class TypeChecker {
 	static Program ast;
 	public static String currentClass;
 	ClassesTable classesTable;
-	VarTable varTable;
 	Tree tree;
 	
 	public TypeChecker(Program builtinAST, Program ast){
-		TypeChecker.ast= ast;
-		TypeChecker.builtinAST= builtinAST;
+		TypeChecker.ast = ast;
+		TypeChecker.builtinAST = builtinAST;
 		classesTable = ClassesTable.getInstance();
-		tree= Tree.getInstance();
+		tree = Tree.getInstance();
 	}
 	
 	 public boolean TypeCheck() throws Exception {
 		 	//first visit only classes
 	        ast.visit();
+	        ast.methodVisit();
 	        checkForUndefined();
 	        System.out.println("Passed check for undefined class inheritance");
 	        checkForCycles();
@@ -30,7 +30,7 @@ public class TypeChecker {
             //Second Visit to typeCheck everything
             ast.visit2();
 	        checkOverriden();
-	        
+	        checkConstructor();
 	       // System.out.println(" : "+tree.LCA(tree.getRoot(), "D","X"));
 	        
 	        System.out.println("Passed check for subclass matching constructor of parent class");

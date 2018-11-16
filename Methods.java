@@ -3,6 +3,7 @@ import java.util.List;
 public abstract class Methods
 {
     public Methods() { }
+    abstract void visit(String classIdent) throws Exception;
     abstract void visit2(String classIdent) throws Exception;
 
     public static class Method extends Methods
@@ -29,11 +30,14 @@ public abstract class Methods
             this._statements = stmts;
         }
 
-        public void visit2(String classIdent) throws Exception
+        public void visit(String classIdent) throws Exception
         {
             Var method = new Var(this._methodIdent, this._methodType);
-            VarTableSingleton.getTableByClassName(classIdent).AddToMethodTable(method);
+            VarTableSingleton.getTableByClassName(classIdent).AddMethodToMethodTable(method);
+        }
 
+        public void visit2(String classIdent) throws Exception
+        {
         	//Make sure args have existing type
         	_formalArgs.visit2(classIdent);
 
@@ -51,6 +55,11 @@ public abstract class Methods
             if (statementIndex < statementCount)
             {
                 throw new Exception("Statement after return: " + s);
+            }
+
+            if (!s.StatementType().toLowerCase().equals("return"))
+            {
+                throw new Exception("Method " + this._methodIdent + " lacks a return statement");
             }
 
             if(s != null && !TypeChecker.checkSubtype(s.getExpr().getType(), _methodType))

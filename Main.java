@@ -86,6 +86,7 @@ public class Main {
             //ast of built in clasess
             builtinAST = (Program) result.value;
             builtinAST.visit();
+            builtinAST.methodVisit();
             //System.out.println("Built in classes parsed, ast built");
 //            System.out.println(builtinAST.toString());
 

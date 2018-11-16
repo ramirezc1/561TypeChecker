@@ -36,6 +36,16 @@ public class Program
         	cb.visit();
         }
     }
+
+    public void methodVisit() throws Exception
+    {
+        for (Class_Block.Clazz_Block cb: _cbs)
+        {
+            TypeChecker.currentClass = cb._classIdent;
+            cb.methodVisit();
+        }
+    }
+
     public void visit2()throws Exception
     {
     	//second visit to typeCheck

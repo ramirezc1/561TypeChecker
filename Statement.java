@@ -67,12 +67,12 @@ public abstract class Statement
             if (this._lexpr.getIdent().contains("this."))
             {
                 VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
-                varTable.AddToConstructorTable(var);
+                varTable.AddVarToConstructorTable(var);
             }
             else
             {
                 VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
-                varTable.AddToVarTable(var);
+                varTable.AddVarToVarTable(var);
             }
         }
 
@@ -100,12 +100,12 @@ public abstract class Statement
             if (this._lexpr.getIdent().contains("this."))
             {
                 VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
-                varTable.AddToConstructorTable(var);
+                varTable.AddVarToConstructorTable(var);
             }
             else
             {
                 VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
-                varTable.AddToMethodVarTable(methodIdent, var);
+                varTable.AddVarToMethodVarTable(methodIdent, var);
             }
         }
 
@@ -140,6 +140,11 @@ public abstract class Statement
         {
             _e = e;
         }
+        public Return_Statement()
+        {
+            Expression e = new Expression.Identifier("none", -1, -1);
+            this._e = e;
+        }
 
         public String StatementType()
         {
@@ -170,6 +175,10 @@ public abstract class Statement
     public static Assignment_Statement.Return_Statement returnStatement(Expression e)
     {
         return new Assignment_Statement.Return_Statement(e);
+    }
+    public static Assignment_Statement.Return_Statement returnStatement()
+    {
+        return new Assignment_Statement.Return_Statement();
     }
 
     public static class While_Statement extends Statement
@@ -255,12 +264,36 @@ public abstract class Statement
 
         public void visit2(String classIdent) throws Exception
         {
+            LinkedList<String> ifIdents = new LinkedList<>();
+            LinkedList<String> elseIdents = new LinkedList<>();
             for (Statement s : this._statements)
             {
+                if (s.StatementType().toLowerCase().equals("assignment") && s.getLexpr().getIdent().toLowerCase().contains("this."))
+                {
+                    ifIdents.add(s.getLexpr().getIdent());
+                }
                 s.visit2(classIdent);
             }
             if (this._elseStatement != null)
                 this._elseStatement.visit2(classIdent);
+            if (this._elseStatement != null) {
+                for (Statement s : ((Else_Statement) this._elseStatement)._elseStatements) {
+                    if (s.StatementType().toLowerCase().equals("assignment") && s.getLexpr().getIdent().toLowerCase().contains("this.")) {
+                        elseIdents.add(s.getLexpr().getIdent());
+                    }
+                }
+            }
+            for (String ifId : ifIdents)
+            {
+                if (!elseIdents.contains(ifId))
+                    throw new Exception(ifId + " not declared in all branches");
+            }
+            for (String elseId : elseIdents)
+            {
+                if (!ifIdents.contains(elseId))
+                    throw new Exception(elseId + " not declared in all branches");
+            }
+
         }
 
         public void visit2(String classIdent, String methodIdent) throws Exception

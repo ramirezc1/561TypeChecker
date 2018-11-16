@@ -1,3 +1,4 @@
+
 import java.util.List;
 
 public abstract class Methods
@@ -61,11 +62,7 @@ public abstract class Methods
             {
                 throw new Exception("Method " + this._methodIdent + " lacks a return statement");
             }
-
-            if(s != null && !TypeChecker.checkSubtype(s.getExpr().getType(), _methodType))
-            {
-                throw new Exception("Problem with return: " + s.getExpr().getType() + " is not a subtype of "+ _methodType);
-            }
+            s.visit2(classIdent, this._methodIdent);
 
         }
 

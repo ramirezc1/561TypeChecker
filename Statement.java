@@ -154,7 +154,22 @@ public abstract class Statement
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
-            // TODO: make sure expression type evaluates to method's return type
+        	_e.visit2(classIdent,methodIdent);
+            String type= _e.getType();
+            VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+            
+            //find type by looking in method_args
+            if(type ==null) {
+            	//System.out.println(r.GetTypeFromMethodVarTable(s.getExpr().getIdent(), this._methodIdent));
+            	type =t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
+            	_e.setsetType(type);;
+            }
+            
+            if(!TypeChecker.checkSubtype(type, t.GetTypeFromMethodTable(methodIdent)))
+            {
+                throw new Exception("Problem with return: " + _e.getType() + " is not a subtype of "+ t.GetTypeFromMethodTable(methodIdent));
+            }
+        	
         }
 
         public String toString()
@@ -209,6 +224,7 @@ public abstract class Statement
             // adds statements to table
             // type checks statements
             // removes statements from table
+        	
             for (Statement s : this._statements)
             {
                 s.visit2(classIdent, methodIdent);
@@ -446,6 +462,7 @@ public abstract class Statement
             return "Typecase: " + this._ident;
         }
 
+
     }
     public static Statement.Type_Statement typeStatement(String ident, String type, List<Statement> stmts)
     {
@@ -472,13 +489,14 @@ public abstract class Statement
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
-            this._expression.visit2(classIdent);
+            this._expression.visit2(classIdent,methodIdent);
         }
 
         public String toString()
         {
             return this._expression.toString();
         }
+
     }
     public static Statement.Expression_Statement expressionStatement(Expression e)
     {

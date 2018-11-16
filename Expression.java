@@ -1,3 +1,4 @@
+
 import java.util.List;
 
 public abstract class Expression
@@ -6,6 +7,7 @@ public abstract class Expression
     abstract void visit2(String classIdent) throws Exception;
     abstract String getType() throws Exception;
     protected abstract String getIdent() throws Exception;
+    protected abstract void visit2(String classIdent, String methodIdent);
     
     public static class Priority extends Expression
     {
@@ -42,6 +44,18 @@ public abstract class Expression
             return e.getIdent();
 		}
 
+		@Override
+		protected void setsetType(String type) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			// TODO Auto-generated method stub
+			
+		}
+
     }
     public static Expression.Priority priority(Expression e, int left, int right)
     {
@@ -54,6 +68,8 @@ public abstract class Expression
     {
         public Expression e1, e2;
         public String op;
+        public String classIdent;
+        public String methodIdent;
 
         public Binex(Expression e1, String op, Expression e2)
         {
@@ -64,6 +80,7 @@ public abstract class Expression
 
         public String getType() throws Exception
         {
+        	
             String e1Type = e1.getType();
             String e2Type = e2.getType();
             String operatorString = OperatorToString.getOperatorDict().get(this.op);
@@ -89,6 +106,19 @@ public abstract class Expression
             return null;
 		}
 
+		@Override
+		protected void setsetType(String type) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			this.classIdent=classIdent;
+			this.methodIdent=methodIdent;
+			
+		}
+
     }
     public static Expression.Binex binop(Expression e1, String op, Expression e2)
     {
@@ -102,6 +132,8 @@ public abstract class Expression
         public String op;
         public Expression e1;
         public int _left, _right;
+		public String classIdent;
+		public String methodIdent;
         public Unex(String op, Expression e1, int left, int right)
         {
             this.e1 = e1;
@@ -134,6 +166,20 @@ public abstract class Expression
 			return null;
 		}
 
+		@Override
+		protected void setsetType(String type) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			this.classIdent=classIdent;
+			this.methodIdent=methodIdent;
+			
+			
+		}
+
     }
     public static Expression.Unex unop(String op, Expression e, int left, int right)
     {
@@ -146,6 +192,8 @@ public abstract class Expression
     {
         public String _s;
         public int _left, _right;
+        public String classIdent;
+		public String methodIdent;
         public StringLit(String s, int left, int right)
         {
             this._s = s;
@@ -173,6 +221,20 @@ public abstract class Expression
 			return null;
 		}
 
+		@Override
+		protected void setsetType(String type) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			this.classIdent=classIdent;
+			this.methodIdent=methodIdent;
+			
+			
+		}
+
     }
     public static Expression.StringLit stringLit(String s, int left, int right)
     {
@@ -184,6 +246,8 @@ public abstract class Expression
     {
         public int i;
         public int _left, _right;
+        public String classIdent;
+		public String methodIdent;
         public IntConst(int i, int left, int right)
         {
             this.i = i;
@@ -211,6 +275,20 @@ public abstract class Expression
 			return null;
 		}
 
+		@Override
+		protected void setsetType(String type) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			this.classIdent=classIdent;
+			this.methodIdent=methodIdent;
+			
+			
+		}
+
     }
     public static Expression.IntConst intconst(int i, int left, int right)
     {
@@ -225,6 +303,9 @@ public abstract class Expression
         //        public Location left, right;
         public int _left, _right;
         public String ident;
+        public String type;
+        public String classIdent;
+		public String methodIdent;
 
         public Identifier(String i, int left, int right)
         {
@@ -243,12 +324,12 @@ public abstract class Expression
             {
                 return "Nothing";
             }
-            String identType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this.ident);
-            return identType;
+            
+            return type;
         }
-
         public void visit2(String classIdent) throws Exception
         {
+        	 
         	 ClassesTable ct = ClassesTable.getInstance();
              if(ct.classTable.containsKey(ident))
              	throw new Exception("Var "+ ident + " (" + _left + ", " + _right + ") has same name as class ");
@@ -268,10 +349,28 @@ public abstract class Expression
         {
             return ident;
         }
+        public void setType(String type)
+        {
+            this.type=type;
+        }
 
 		protected String getIdent() {
 			
 			return ident;
+		}
+
+		@Override
+		protected void setsetType(String type) {
+			this.type=type;
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			this.classIdent=classIdent;
+			this.methodIdent=methodIdent;
+			
+			
 		}
 
     }
@@ -291,6 +390,8 @@ public abstract class Expression
         public int _left, _right;
 
         public boolean isMethod;
+        public String classIdent;
+		public String methodIdent;
 
         public Method_Call(Expression e, String ident, int left, int right) throws Exception
         {
@@ -388,6 +489,20 @@ public abstract class Expression
             return _e + "." + _ident + args;
         }
 
+		@Override
+		protected void setsetType(String type) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			this.classIdent=classIdent;
+			this.methodIdent=methodIdent;
+			
+			
+		}
+
     }
     public static Expression.Method_Call methodCall(Expression e, String ident, int left, int right) throws Exception
     {
@@ -404,12 +519,15 @@ public abstract class Expression
         String _ident;
         Args.Informal_Args _args;
         public int _left, _right;
+        public String classIdent;
+		public String methodIdent;
         public Constructor(String ident, Args.Informal_Args args, int left, int right)
         {
             this._ident = ident;
             this._args = args;
             this._left = left;
             this._right = right;
+            
         }
 
         public String getType()
@@ -425,7 +543,7 @@ public abstract class Expression
             for (Class_Block.Clazz_Block class_block : class_blocks)
             {
                 if(class_block._classIdent.equals(_ident)) {
-                	int i=0;
+                	
                 	if(!(class_block._argList._args.size()==_args.getArgs().size()))
                 		throw new Exception("Class " + class_block._classIdent + "is getting instantiated with the wrong number of arguments");
                 	_args.checkArgs(classIdent, "");
@@ -443,11 +561,26 @@ public abstract class Expression
 			return _ident;
 		}
 
+		@Override
+		protected void setsetType(String type) {
+			// TODO Auto-generated method stub
+			
+		}
+
+		@Override
+		protected void visit2(String classIdent, String methodIdent) {
+			this.classIdent=classIdent;
+			this.methodIdent=methodIdent;
+			
+			
+		}
+
     }
     public static Expression.Constructor constructor(String ident, Args.Informal_Args args, int left, int right)
     {
         return new Expression.Constructor(ident, args, left, right);
     }
+	protected abstract void setsetType(String type);
 	
 
 }

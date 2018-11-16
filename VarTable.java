@@ -170,6 +170,9 @@ public class VarTable
     public void AddVarToConstructorTable(Var v) throws Exception
     {
         //make sure the varname is not same as a class name
+    	if(v.ident.contains("this."))
+    		if(ClassesTable.getInstance().classTable.containsKey(v.ident.substring(5)))
+    			throw new Exception("Var " + v.ident + " has same name as class ");
         if(ClassesTable.getInstance().classTable.containsKey(v.ident))
             throw new Exception("Var " + v.ident + " has same name as class ");
         //make sure var type exists

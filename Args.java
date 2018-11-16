@@ -64,6 +64,7 @@ public abstract class Args
                 {
                     VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
                     varTable.AddVarToMethodVarTable(methodIdent, var);
+                    
                 }
             }
 

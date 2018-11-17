@@ -47,10 +47,13 @@ public abstract class Statement
         {
         	String type;
         	//_rexpr.setsetType(classIdent);
-        	if(_rexpr.getClass().getCanonicalName().equals("Expression.Identifier")) {
+        	if(_rexpr.getClass().getCanonicalName().equals("Expression.Identifier"))
+        	{
         		 VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
                  type=varTable.ExistsInVarTable(_rexpr.getIdent());
-        	}else {
+        	}
+        	else
+            {
         		type= _rexpr.getType();
         	}
              

@@ -11,7 +11,7 @@ public abstract class Methods
     {
         public String _methodIdent;
         public Args _formalArgs;
-        String _methodType ="Nothing";
+        String _methodType = "Nothing";
         List<Statement> _statements;
 
 
@@ -77,10 +77,11 @@ public abstract class Methods
                 s.visit2(classIdent, this._methodIdent);
             }
 
-            if (statementIndex < statementCount)
-            {
-                throw new Exception("Statement after return: " + s);
-            }
+            // we're allowing statements after return in the type checking phase
+//            if (statementIndex < statementCount)
+//            {
+//                throw new Exception("Statement after return: " + s);
+//            }
 
             if (s != null && !s.StatementType().toLowerCase().equals("return")&& !s.StatementType().toLowerCase().equals("typecase"))
             {

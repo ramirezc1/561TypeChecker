@@ -98,8 +98,18 @@ public abstract class Expression
             String e2Type = e2.getType(methodIdent);
             String operatorString = OperatorToString.getOperatorDict().get(this.op);
             String rtype = TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
-            if (rtype == null)
-                throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") not defined");
+            
+            while(rtype ==null) {
+            	e1Type= TypeChecker.getParent(e1Type);
+            	e2Type= TypeChecker.getParent(e2Type);
+            	if(rtype ==null)
+            			rtype= TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
+            	if(rtype==null&& e1Type=="Obj"&& e1Type=="Obj")
+            		break;
+            }
+            //if (rtype == null)
+            	
+               // throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") not defined");
             return rtype;
         }
 

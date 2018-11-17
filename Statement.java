@@ -480,7 +480,7 @@ public abstract class Statement
         	 VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
         	 String methodType =t.GetTypeFromMethodTable(methodIdent);
             for(Statement s: _stmtList) {
-            	
+            	s.visit2(classIdent, methodIdent);
             	System.out.println(s.toString());
             }
         }

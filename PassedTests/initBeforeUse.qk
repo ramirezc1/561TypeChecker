@@ -1,5 +1,4 @@
-//typecheck fails with Minus
-// difficutly getting type of this.weight
+
 class Foo(color: Int){
 
 	if color < 5{

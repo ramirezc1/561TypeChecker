@@ -48,7 +48,7 @@ public class TypeChecker {
      		 
      	c.remove("Obj", "Obj");
      	
-     	Iterator<Entry<String, String>> i = c.entrySet().iterator();
+
      	Entry<String,String> entry = null;
      	String key = "Obj";
 
@@ -56,8 +56,18 @@ public class TypeChecker {
      		
      		Node n =tree.findNode(root, key);
      		while(n==null) {
-     			key = i.next().getKey();
-     			n =tree.findNode(root, key);
+     			for (Entry<String,String> e : c.entrySet()) {
+     				key = e.getKey();
+     				n =tree.findNode(root, key);
+     				if(n!=null)
+     					break;
+     				key = e.getValue();
+     				n =tree.findNode(root, key);
+     				if(n!=null)
+         				break;
+     				
+     			
+     			}
      		}
      		entry =getElement(c,key);
      		while(entry!=null) {
@@ -85,10 +95,10 @@ public class TypeChecker {
 		return null;
 	}
 	public static String getParent(String clazz) {
-		
+		if(clazz.equals("Obj"))
+			return clazz;
 		Tree tree = Tree.getInstance();
-		Node n =tree.findNode(tree.getRoot(), clazz);
-		
+		Node n =tree.findNode(tree.getRoot(), clazz);	
 		return n.getParent().getId();
 		
 	}

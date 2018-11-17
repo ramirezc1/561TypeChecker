@@ -83,6 +83,7 @@ public abstract class Class_Block
 
         public void methodVisit() throws Exception
         {
+        	
             for (Methods m : this._methods)
             {
                 m.visit(this._classIdent);

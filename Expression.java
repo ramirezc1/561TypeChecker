@@ -118,6 +118,7 @@ public abstract class Expression
 
         public String getType(String methodIdent) throws Exception
         {
+        	//if(e1.getType().equals("Identifier"))
             String e1Type = e1.getType(methodIdent);
             String e2Type = e2.getType(methodIdent);
             String operatorString = OperatorToString.getOperatorDict().get(this.op);
@@ -140,9 +141,8 @@ public abstract class Expression
             	if(rtype==null&& e1Type=="Obj"&& e1Type=="Obj")
             		break;
             }
-            //if (rtype == null)
-            	
-               // throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") not defined");
+            if (rtype == null)
+               throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") not defined");
         	}
             return rtype;
         }
@@ -476,6 +476,7 @@ public abstract class Expression
                 return type;
             }
             // TODO: fix so it looks for the type in the correct table
+            VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
             String iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromMethodVarTable(this.ident, methodIdent);
             
             

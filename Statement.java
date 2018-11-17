@@ -281,6 +281,10 @@ public abstract class Statement
 
         public void visit2(String classIdent) throws Exception
         {
+        	_expression.visit2(classIdent);
+//        	String type = _expression.getType();
+//        	if(!type.equals("Boolean"))
+//        		throw new Exception("Condition in IF statment did not evalutate to boolean");
             LinkedList<String> ifIdents = new LinkedList<>();
             LinkedList<String> elseIdents = new LinkedList<>();
             for (Statement s : this._statements)
@@ -315,6 +319,10 @@ public abstract class Statement
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
+        	_expression.visit2(classIdent,methodIdent);
+        	String type = _expression.getType(methodIdent);
+        	if(type==null ||!type.equals("Boolean"))
+        		throw new Exception("Condition in IF statment did not evalutate to boolean");
             for (Statement s : this._statements)
             {
                 s.visit2(classIdent, methodIdent);

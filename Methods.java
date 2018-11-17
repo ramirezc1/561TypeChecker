@@ -46,6 +46,8 @@ public abstract class Methods
 
             boolean hasReturnStmt = false;
             boolean hasTypecase = false;
+            //such as if and while
+            boolean hasOtherCase = false;
             for (Statement stmt : this._statements)
             {
                 if (stmt.StatementType().toLowerCase().equals("return"))
@@ -58,8 +60,13 @@ public abstract class Methods
                     hasTypecase = true;
                     break;
                 }
+                if(stmt.toString().contains("return")) {
+                	hasOtherCase =true;
+                }
+              
+                
             }
-            if (!hasReturnStmt&&!hasTypecase )
+            if (!hasReturnStmt&&!hasTypecase &&!hasOtherCase )
             {
                 Expression.Identifier none = new Expression.Identifier("none", -1, -1);
                 Statement.Return_Statement return_statement = new Statement.Return_Statement(none);

@@ -45,6 +45,7 @@ public abstract class Methods
         	_formalArgs.visit2(classIdent, this._methodIdent);
 
             boolean hasReturnStmt = false;
+            boolean hasTypecase = false;
             for (Statement stmt : this._statements)
             {
                 if (stmt.StatementType().toLowerCase().equals("return"))
@@ -52,8 +53,13 @@ public abstract class Methods
                     hasReturnStmt = true;
                     break;
                 }
+                if (stmt.StatementType().toLowerCase().equals("typecase"))
+                {
+                    hasTypecase = true;
+                    break;
+                }
             }
-            if (!hasReturnStmt)
+            if (!hasReturnStmt&&!hasTypecase )
             {
                 Expression.Identifier none = new Expression.Identifier("none", -1, -1);
                 Statement.Return_Statement return_statement = new Statement.Return_Statement(none);
@@ -64,7 +70,7 @@ public abstract class Methods
             int statementIndex = 0;
             int statementCount = this._statements.size();
             Statement s = null;
-        	while (!statementIdent.toLowerCase().equals("return") && statementIndex < statementCount)
+        	while (!statementIdent.toLowerCase().equals("return") && statementIndex < statementCount &&!statementIdent.toLowerCase().equals("typecase"))
             {
                 s = this._statements.get(statementIndex++);
                 statementIdent = s.StatementType();
@@ -76,7 +82,7 @@ public abstract class Methods
                 throw new Exception("Statement after return: " + s);
             }
 
-            if (s != null && !s.StatementType().toLowerCase().equals("return"))
+            if (s != null && !s.StatementType().toLowerCase().equals("return")&& !s.StatementType().toLowerCase().equals("typecase"))
             {
                 throw new Exception("Method " + this._methodIdent + " lacks a return statement");
             }

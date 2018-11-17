@@ -72,7 +72,7 @@ public class TypeChecker {
      		key = c.entrySet().iterator().next().getValue();
 
      	}
-     	System.out.println("Latice");
+     	//System.out.println("Latice");
 		
 	}
 	public Entry<String, String> getElement(HashMap<String, String> t, String v) {
@@ -82,6 +82,14 @@ public class TypeChecker {
             }
         }
 		return null;
+	}
+	public static String getParent(String clazz) {
+		
+		Tree tree = Tree.getInstance();
+		Node n =tree.findNode(tree.getRoot(), clazz);
+		
+		return n.getParent().getId();
+		
 	}
 	
 

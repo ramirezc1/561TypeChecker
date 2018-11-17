@@ -9,10 +9,8 @@ class Waterfowl() {
         b = "thirteen";  // b: String
      }
      // a,b:  Obj (least common ancestor of Int and String)
-     if a < b {   // ERROR:  cannot compare Obj < Obj 
+     while a < b {   // ERROR:  cannot compare Obj < Obj 
         return 1;
-     } else {
-        return 2; 
      }
   }
 }

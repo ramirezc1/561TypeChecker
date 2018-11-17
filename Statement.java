@@ -172,7 +172,7 @@ public abstract class Statement
             if(type ==null) {
             	//System.out.println(r.GetTypeFromMethodVarTable(s.getExpr().getIdent(), this._methodIdent));
             	type =t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
-            	_e.setsetType(type);;
+            	_e.setsetType(type);
             }
             
             if(!TypeChecker.checkSubtype(type, t.GetTypeFromMethodTable(methodIdent)))
@@ -424,7 +424,20 @@ public abstract class Statement
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
-            //
+        	
+            VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+            String superType=t.GetTypeFromMethodVarTable(_typecaseIdent, methodIdent);
+
+            for(Statement s: _typeAlts ) {
+            	//typecheck 
+            	if(!TypeChecker.checkSubtype(s.getDeclaredType(),superType ))
+                  {
+                      throw new Exception("Problem with return: " + s.getDeclaredType() + " is not a subtype of "+ t.GetTypeFromMethodTable(superType));
+                  }
+            	//System.out.println(s.getDeclaredType());
+            	s.visit2(classIdent, methodIdent); 	
+            	
+            }
         }
 
         public String toString()
@@ -441,8 +454,8 @@ public abstract class Statement
 
     public static class Type_Statement extends Statement
     {
-        String _ident;
-        String _type;
+        public String _ident;
+        public String _type;
         List<Statement> _stmtList = new LinkedList<>();
 
         public Type_Statement(String ident, String type, List<Statement> stmts)
@@ -464,13 +477,22 @@ public abstract class Statement
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
-            // TODO
+        	 VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+        	 String methodType =t.GetTypeFromMethodTable(methodIdent);
+            for(Statement s: _stmtList) {
+            	
+            	System.out.println(s.toString());
+            }
         }
 
         public String toString()
         {
             return "Typecase: " + this._ident;
         }
+        public String getDeclaredType() {
+    		return this._type;
+    		
+    	}
 
 
     }

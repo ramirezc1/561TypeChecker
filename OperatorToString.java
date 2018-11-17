@@ -21,7 +21,6 @@ public class OperatorToString
             operatorDict.put("/", "DIVIDE");
             operatorDict.put("and", "$AND");
             operatorDict.put("or", "$OR");
-            operatorDict.put("not", "$NOT");
         }
 
         return operatorDict;
@@ -33,6 +32,7 @@ public class OperatorToString
         {
             unaryOperatorDict = new HashMap<>();
             unaryOperatorDict.put("-", "NEG");
+            unaryOperatorDict.put("!", "$NOT");
         }
 
         return unaryOperatorDict;

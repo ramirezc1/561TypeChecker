@@ -46,14 +46,7 @@ public abstract class Statement
         public void visit2(String classIdent) throws Exception
         {
         	String type;
-        	//_rexpr.setsetType(classIdent);
-//        	if(_rexpr.getClass().getCanonicalName().equals("Expression.Identifier"))
-//        	{
-//        		 VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
-//                 type = varTable.ExistsInVarTable(_rexpr.getIdent());
-//        	}
-
-            type= _rexpr.getType();
+            type = _rexpr.getType();
              
             // if the type of _rexpr isn't in the class table,
             if (type == null) {

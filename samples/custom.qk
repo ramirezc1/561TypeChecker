@@ -1,0 +1,27 @@
+
+class A()
+{
+    this.x = 4;
+    def foo(): Int
+    {
+        return 7;
+    }
+}
+
+class B(h: A)
+{
+    this.i = h;
+    this.j = this.i.foo();
+    def bar(): A
+    {
+        return this.i;
+    }
+}
+
+one = A();
+a = A().foo();
+b = A().x;
+c = B(one).j;
+d = B(one).bar();
+e = B(one).bar().foo();
+e = B(B(one).bar()).bar().x;

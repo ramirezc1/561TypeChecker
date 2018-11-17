@@ -172,7 +172,7 @@ public abstract class Statement
             
             if(!TypeChecker.checkSubtype(type, t.GetTypeFromMethodTable(methodIdent)))
             {
-                throw new Exception("Problem with return: " + _e.getType() + " is not a subtype of "+ t.GetTypeFromMethodTable(methodIdent));
+                throw new Exception("Problem with return: " + _e.getType() + " is not a subtype of " + t.GetTypeFromMethodTable(methodIdent));
             }
         	
         }

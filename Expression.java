@@ -516,80 +516,39 @@ public abstract class Expression
 
         public String getType() throws Exception
         {
-            String identifierType = "";
-            String type = null;
+            String identifierType = this._e.getType();
+            String type = "";
             if (_optionalArgs == null)
             {
                 // if optional args are null, I'm accessing a variable
-                if (!_e.getIdent().equals("this"))
-                {
-                    if (this._e.getClass() != Expression.Constructor.class)
-                    {
-                        String localVarType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_ident);
-                        if (localVarType == null)
-                            throw new Exception(_varIdent + " not defined");
-                        identifierType = VarTableSingleton.getTableByClassName(localVarType).GetTypeFromConstructorTable("this." + _ident);
-                    }
-                    else
-                    {
-                        identifierType = VarTableSingleton.getTableByClassName(_varIdent).GetTypeFromConstructorTable("this." + _ident);
-                    }
-
-                }
-                else
-                {
-                    identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
-                }
-                return identifierType;
+                type = VarTableSingleton.getTableByClassName(identifierType).GetTypeFromConstructorTable("this." + _ident);
             }
             else
             {
-                identifierType = this._e.getType();
                 type = VarTableSingleton.getTableByClassName(identifierType).ExistsInMethodTable(this._ident);
                 VarTableSingleton.getTableByClassName(identifierType).checkMethodArgs(this._ident, this._optionalArgs.getArgTypes());
-                return type;
             }
+            return type;
         }
 
         public String getType(String methodIdent) throws Exception
+    {
+
+        String identifierType = this._e.getType();
+        String type = "";
+        if (_optionalArgs == null)
         {
-            String identifierType = "";
-            String type = null;
-            if (_optionalArgs == null)
-            {
-                // if optional args are null, I'm accessing a variable
-                if (!_e.getIdent().equals("this"))
-                {
-                    if (this._e.getClass() != Expression.Constructor.class)
-                    {
-                        String localVarType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_ident);
-                        if (localVarType == null)
-                            throw new Exception(_varIdent + " not defined");
-                        identifierType = VarTableSingleton.getTableByClassName(localVarType).GetTypeFromConstructorTable("this." + _ident);
-                    }
-                }
-                else
-                {
-                    identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
-                }
-                if(_e.getType()!=null)
-                    identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
-                else {
-                    VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
-                    identifierType = t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
-                }
-
-                return identifierType;
-            }
-            else
-            {
-                identifierType = this._e.getType();
-                type = VarTableSingleton.getTableByClassName(identifierType).ExistsInMethodTable(this._ident);
-                VarTableSingleton.getTableByClassName(identifierType).checkMethodArgs(this._ident, this._optionalArgs.getArgTypes());
-                return type;
-            }
+            // if optional args are null, I'm accessing a variable
+            type = VarTableSingleton.getTableByClassName(identifierType).GetTypeFromConstructorTable("this." + _ident);
         }
+        else
+        {
+            type = VarTableSingleton.getTableByClassName(identifierType).ExistsInMethodTable(this._ident);
+            VarTableSingleton.getTableByClassName(identifierType).checkMethodArgs(this._ident, this._optionalArgs.getArgTypes());
 
+        }
+        return type;
+    }
 
         public String getIdent() throws Exception
         {

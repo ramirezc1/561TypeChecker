@@ -7,6 +7,7 @@ public class TypeChecker {
 	static Program builtinAST;
 	static Program ast;
 	public static String currentClass;
+	public static String currentMethod;
 	ClassesTable classesTable;
 	Tree tree;
 	

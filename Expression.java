@@ -403,8 +403,12 @@ public abstract class Expression
             }
             // TODO: fix so it looks for the type in the correct table
             String iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromMethodVarTable(this.ident, methodIdent);
+            
+            
             if (iType == null)
-                throw new Exception(this.ident + " not defined");
+            	iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this.ident);
+            if(iType ==null)
+            	throw new Exception(this.ident + " not defined");
             return iType;
 //            return type;
         }

@@ -1,9 +1,5 @@
 
-class C1_Fer(x: Int, y: Boolean, z: String) {
-    while (x > 5) {
-        w : Boolean = true;
-    }
-    return this;
-
+class C1()
+{
+    x = 1 * 2 - 3 * 4;
 }
-

@@ -556,8 +556,20 @@ public abstract class Expression
                 // if optional args are null, I'm accessing a variable
                 if (!_e.getIdent().equals("this"))
                 {
-
+                    if (this._e.getClass() != Expression.Constructor.class)
+                    {
+                        String localVarType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_ident);
+                        if (localVarType == null)
+                            throw new Exception(_varIdent + " not defined");
+                        identifierType = VarTableSingleton.getTableByClassName(localVarType).GetTypeFromConstructorTable("this." + _ident);
+                    }
                 }
+                else
+                {
+                    identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
+                }
+<<<<<<< HEAD
+=======
                 if(_e.getType()!=null)
                 identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
                 else {
@@ -566,6 +578,7 @@ public abstract class Expression
                 }
                 
                 
+>>>>>>> master
                 return identifierType;
             }
             else

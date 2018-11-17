@@ -192,7 +192,17 @@ op          ::= PLUS                                            {: RESULT = "+";
             |   OR                                              {: RESULT = "or"; :}
             ;
 
-expr        ::= expr:e1 op:o expr:e2                            {: RESULT = Expression.binop(e1, o, e2); :}
+expr        ::= expr:e1 PLUS expr:e2                            {: RESULT = Expression.binop(e1, "+", e2); :}
+            |   expr:e1 MINUS expr:e2                            {: RESULT = Expression.binop(e1, "-", e2); :}
+            |   expr:e1 TIMES expr:e2                            {: RESULT = Expression.binop(e1, "*", e2); :}
+            |   expr:e1 DIV expr:e2                            {: RESULT = Expression.binop(e1, "/", e2); :}
+            |   expr:e1 LESS expr:e2                            {: RESULT = Expression.binop(e1, "<", e2); :}
+            |   expr:e1 GREATER expr:e2                            {: RESULT = Expression.binop(e1, ">", e2); :}
+            |   expr:e1 EQUALS expr:e2                            {: RESULT = Expression.binop(e1, "==", e2); :}
+            |   expr:e1 ATLEAST expr:e2                            {: RESULT = Expression.binop(e1, ">=", e2); :}
+            |   expr:e1 ATMOST expr:e2                            {: RESULT = Expression.binop(e1, "<=", e2); :}
+            |   expr:e1 AND expr:e2                            {: RESULT = Expression.binop(e1, "and", e2); :}
+            |   expr:e1 OR expr:e2                            {: RESULT = Expression.binop(e1, "or", e2); :}
             |   MINUS:m expr:e                                  {: RESULT = Expression.unop("-", e, mleft, eright); :}
             |   NOT:n expr:b                                    {: RESULT = Expression.unop("!", b, nleft, bright); :}
             |   INT_LIT:i                                       {: RESULT = Expression.intconst(i, ileft, iright); :}

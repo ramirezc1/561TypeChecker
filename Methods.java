@@ -77,17 +77,17 @@ public abstract class Methods
                 s.visit2(classIdent, this._methodIdent);
             }
 
-            // we're allowing statements after return in the type checking phase
+            // error if statements after return in the type checking phase
 //            if (statementIndex < statementCount)
 //            {
 //                throw new Exception("Statement after return: " + s);
 //            }
 
-            if (s != null && !s.StatementType().toLowerCase().equals("return")&& !s.StatementType().toLowerCase().equals("typecase"))
-            {
-                throw new Exception("Method " + this._methodIdent + " lacks a return statement");
-            }
-            s.visit2(classIdent, this._methodIdent);
+//            if (s != null && !s.StatementType().toLowerCase().equals("return")&& !s.StatementType().toLowerCase().equals("typecase"))
+//            {
+//                throw new Exception("Method " + this._methodIdent + " lacks a return statement");
+//            }
+//            s.visit2(classIdent, this._methodIdent);
 
         }
 

@@ -61,13 +61,14 @@ public class VarTable
     {
         if (ExistsInMethodTable(methodIdent) == null)
             throw new Exception("Method " + methodIdent + " doesn't exist");
-        if (givenMethodArgTypes.size() != GetMethodArgs(methodIdent).size())
+        LinkedList<String> methodArgs = GetMethodArgs(methodIdent);
+        if (givenMethodArgTypes.size() != methodArgs.size())
         {
             throw new Exception("Number of args for " + methodIdent + " don't match");
         }
         for (int i = 0; i < givenMethodArgTypes.size(); i++)
         {
-            if (!TypeChecker.checkSubtype(this.methodArgTypes.get(methodIdent).get(i), givenMethodArgTypes.get(i)))
+            if (!TypeChecker.checkSubtype(methodArgs.get(i), givenMethodArgTypes.get(i)))
             {
                 throw new Exception(this.methodArgTypes.get(methodIdent).get(i) + " not a subtype of " + givenMethodArgTypes.get(i));
             }

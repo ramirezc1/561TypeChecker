@@ -144,8 +144,8 @@ public abstract class Args
         public void visit2(String classIdent) throws Exception
         {
             // check to make sure each arg is the correct type for class constructor
-
-            VarTableSingleton.getTableByClassName(classIdent).checkClassArgs(this.getArgTypes());
+            VarTable t = VarTableSingleton.getTableByClassName(classIdent);
+            t.checkClassArgs(this.getArgTypes());
         }
 
         public void visit2(String classIdent, String methodIdent) throws Exception
@@ -154,6 +154,8 @@ public abstract class Args
             ArrayList<String> listOfTypes = new ArrayList<>();
             for (Expression e : this._args)
             {
+                e.SetClassIdent(classIdent);
+                e.SetMethodIdent(methodIdent);
                 listOfTypes.add(e.getType());
             }
             VarTableSingleton.getTableByClassName(classIdent).checkMethodArgs(methodIdent, listOfTypes);

@@ -1,27 +1,10 @@
-
-class A()
+class A() extends Obj
 {
-    this.x = 4;
-    def foo(): Int
-    {
-        return 7;
-    }
 }
-
-class B(h: A)
+class B() extends Obj
 {
-    this.i = h;
-    this.j = this.i.foo();
-    def bar(): A
-    {
-        return this.i;
-    }
+	def foo(): B
+	{
+		return A();
+	}
 }
-
-one = A();
-a = A().foo();
-b = A().x;
-c = B(one).j;
-d = B(one).bar();
-e = B(one).bar().foo();
-e = B(B(one).bar()).bar().x;

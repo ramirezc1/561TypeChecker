@@ -9,6 +9,8 @@ public abstract class Expression
     abstract String getType(String methodIdent) throws Exception;
     protected abstract String getIdent() throws Exception;
     protected abstract void visit2(String classIdent, String methodIdent);
+    abstract void SetClassIdent(String ci);
+    abstract void SetMethodIdent(String mi);
     
     public static class Priority extends Expression
     {
@@ -20,6 +22,16 @@ public abstract class Expression
             this.e = e;
             this._left = left;
             this._right = right;
+        }
+
+        public void SetClassIdent(String ci)
+        {
+            this.e.SetClassIdent(ci);
+        }
+
+        public void SetMethodIdent(String mi)
+        {
+            this.e.SetMethodIdent(mi);
         }
 
         public String getType() throws Exception
@@ -79,6 +91,18 @@ public abstract class Expression
             this.e1 = e1;
             this.e2 = e2;
             this.op = op;
+        }
+
+        public void SetClassIdent(String ci)
+        {
+            this.e1.SetClassIdent(ci);
+            this.e2.SetClassIdent(ci);
+        }
+
+        public void SetMethodIdent(String mi)
+        {
+            this.e1.SetMethodIdent(mi);
+            this.e2.SetMethodIdent(mi);
         }
 
         public String getType() throws Exception
@@ -175,6 +199,16 @@ public abstract class Expression
             this._right = right;
         }
 
+        public void SetClassIdent(String ci)
+        {
+            this.e1.SetClassIdent(ci);
+        }
+
+        public void SetMethodIdent(String mi)
+        {
+            this.e1.SetMethodIdent(mi);
+        }
+
         public String getType() throws Exception
         {
             String eType = this.e1.getType();
@@ -256,6 +290,16 @@ public abstract class Expression
             return ClassesTable.getInstance().getClass("String");
         }
 
+        public void SetClassIdent(String ci)
+        {
+            this.classIdent = ci;
+        }
+
+        public void SetMethodIdent(String mi)
+        {
+            this.methodIdent = mi;
+        }
+
         public void visit2(String classIdent)
         {
             // TODO
@@ -320,6 +364,16 @@ public abstract class Expression
             // TODO
         }
 
+        public void SetClassIdent(String ci)
+        {
+            this.classIdent = ci;
+        }
+
+        public void SetMethodIdent(String mi)
+        {
+            this.methodIdent = mi;
+        }
+
         public String toString()
         {
             return i + "";
@@ -369,6 +423,16 @@ public abstract class Expression
             this._right = right;
         }
 
+        public void SetClassIdent(String classIdent)
+        {
+            this.classIdent = classIdent;
+        }
+
+        public void SetMethodIdent(String methodIdent)
+        {
+            this.methodIdent = methodIdent;
+        }
+
         public String getType()
         {
             if (ident.equals("true") || ident.equals("false"))
@@ -385,7 +449,13 @@ public abstract class Expression
                 return type;
             }
             // TODO: fix so it looks for the type in the correct table
-            String iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this.ident);
+            String  iType = "";
+            if (classIdent != null && methodIdent != null)
+                iType = VarTableSingleton.getTableByClassName(classIdent).GetTypeFromMethodVarTable(this.ident, methodIdent);
+            else
+                iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(this.ident);
+            if (iType == null)
+                iType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromMethodVarTable(this.ident, TypeChecker.currentMethod);
             return iType;
 //            return type;
         }
@@ -424,7 +494,7 @@ public abstract class Expression
         	 ClassesTable ct = ClassesTable.getInstance();
              if(ct.classTable.containsKey(ident))
              	throw new Exception("Var "+ ident + " (" + _left + ", " + _right + ") has same name as class ");
-            VarTableSingleton.getCurrentInstance();
+
 			VarTable varTable = VarTableSingleton.getTableByClassName(classIdent);
 			
 			String type = varTable.ExistsInVarTable(ident);
@@ -512,6 +582,16 @@ public abstract class Expression
             this._left = left;
             this._right = right;
             isMethod = true;
+        }
+
+        public void SetClassIdent(String ci)
+        {
+            this._e.SetClassIdent(ci);
+        }
+
+        public void SetMethodIdent(String mi)
+        {
+            this._e.SetMethodIdent(mi);
         }
 
         public String getType() throws Exception
@@ -621,6 +701,16 @@ public abstract class Expression
             
         }
 
+        public void SetClassIdent(String ci)
+        {
+            this.classIdent = ci;
+        }
+
+        public void SetMethodIdent(String mi)
+        {
+            this.methodIdent = mi;
+        }
+
         public String getType() throws Exception
         {
             // the class identifier is the type, right?
@@ -669,7 +759,6 @@ public abstract class Expression
 		protected void visit2(String classIdent, String methodIdent) {
 			this.classIdent=classIdent;
 			this.methodIdent=methodIdent;
-			
 			
 		}
 

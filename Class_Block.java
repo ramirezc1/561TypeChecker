@@ -113,8 +113,9 @@ public abstract class Class_Block
 
                 if(ClassesTable.getInstance().classTable.containsKey(m.getMethodIdent()))
                     throw new Exception("Method " + m.getMethodIdent() + " has same name as class ");
-
+                TypeChecker.currentMethod = m.getMethodIdent();
                 m.visit2(_classIdent);
+                TypeChecker.currentMethod = null;
             }
 
         }

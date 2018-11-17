@@ -494,8 +494,13 @@ public abstract class Expression
             {
                 // if optional args are null, I'm accessing a variable
                 if (!_e.getIdent().equals("this"))
-                    throw new Exception("Can't access private variable " + _ident + " in " + _e.getIdent());
-                identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
+                {
+                    identifierType = VarTableSingleton.getTableByClassName(_varIdent).GetTypeFromConstructorTable("this." + _ident);
+                }
+                else
+                {
+                    identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
+                }
                 return identifierType;
             }
             else
@@ -515,7 +520,9 @@ public abstract class Expression
             {
                 // if optional args are null, I'm accessing a variable
                 if (!_e.getIdent().equals("this"))
-                    throw new Exception("Can't access private variable " + _ident + " in " + _e.getIdent());
+                {
+
+                }
                 identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
                 return identifierType;
             }

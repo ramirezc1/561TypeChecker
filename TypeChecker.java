@@ -17,7 +17,8 @@ public class TypeChecker {
 		tree = Tree.getInstance();
 	}
 	
-	 public boolean TypeCheck() throws Exception {
+	 public boolean TypeCheck() throws Exception
+     {
 		 	//first visit only classes
 	        ast.visit();
 	        ast.methodVisit();

@@ -97,11 +97,20 @@ public abstract class Expression
             String e1Type = e1.getType(methodIdent);
             String e2Type = e2.getType(methodIdent);
             String operatorString = OperatorToString.getOperatorDict().get(this.op);
-            String rtype = TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
+            String rtype = null;
+            if(operatorString.equals("$AND")||operatorString.equals("$OR")) {
+            	
+            	if(e1Type.equals("Boolean")&&e2Type.equals("Boolean"))
+            		rtype="Boolean";
+            }
+            else {
+            rtype = TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
             
             while(rtype ==null) {
             	e1Type= TypeChecker.getParent(e1Type);
             	e2Type= TypeChecker.getParent(e2Type);
+            	if(e2Type==null||e2Type==null)
+            		throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") ");
             	if(rtype ==null)
             			rtype= TypeChecker.typeCheckOperator(e1Type, operatorString, e2Type);
             	if(rtype==null&& e1Type=="Obj"&& e1Type=="Obj")
@@ -110,6 +119,7 @@ public abstract class Expression
             //if (rtype == null)
             	
                // throw new Exception(operatorString + "(" + e1Type + ", " + e2Type + ") not defined");
+        	}
             return rtype;
         }
 
@@ -544,7 +554,14 @@ public abstract class Expression
                 {
 
                 }
+                if(_e.getType()!=null)
                 identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
+                else {
+                	VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+                	identifierType = t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
+                }
+                
+                
                 return identifierType;
             }
             else

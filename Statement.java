@@ -436,12 +436,15 @@ public abstract class Statement
             	//typecheck 
             	if(!TypeChecker.checkSubtype(s.getDeclaredType(),superType ))
                   {
-                      throw new Exception("Problem with return: " + s.getDeclaredType() + " is not a subtype of "+ t.GetTypeFromMethodTable(superType));
+                      throw new Exception("Problem with Typecase return type: " + s.getDeclaredType() + " is not a subtype of "+ t.GetTypeFromMethodTable(superType));
                   }
+            	Var var = new Var(s.getIdent(), s.getDeclaredType());
+            	t.AddVarToMethodVarTable(methodIdent, var);
             	//System.out.println(s.getDeclaredType());
             	s.visit2(classIdent, methodIdent); 	
             	
             }
+            
         }
 
         public String toString()
@@ -495,6 +498,10 @@ public abstract class Statement
         }
         public String getDeclaredType() {
     		return this._type;
+    		
+    	}
+        public String getIdent() {
+    		return this._ident;
     		
     	}
 
@@ -556,6 +563,10 @@ public abstract class Statement
 	public Expression getExpr() {
 		return null;
 		// TODO Auto-generated method stub
+		
+	}
+	public String getIdent() {
+		return null;
 		
 	}
 	

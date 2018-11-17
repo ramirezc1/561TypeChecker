@@ -568,17 +568,13 @@ public abstract class Expression
                 {
                     identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
                 }
-<<<<<<< HEAD
-=======
                 if(_e.getType()!=null)
-                identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
+                    identifierType = VarTableSingleton.getTableByClassName(_e.getType()).GetTypeFromConstructorTable(_varIdent);
                 else {
-                	VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
-                	identifierType = t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
+                    VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
+                    identifierType = t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
                 }
-                
-                
->>>>>>> master
+
                 return identifierType;
             }
             else

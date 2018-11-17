@@ -495,7 +495,18 @@ public abstract class Expression
                 // if optional args are null, I'm accessing a variable
                 if (!_e.getIdent().equals("this"))
                 {
-                    identifierType = VarTableSingleton.getTableByClassName(_varIdent).GetTypeFromConstructorTable("this." + _ident);
+                    if (this._e.getClass() != Expression.Constructor.class)
+                    {
+                        String localVarType = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).GetTypeFromVarTable(_ident);
+                        if (localVarType == null)
+                            throw new Exception(_varIdent + " not defined");
+                        identifierType = VarTableSingleton.getTableByClassName(localVarType).GetTypeFromConstructorTable("this." + _ident);
+                    }
+                    else
+                    {
+                        identifierType = VarTableSingleton.getTableByClassName(_varIdent).GetTypeFromConstructorTable("this." + _ident);
+                    }
+
                 }
                 else
                 {
@@ -540,8 +551,8 @@ public abstract class Expression
         {
             if (this._e != null)
             {
-                if (!this.toString().contains("this."))
-                    throw new Exception("Cannot access private variables in class " + this.toString());
+//                if (!this.toString().contains("this."))
+//                    throw new Exception("Cannot access private variables in class " + this.toString());
                 return _e.getIdent() + "." + _ident;
             }
         	return _ident;
@@ -617,7 +628,7 @@ public abstract class Expression
         public String getType(String methodIdent) throws Exception
         {
             // the class identifier is the type, right?
-            this._args.visit2(this._ident, methodIdent);
+            this._args.visit2(this._ident);
             return this._ident;
         }
 

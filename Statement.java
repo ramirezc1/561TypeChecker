@@ -168,13 +168,14 @@ public abstract class Statement
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
         	_e.visit2(classIdent,methodIdent);
-            String type= _e.getType(methodIdent);
+            String type = _e.getType(methodIdent);
             VarTable t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass);
             
             //find type by looking in method_args
-            if(type ==null) {
+            if(type == null)
+            {
             	//System.out.println(r.GetTypeFromMethodVarTable(s.getExpr().getIdent(), this._methodIdent));
-            	type =t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
+            	type = t.GetTypeFromMethodVarTable(_e.getIdent(), methodIdent);
             	_e.setsetType(type);
             }
             

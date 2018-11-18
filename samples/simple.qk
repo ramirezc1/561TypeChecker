@@ -1,16 +1,35 @@
-class Waterfowl() {
+class C1()  extends Obj {
+   def foo():  C1{
+       return C1();    /* CHANGED */
+   }
+}
 
-  def not_duck_typing(x: Int): Int {
-     if x < 7 {
-        a = 42;          // a: Int
-        b = 13;          // b: Int
-     } else {
-        a = "forty-two"; // a: String
-        b = "thirteen";  // b: String
-     }
-     // a,b:  Obj (least common ancestor of Int and String)
-     while a < b {   // ERROR:  cannot compare Obj < Obj 
-        return 1;
-     }
-  }
+class C2() extends C1 {
+   def foo():  C1 {
+        return C1();    /* Conforms to C1.foo() */
+   }
+}
+
+class C3() extends C2 { 
+   def foo(): C2 {
+        return C2();   /* Conforms to C2.foo() */
+   }
+}
+
+class C4() extends C3 {
+    def foo() : C3 {
+         return C3();  /* Conforms to C3.foo() */
+    }
+}
+/* Obviously you can extend this pattern indefintely.  
+ * Now type x below ... what should happen? 
+ */ 
+class d(){
+
+def s(){
+x = C4();           
+while ( x == x ) {
+   x = x.foo();      /* Type system should reject this */
+}
+}
 }

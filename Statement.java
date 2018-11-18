@@ -213,7 +213,8 @@ public abstract class Statement
             return "WHILE";
         }
 
-        public void visit2(String classIdent) throws Exception
+        @SuppressWarnings("unchecked")
+		public void visit2(String classIdent) throws Exception
         {
         	//typecheck condition
         	_expression.visit2(classIdent);
@@ -223,14 +224,36 @@ public abstract class Statement
             // adds statements to table
             // type checks statements
             // removes statements from table
-        	for (Statement s : this._statements)
-            {
-                s.visit2(classIdent);
-            }
+        	while(true) {
+        		LinkedList<Var> t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).getVarTable();
+        		LinkedList<Var> o = new LinkedList<Var>();
+        		for (Var v: t) {
+        			 Var a = new Var(v.ident,v.type);
+        			  o.add(a);
+        
+        		}
+	        	for (Statement s : this._statements)
+	            {
+	                s.visit2(classIdent);
+	            }
+	        	int count =0;
+	        	int i=0;
+	        	for (Var v: t) {
+       			  if(v.ident.equals(o.get(i).ident)&&v.type.equals(o.get(i).type))
+       			   count++;
+       			  i++;
+	        	}
+	        	if(count == t.size())
+	        		break;
+    		
+        	}
+        	
+        	
         }
 
         public void visit2(String classIdent, String methodIdent) throws Exception
         {
+        	
         	//typecheck condition
         	_expression.visit2(classIdent,methodIdent);
         	String type = _expression.getType(methodIdent);
@@ -239,11 +262,30 @@ public abstract class Statement
             // adds statements to table
             // type checks statements
             // removes statements from table
-        	
-            for (Statement s : this._statements)
-            {
-                s.visit2(classIdent, methodIdent);
-            }
+        	while(true) {
+        		LinkedList<Var> t = VarTableSingleton.getTableByClassName(TypeChecker.currentClass).getMethodVarTable().get(methodIdent);
+        		LinkedList<Var> o = new LinkedList<Var>();
+        		for (Var v: t) {
+        			 Var a = new Var(v.ident,v.type);
+        			  o.add(a);
+        
+        		}
+	        	for (Statement s : this._statements)
+	            {
+	                s.visit2(classIdent, methodIdent);
+	            }
+	        	int count =0;
+	        	int i=0;
+	        	for (Var v: t) {
+       			  if(v.ident.equals(o.get(i).ident)&&v.type.equals(o.get(i).type))
+       			   count++;
+       			  i++;
+	        	}
+	        	if(count == t.size())
+	        		break;
+    		
+        	}
+            
         }
 
         public String toString()

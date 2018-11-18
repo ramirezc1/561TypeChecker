@@ -441,6 +441,23 @@ public class VarTable
         }
         return null;
     }
+    public HashMap<String, LinkedList<Var>> getMethodVarTable(){
+    	
+    	return this.methodVars;
+    }
+    public LinkedList<Var> getVarTable(){
+    	
+    	return this.varTable;
+    }
+    public void setMethodVarTable(HashMap<String, LinkedList<Var>> table){
+    	
+    	this.methodVars= table;
+    }
+    public void setVarTable(LinkedList<Var> table){
+    	
+    	this.varTable= table;
+    }
+    
     
 }
 

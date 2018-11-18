@@ -1,5 +1,5 @@
 # CS 561 Typechecker
-Lexer, parser, and AST build by Sam Gerendasy & Cristian Ramirez. 
+Lexer, parser,AST and TypeChecker build by Sam Gerendasy & Cristian Ramirez. 
 Starter code created by Michal Young.
 
 # To Build

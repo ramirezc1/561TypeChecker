@@ -7,6 +7,6 @@ CLI=${HERE}/lib/commons-cli-1.4.jar
 
 CLASSPATH=.:${CUP}:${CLI}:${HERE}:${JFLEX}
 
-#make clean
-#make
+make clean
+make
 java -cp $CLASSPATH Main $*

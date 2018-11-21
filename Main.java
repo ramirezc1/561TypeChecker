@@ -86,8 +86,7 @@ public class Main {
             builtinAST = (Program) result.value;
             builtinAST.visit();
             builtinAST.methodVisit();
-            //System.out.println("Built in classes parsed, ast built");
-//            System.out.println(builtinAST.toString());
+            System.out.println("Built in classes parsed, built-in ast built");
 
             scanner = new Lexer (new FileReader ( sourceFile), symbolFactory);
                 p = new parser( scanner, symbolFactory);
@@ -100,9 +99,6 @@ public class Main {
             }
 
             ast = (Program) result.value;
-
-            System.out.println(ast.toString());
-            System.out.println("Done parsing");
         }
         catch (Exception e)
         {

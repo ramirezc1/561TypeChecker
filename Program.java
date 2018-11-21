@@ -49,7 +49,6 @@ public class Program
     public void visit2()throws Exception
     {
     	//second visit to typeCheck
-        System.out.println("TypeChecking program");
         for (Class_Block.Clazz_Block cb : _cbs)
         {
             TypeChecker.currentClass = cb._classIdent;

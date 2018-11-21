@@ -246,6 +246,11 @@ public abstract class Expression
             String eType = this.e1.getType(methodIdent);
             String opString = OperatorToString.getUnaryOperatorDict().get(this.op);
             String unopType = TypeChecker.typeCheckUnaryOperator(eType, opString);
+            if (unopType == null)
+            {
+                if (this.op.equals("!"))
+                    unopType = "Boolean";
+            }
             return unopType;
         }
 

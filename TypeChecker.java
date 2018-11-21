@@ -18,26 +18,55 @@ public class TypeChecker {
 		tree = Tree.getInstance();
 	}
 	
-	 public boolean TypeCheck() throws Exception
-     {
-		 	//first visit only classes
-	        ast.visit();
-	        ast.methodVisit();
-	        checkForUndefined();
-	        System.out.println("Passed check for undefined class inheritance");
-	        checkForCycles();
-	        createLattice();
-	        System.out.println("Passed check for class cycles");
+	public boolean TypeCheck() throws Exception
+    {
+        //first visit only classes
+        ast.visit();
+        ast.methodVisit();
+        checkForUndefined();
+        System.out.println("Passed check for undefined class inheritance");
+        checkForCycles();
+        createLattice();
+        System.out.println("Passed check for class cycles");
 
-            //Second Visit to typeCheck everything
-            ast.visit2();
-	        checkOverriden();
-	        checkConstructor();
-	       // System.out.println(" : "+tree.LCA(tree.getRoot(), "D","X"));
-	        
-	        System.out.println("Passed check for subclass matching constructor of parent class");
-			return true;
-	    }
+        //Second Visit to typeCheck everything
+        ast.visit2();
+        checkOverriden();
+        checkConstructor();
+        // System.out.println(" : "+tree.LCA(tree.getRoot(), "D","X"));
+        PrintTables();
+        return true;
+    }
+
+    private void PrintTables()
+    {
+        System.out.println("\n ========== PRINTING TYPE TABLES ==========\n");
+        for (VarTable vt : VarTableSingleton.TheTable)
+        {
+            String className = vt.className;
+            System.out.println("Class: " + className);
+            System.out.println("\tExtends: " + ClassesTable.getInstance().getParentClass(className));
+            System.out.println("\tInstance Variables: ");
+            for (Var v : vt.constructorTable)
+            {
+                System.out.println("\t\t" + v.ident + ": " + v.type);
+            }
+            if (vt.constructorTable.size() == 0)
+            {
+                System.out.println("\t\t[none]");
+            }
+            System.out.println("\tMethods:");
+            for(Var v : vt.methodTable)
+            {
+                System.out.println("\t\t" + v.ident + " returns: " + v.type);
+            }
+            if (vt.methodTable.size() == 0)
+            {
+                System.out.println("\t\t[none]");
+            }
+            System.out.println();
+        }
+    }
 
 	private void createLattice() throws Exception {
 	    Tree tree = Tree.getInstance();

@@ -1,4 +1,4 @@
-class C1(x: Int)
+class C1(x: Boolean)
 {
     this.x = x;
     def foo() : C2
@@ -16,5 +16,6 @@ class C2()
     }
 }
 
-A = C1(5);
-B = A.foo().bar(not A.x); // test methods calling methods with argument expression.
+A = C1(false);
+// test methods calling methods with argument expression.
+B = A.foo().bar(not A.x);

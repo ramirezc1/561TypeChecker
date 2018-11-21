@@ -539,7 +539,6 @@ public abstract class Statement
         	 String methodType =t.GetTypeFromMethodTable(methodIdent);
             for(Statement s: _stmtList) {
             	s.visit2(classIdent, methodIdent);
-            	System.out.println(s.toString());
             }
         }
 

@@ -1,0 +1,8 @@
+//Instantiating class B takes one argument but is called with two. The number of arguments do not match
+
+class B(x :Int){
+	
+}
+
+z=5;
+y =B(z,"5");

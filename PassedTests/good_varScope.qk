@@ -1,0 +1,9 @@
+* A field initialized in a constructor can be accessed in a subsequent method
+class A(){
+	x="5";
+	def b(): String{
+
+		return x;
+	}
+
+}

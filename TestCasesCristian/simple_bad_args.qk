@@ -1,0 +1,4 @@
+//Type of argument in constructor is not valid type, int is not Int
+class (x:int){
+	
+}

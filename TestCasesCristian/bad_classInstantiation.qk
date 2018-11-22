@@ -1,0 +1,7 @@
+//Instantiating class B takes an int as an argument and int is not a subtype of a String. So it will fail when B gets instantiated with a String
+
+class B(x :Int ){
+	
+}
+
+y =B("5");

@@ -1,4 +1,6 @@
 //This case should not be allowed. There are more statement after the first  return 
+
+//We commented this out in our type checker because we didn't think it was needed but we can uncomment it to make this case fail
 class A(){
 	def foo() : Int
 	{
